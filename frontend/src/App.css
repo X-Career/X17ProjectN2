@@ -36,3 +36,223 @@
     transform: rotate(360deg);
   }
 }
+
+.wrapper {
+  width: 100%;
+  height: 100vh;
+}
+
+.column-around{
+  display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-start{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.w-100{
+  width: 100%;
+}
+
+.h-100{
+  height: 100%;
+}
+.register_name .ant-form-item{
+  width: 48%;
+}
+
+
+a{
+  text-decoration: none;
+  color: #e8d207;
+}
+
+a:hover{
+  color: #282c34;
+}
+
+.ant-form-item{
+  margin-bottom: 15px !important;
+}
+
+.vh-100{
+  height: 100vh;
+}
+
+.register-wrapper, .login_wrapper{
+  background-color: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  height: 95vh;
+}
+
+.anticon-eye-invisible{
+  color: #282c34 !important;
+}
+
+.register_form{
+  width: 600px;
+}
+
+.register_form .ant-input, 
+.register_form .ant-input-affix-wrapper{
+  background-color: transparent !important;
+}
+
+.login_form{
+  width: 1000px;
+  height: 600px;
+  border-radius: 10px;
+  background-color: white;
+  border: 1px solid rgb(238, 238, 238);
+}
+
+.login_carousel{
+  height: 600px;
+  width: 100%;
+}
+
+.w-50{
+  width: 50%
+}
+
+@import url("https://fonts.googleapis.com/css?family=Montserrat:700");
+
+.login_wrapper {
+  background-color: #f8f8f8;;
+  position: relative;
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+}
+
+.cube {
+  position: absolute;
+  top: 80vh;
+  left: 45vw;
+  width: 10px;
+  height: 10px;
+  border: solid 1px #e8d207;
+  transform-origin: top left;
+  transform: scale(0) rotate(0deg) translate(-50%, -50%);
+  -webkit-animation: cube 12s ease-in forwards infinite;
+  animation: cube 12s ease-in forwards infinite;
+}
+
+.cube:nth-child(2n) {
+  border-color: #282c34 ;
+}
+
+.cube:nth-child(2) {
+  -webkit-animation-delay: 2s;
+  animation-delay: 2s;
+  left: 25vw;
+  top: 40vh;
+}
+
+.cube:nth-child(3) {
+  -webkit-animation-delay: 4s;
+  animation-delay: 4s;
+  left: 75vw;
+  top: 50vh;
+}
+
+.cube:nth-child(4) {
+  -webkit-animation-delay: 6s;
+  animation-delay: 6s;
+  left: 90vw;
+  top: 10vh;
+}
+
+.cube:nth-child(5) {
+  -webkit-animation-delay: 8s;
+  animation-delay: 8s;
+  left: 10vw;
+  top: 85vh;
+}
+
+.cube:nth-child(6) {
+  -webkit-animation-delay: 10s;
+  animation-delay: 10s;
+  left: 50vw;
+  top: 10vh;
+}
+
+@-webkit-keyframes cube {
+  from {
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(20) rotate(960deg) translate(-50%, -50%);
+    opacity: 0;
+  }
+}
+
+@keyframes cube {
+  from {
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(20) rotate(960deg) translate(-50%, -50%);
+    opacity: 0;
+  }
+}
+
+.login_btn {
+  width: 80px;
+  height: 80px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  margin-top: 24px;
+}
+
+.login_btn:hover {
+  background-color: #fff27c;
+  box-shadow: 0px 5px 5px #fdf7c1;
+  color: #fff;
+  transform: translateY(-7px);
+}
+
+.ant-input{
+  box-shadow: rgba(0, 0, 0, 0.35) 2.5px 2.5px 2.6px;
+}
