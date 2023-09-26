@@ -10,14 +10,18 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    position: {
+    location:{
         type: String,
         required: true
     },
-    salary:{
+    time:{
         type: Number,
         required: true
-    }
+    },
+    positions: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Position",
+    },
 },{
     versionKey: false,
     timestamps: true
