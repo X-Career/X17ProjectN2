@@ -1,18 +1,18 @@
-import Job from "../models/job.js";
-import jobValidator from "../validation/job.js";
+import Candidate from "../models/candidate.js";
+import candidateValidator from "../validation/candidate.js";
 
 
 
 export const getAll = async (req, res)=>{
     try {
-        const data = await Job.find({});
+        const data = await Candidate.find({});
         if (!data || data.length === 0){
             return res.status(404).json({
-                message: "No Job",
+                message: "No candidate found",
             })
         }
         return res.status(200).json({
-            message: "Job has been",
+            message: "Cadidate has been applied",
             datas: data,
         })
 
@@ -25,14 +25,14 @@ export const getAll = async (req, res)=>{
 }
 export const getDetail = async (req, res)=>{
     try {
-        const data = await Job.findById(req.params.id).populate("Test")
+        const data = await Candidate.findById(req.params.id)
         if (!data){
             return res.status(404).json({
-                message: "No Job",
+                message: "No candidate found",
             })
         }
         return res.status(200).json({
-            message: "Job has been",
+            message: "Cadidate has been applied",
             datas: data,
         })
 
@@ -46,21 +46,21 @@ export const getDetail = async (req, res)=>{
 
 export const create = async (req, res)=>{
     try {
-        const {error} = jobValidator.validate(req.body, {abortEarly: false}); 
+        const {error} = candidateValidator.validate(req.body, {abortEarly: false}); 
         if (error){
             return res.status(400).json({
                 message: error.details.map(err => err.message),
             })
         }
-        const data = await Job.create(req.body);
+        const data = await Candidate.create(req.body);
         if (!data){
             return res.status(404).json({
-                message: "Create Job not successful",
+                message: "Create Cadidate not successful",
             })
         }
 
         return res.status(200).json({
-            message: "Create Job successful",
+            message: "Create Cadidate successful",
             datas: data,
         })
 
@@ -74,20 +74,20 @@ export const create = async (req, res)=>{
 
 export const update = async (req, res)=>{
     try {
-        const {error} = jobValidator.validate(req.body, {abortEarly: false}); 
+        const {error} = candidateValidator.validate(req.body, {abortEarly: false}); 
         if (error){
             return res.status(400).json({
                 message: error.details.map(err => err.message),
             })
         }
-        const data = await Job.findByIdAndUpdate(req.params.id, req.body, {new:true});
+        const data = await Candidate.findByIdAndUpdate(req.params.id, req.body, {new:true});
         if (!data){
             return res.status(404).json({
-                message: "Update Job not successful",
+                message: "Update Cadidate not successful",
             })
         }
         return res.status(200).json({
-            message: "Update Job successful",
+            message: "Update Cadidate successful",
             datas: data,
         })
 
@@ -101,14 +101,14 @@ export const update = async (req, res)=>{
 
 export const remove = async (req, res)=>{
     try {
-        const data = await Job.findByIdAndDelete(req.params.id);
+        const data = await Candidate.findByIdAndDelete(req.params.id);
         if (!data){
             return res.status(404).json({
-                message: "Delete position not successful",
+                message: "Delete Cadidate not successful",
             })
         }
         return res.status(200).json({
-            message: "Delete position successful",
+            message: "Delete Cadidate successful",
             datas: data,
         })
 
