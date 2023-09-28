@@ -18,10 +18,6 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    date:{
-        type: Date,
-        required: true
-    },
     position:{
         type: String,
         required: true
@@ -33,6 +29,10 @@ const jobSchema = new mongoose.Schema({
     test: {
         type: mongoose.Schema.Types.ObjectId,
         ref:"Test",
+    },
+    date:{
+        type: Date,
+        required: true
     },
 },{
     versionKey: false,

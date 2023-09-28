@@ -22,9 +22,21 @@ const candidateSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    role: {
+    point:{
+        type: Number,
+    },
+    datetoInter:{
+        type: Date,
+    },
+    result:{
         type: String,
-        default:"candidate",
+    },
+    datetoGetjob:{
+        type: Date,
+    },
+    satus: {
+        type: String,
+        default:"Applying",
     },
     },
     {

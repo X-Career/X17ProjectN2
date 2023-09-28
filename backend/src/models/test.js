@@ -10,14 +10,6 @@ const testSchema = new mongoose.Schema({
         type: String,
         require:true,
     },
-    startTime:{
-        type: Date,
-        require:true,
-    },
-    endTime:{
-        type: Date,
-        require:true,
-    },
     point:{
         type: String,
         require: true,
@@ -32,7 +24,15 @@ const testSchema = new mongoose.Schema({
             ref: "Job",
             require: true
         }
-    ]
+    ],
+    startTime:{
+        type: Date,
+        require:true,
+    },
+    endTime:{
+        type: Date,
+        require:true,
+    },
 },{
     versionKey: false, timestamps: true
 })
