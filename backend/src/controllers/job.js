@@ -25,7 +25,7 @@ export const getAll = async (req, res)=>{
 }
 export const getDetail = async (req, res)=>{
     try {
-        const data = await Job.findById(req.params.id).populate("test")
+        const data = await Job.findById(req.params.id).populate("tests")
         if (!data){
             return res.status(404).json({
                 message: "No Job",

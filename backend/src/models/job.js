@@ -26,7 +26,7 @@ const jobSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    test: {
+    tests: {
         type: mongoose.Schema.Types.ObjectId,
         ref:"Test",
     },

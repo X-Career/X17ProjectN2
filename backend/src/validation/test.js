@@ -8,7 +8,6 @@ const positionValidator = Joi.object({
     startTime: Joi.date().format('YYYY-MM-DD HH:mm').required(),
     endTime: Joi.date().format('YYYY-MM-DD HH:mm').required(),
     point: Joi.number().required(),
-    question: Joi.string().required(),
     jobId:  Joi.string().required()
 });
 

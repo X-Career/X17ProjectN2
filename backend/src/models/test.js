@@ -14,10 +14,6 @@ const testSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    question:{
-        type: String,
-        require: true,
-    },
     jobId:[
         {
             type: mongoose.Schema.Types.ObjectId,

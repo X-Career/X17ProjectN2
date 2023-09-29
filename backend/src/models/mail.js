@@ -1,23 +1,29 @@
 import mongoose from "mongoose";
 
 const mailSchema = new mongoose.Schema({
-    name:{
+    userEmail:{
         type: String,
-        require:true,
-        defaultValue: "Noposition"
+        required: true,
     },
-    des:{
+    candidateName:{
         type: String,
-        require:true,
+        required: true,
     },
-    testId:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Test",
-            require: true
-        }
-    ],
+    intro:{
+        type: String,
+        required: true,
+    },
+    linkTest:{
+        type: String,
+        required: true,
+    }, 
+    outro:{
+        type: String,
+        required: true,
+    }
 },{
-    versionKey: false, timestamps: true
-})
+    versionKey: false,
+    timestamps: true
+});
+
 export default mongoose.model("Mail", mailSchema);

@@ -24,17 +24,21 @@ const candidateSchema = new mongoose.Schema({
     },
     point:{
         type: Number,
+        default: null,
     },
     datetoInter:{
         type: Date,
+        default: null,
     },
     result:{
         type: String,
+        default: null,
     },
     datetoGetjob:{
         type: Date,
+        default: null,
     },
-    satus: {
+    status: {
         type: String,
         default:"Applying",
     },

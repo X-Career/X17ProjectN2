@@ -1,15 +1,29 @@
 import dotenv from "dotenv"
 import nodemailer from 'nodemailer';
-import Mail from "../models/job.js";
+import Mail from "../models/mail.js";
 import Mailgen from 'mailgen';
+import mailValidator from "../validation/mail.js";
 
 dotenv.config()
 const {APP_MAIL} = process.env;
 const {APP_PASSWORDS}= process.env;
 
 
-export const emailtoCandicate = (req, res)=>{
-        const {userEmail} = req.body;
+export const emailtoCandicate = async(req, res)=>{
+        try {
+            const {error} = mailValidator.validate(req.body, {abortEarly: false}); 
+            if (error){
+                return res.status(400).json({
+                    message: error.details.map(err => err.message),
+                })
+            }
+        const data = await Mail.create(req.body);
+        if (!data){
+            return res.status(404).json({
+                message: "Import infor not successful",
+            })
+        }    
+
         let config = {
             service: 'gmail',
             auth:{
@@ -22,40 +36,43 @@ export const emailtoCandicate = (req, res)=>{
         let MailGenerator = new Mailgen({
             theme: 'default',
             product: {
-                name: "Mailgen",
-                link:"http://mailgen.js",
+                name: "Itecho",
+                link:"http://Itecho.js",
             }
         })
         let response = {
             body:{
-                name: "Tai",
-                intro: "You need to access this link to do test",
+                name: data.candidateName,
+                intro: data.intro,
                 table: {
                     data: [
                         {
-                            Link: "This link in here"
+                            Link: data.linkTest
                         }
                     ]
                 },
-                outro:"Thanks for do this test"
+                outro:data.outro
             }
         }
         let mail = MailGenerator.generate(response)
         let message ={
             from: APP_MAIL,
-            to: userEmail,
+            to: data.userEmail,
             subject: "Test",
             html: mail
         }
 
         transporter.sendMail(message).then(()=>{
             return res.status(201).json({
-                msg:"You should receive a email"
+                msg:"Email sent successfully"
             })
-        }).catch(error=> {
+        })
+            
+        } catch (error) {
             return res.status(500).json({
                 name: error.name,
                 message: error.message,
             });
-    })
+        }
+
 }
