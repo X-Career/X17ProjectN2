@@ -42,6 +42,10 @@ const candidateSchema = new mongoose.Schema({
         type: String,
         default:"Applying",
     },
+    fileCV:[ {
+        type: Object, 
+        required: true
+    }],
     },
     {
         timestamps: true, 

@@ -12,7 +12,8 @@ const candidateValidator = Joi.object({
     status: Joi.string(),
     datetoInter:Joi.date().format('YYYY-MM-DD HH:mm'),
     result:Joi.string(),
-    datetoGetjob:Joi.date().format('YYYY-MM-DD HH:mm')
+    datetoGetjob:Joi.date().format('YYYY-MM-DD HH:mm'),
+    fileCV: Joi.string().required()
 });
 
 export default candidateValidator;
