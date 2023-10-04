@@ -1,18 +1,18 @@
 import Job from "../models/job.js";
-import jobValidator from "../validation/job.js";
-
+import Test from "../models/test.js";
+import testValidator from "../validation/test.js";
 
 
 export const getAll = async (req, res)=>{
     try {
-        const data = await Job.find({});
+        const data = await Test.find({}).populate("jobId");
         if (!data || data.length === 0){
             return res.status(404).json({
-                message: "No Job",
+                message: "No test",
             })
         }
         return res.status(200).json({
-            message: "Job has been",
+            message: "Tests has been created successfully",
             datas: data,
         })
 
@@ -25,14 +25,14 @@ export const getAll = async (req, res)=>{
 }
 export const getDetail = async (req, res)=>{
     try {
-        const data = await Job.findById(req.params.id).populate("tests")
+        const data = await Test.findById(req.params.id).populate("jobId");
         if (!data){
             return res.status(404).json({
-                message: "No Job",
+                message: "No test",
             })
         }
         return res.status(200).json({
-            message: "Job has been",
+            message: "Test has been created successfully",
             datas: data,
         })
 
@@ -46,21 +46,33 @@ export const getDetail = async (req, res)=>{
 
 export const create = async (req, res)=>{
     try {
-        const {error} = jobValidator.validate(req.body, {abortEarly: false}); 
+        const {error} = testValidator.validate(req.body, {abortEarly: false}); 
         if (error){
             return res.status(400).json({
                 message: error.details.map(err => err.message),
             })
         }
-        const data = await Job.create(req.body);
+        const data = await Test.create(req.body);
         if (!data){
             return res.status(404).json({
-                message: "Create Job not successful",
+                message: "Create test not successful",
             })
         }
+        const updateJobs = await Job.findByIdAndUpdate(data.jobId, {
+            $addToSet: {
+                tests: data._id,
+            },
+          });
+
+        if (!updateJobs) {
+            return res.status(404).json({
+              message: "Add Job for new Test not successful",
+            });
+        }
+
 
         return res.status(200).json({
-            message: "Create Job successful",
+            message: "Create test successful",
             datas: data,
         })
 
@@ -74,20 +86,33 @@ export const create = async (req, res)=>{
 
 export const update = async (req, res)=>{
     try {
-        const {error} = jobValidator.validate(req.body, {abortEarly: false}); 
+        const {error} = testValidator.validate(req.body, {abortEarly: false}); 
         if (error){
             return res.status(400).json({
                 message: error.details.map(err => err.message),
             })
         }
-        const data = await Job.findByIdAndUpdate(req.params.id, req.body, {new:true});
+        const data = await Test.findByIdAndUpdate(req.params.id, req.body, {new:true});
         if (!data){
             return res.status(404).json({
-                message: "Update Job not successful",
+                message: "Update test not successful",
             })
         }
+
+        const updateJobs = await Job.findByIdAndUpdate(data.jobId, {
+            $addToSet: {
+                tests: data._id,
+            },
+          });
+
+        if (!updateJobs) {
+            return res.status(404).json({
+              message: "Add Job for new Test not successful",
+            });
+        }
+
         return res.status(200).json({
-            message: "Update Job successful",
+            message: "Update test successful",
             datas: data,
         })
 
@@ -101,14 +126,15 @@ export const update = async (req, res)=>{
 
 export const remove = async (req, res)=>{
     try {
-        const data = await Job.findByIdAndDelete(req.params.id);
+        const data = await Test.findByIdAndDelete(req.params.id);
         if (!data){
             return res.status(404).json({
-                message: "Delete position not successful",
+                message: "Delete test not successful",
             })
         }
+        
         return res.status(200).json({
-            message: "Delete position successful",
+            message: "Delete test successful",
             datas: data,
         })
 

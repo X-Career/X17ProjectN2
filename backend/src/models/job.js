@@ -10,17 +10,29 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    req:{
+        type: String,
+        required: true
+    },
     location:{
         type: String,
         required: true
     },
-    time:{
+    position:{
+        type: String,
+        required: true
+    },
+    salary:{
         type: Number,
         required: true
     },
-    positions: {
+    tests: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:"Position",
+        ref:"Test",
+    },
+    date:{
+        type: Date,
+        required: true
     },
 },{
     versionKey: false,
