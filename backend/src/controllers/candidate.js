@@ -1,4 +1,3 @@
-import cloudinary from "../configs/cloudinaryConfig.js";
 import Candidate from "../models/candidate.js";
 import candidateValidator from "../validation/candidate.js";
 
@@ -57,10 +56,6 @@ export const create = async (req, res)=>{
             })
         }
         if(fileCV){
-            const uploadRes = await cloudinary.uploader.upload(fileCV,{
-                upload_preset:'projectN2',
-            })
-            if(uploadRes){
                 const newCandidate = new Candidate({
                     fullName,
                     gender,
@@ -72,7 +67,7 @@ export const create = async (req, res)=>{
                     result,
                     datetoGetjob,
                     status,
-                    fileCV: uploadRes
+                    fileCV,
                 })
                 const candidate = await newCandidate.save();
                 console.log(candidate)
@@ -83,16 +78,7 @@ export const create = async (req, res)=>{
                     message: "Create Cadidate successful",
                     datas: candidate,
                 })
-            }
         }
-        // const data = await Candidate.create(req.body);
-        // if (!data){
-        //     return res.status(404).json({
-        //         message: "Create Cadidate not successful",
-        //     })
-        // }
-
-
     } catch (error) {
         return res.status(500).json({
             name: error.name,
