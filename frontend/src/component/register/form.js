@@ -1,14 +1,32 @@
 import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons';
+import { signUp } from '../../services/auth';
+import { showMessage } from '../../helper/showMessage';
+import { Link, useNavigate } from "react-router-dom";
+
 const RegisterForm = () => {
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const handelRegister = async () =>
     {
         const values = await form.validateFields()
         console.log(values);
+        try{
+            const response = await signUp(values);
+            const { status, message } = response.data;
+            showMessage(status, message);
+            if (Math.floor(status / 100) === 2){
+                navigate('/login')
+            }
+
+        }catch(e){
+            console.log('Error:', e.message);
+        }
+   
     }
+
 
 
 
