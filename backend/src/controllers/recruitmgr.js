@@ -1,31 +1,18 @@
-import Job from "../models/job.js";
-import jobValidator from "../validation/job.js";
+import Recruitmgr from "../models/recruitmgr.js";
+import recruitmgrValidator from "../validation/recruitmgr.js";
 
 
 
 export const getAll = async (req, res)=>{
     try {
-        // const data = await Job.find({});
-
-        const {_page = 1, _limit = 7, _sort = "createdAt", _order = "asc"} = req.query;
-        const options = {
-            page: _page,
-            limit: _limit,
-            sort : {
-                [_sort]: _order === "asc" ? 1 : -1,
-            }
-        }
-
-        const data = await Job.paginate({}, options);
-        console.log(data);
-
-        if (!data.docs || data.docs.length === 0){
+        const data = await Recruitmgr.find({});
+        if (!data || data.length === 0){
             return res.status(404).json({
-                message: "No Job",
+                message: "There is no recruitment",
             })
         }
         return res.status(200).json({
-            message: "Job has been",
+            message: "Recruitmgr has been",
             datas: data,
         })
 
@@ -38,14 +25,14 @@ export const getAll = async (req, res)=>{
 }
 export const getDetail = async (req, res)=>{
     try {
-        const data = await Job.findById(req.params.id).populate("tests")
+        const data = await Recruitmgr.findById(req.params.id)
         if (!data){
             return res.status(404).json({
-                message: "No Job",
+                message: "There is no recruitment",
             })
         }
         return res.status(200).json({
-            message: "Job has been",
+            message: "Recruitmgr has been",
             datas: data,
         })
 
@@ -59,21 +46,21 @@ export const getDetail = async (req, res)=>{
 
 export const create = async (req, res)=>{
     try {
-        const {error} = jobValidator.validate(req.body, {abortEarly: false}); 
+        const {error} = recruitmgrValidator.validate(req.body, {abortEarly: false}); 
         if (error){
             return res.status(400).json({
                 message: error.details.map(err => err.message),
             })
         }
-        const data = await Job.create(req.body);
+        const data = await Recruitmgr.create(req.body);
         if (!data){
             return res.status(404).json({
-                message: "Create Job not successful",
+                message: "Create Recruitmgr not successful",
             })
         }
 
         return res.status(200).json({
-            message: "Create Job successful",
+            message: "Create Recruitmgr successful",
             datas: data,
         })
 
@@ -87,20 +74,20 @@ export const create = async (req, res)=>{
 
 export const update = async (req, res)=>{
     try {
-        const {error} = jobValidator.validate(req.body, {abortEarly: false}); 
+        const {error} = recruitmgrValidator.validate(req.body, {abortEarly: false}); 
         if (error){
             return res.status(400).json({
                 message: error.details.map(err => err.message),
             })
         }
-        const data = await Job.findByIdAndUpdate(req.params.id, req.body, {new:true});
+        const data = await Recruitmgr.findByIdAndUpdate(req.params.id, req.body, {new:true});
         if (!data){
             return res.status(404).json({
-                message: "Update Job not successful",
+                message: "Update Recruitmgr not successful",
             })
         }
         return res.status(200).json({
-            message: "Update Job successful",
+            message: "Update Recruitmgr successful",
             datas: data,
         })
 
@@ -114,14 +101,14 @@ export const update = async (req, res)=>{
 
 export const remove = async (req, res)=>{
     try {
-        const data = await Job.findByIdAndDelete(req.params.id);
+        const data = await Recruitmgr.findByIdAndDelete(req.params.id);
         if (!data){
             return res.status(404).json({
-                message: "Delete Job not successful",
+                message: "Delete Recruitmgr not successful",
             })
         }
         return res.status(200).json({
-            message: "Delete Job successful",
+            message: "Delete Recruitmgr successful",
             datas: data,
         })
 

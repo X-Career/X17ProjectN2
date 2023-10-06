@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const jobSchema = new mongoose.Schema({
     name: {
@@ -38,5 +39,6 @@ const jobSchema = new mongoose.Schema({
     versionKey: false,
     timestamps: true
 });
+jobSchema.plugin(mongoosePaginate)
 
 export default mongoose.model("Job", jobSchema);
