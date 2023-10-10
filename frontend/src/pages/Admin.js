@@ -9,7 +9,7 @@ import {
     UploadOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Button, theme, Avatar, Row, Col } from 'antd';
+import { Layout, Menu, Button, theme, Row, Col } from 'antd';
 import { useNavigate } from "react-router-dom";
 
 const { Header, Sider } = Layout;
@@ -25,8 +25,8 @@ const Admin = () => {
     } = theme.useToken();
     return (
         <Layout>
-            <Sider width={'250px'} trigger={null} collapsible collapsed={collapsed}>
-                <div className="demo-logo-vertical" style={{ padding: '16px' }}>
+            <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed}>
+                <div className="demo-logo-vertical" style={{ padding: '20px' }}>
                     <img src="../images/logo.webp" style={{ width: '100%' }} />
                 </div>
                 <Menu
