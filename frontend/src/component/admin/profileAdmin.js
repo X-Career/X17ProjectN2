@@ -46,7 +46,7 @@ const ProfileAdmin = () => {
                             </div>
                         </Col>
                         <Col md={14}>
-                            <div className='ProfileAdmin' style={{ width: "850px", height:"auto"}}>
+                            <div className='ProfileAdmin'>
                                 <div className='Tittle' style={{fontSize:"30px"}}>Edit acount</div>
                                 <form>
                                     <div className="Tittle_Element">First Name:</div>
