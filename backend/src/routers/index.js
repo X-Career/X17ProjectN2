@@ -8,6 +8,7 @@ import routerMail from './mail.js';
 const router = express.Router()
 
 router.use('/auth', routerAuth)
+
 router.use('/jobs', routerJobs)
 router.use('/tests', routerTests)
 router.use('/candidates', routerCandidates)
