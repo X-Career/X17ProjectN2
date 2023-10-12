@@ -68,3 +68,7 @@ a:hover {
 .w-70{
   width: 80% !important;
 }
+
+.ant-table-body{
+  min-height: 50vh !important;
+}

@@ -400,7 +400,7 @@ const RecruitMgr = () => {
                         pagination={{
                             onChange: cancel,
                         }}
-                        style={{height: '100vh'}}
+                        style={{minHeight: '100vh'}}
                     />
                 </Form>
             </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import {
     LogoutOutlined,
     MailOutlined,
@@ -18,11 +18,13 @@ const { Header, Sider } = Layout;
 
 const Admin = () => {
     const navigate = useNavigate();
-
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+    const currentUrl = window.location.href;
+    const segments = currentUrl.split('/');
+    const selectedKeys  = segments[segments.length - 1];
     return (
         <Layout>
             <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed}>
@@ -32,29 +34,29 @@ const Admin = () => {
                 <Menu
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={'/Admin/ProfileAdmin'}
+                    defaultSelectedKeys={selectedKeys}
                     onClick={(data)=>{
-                        navigate(data.key)
+                        navigate('/Admin/' + data.key)
                     }}
                     items={[
                         {
-                            key: '/Admin/ProfileAdmin',
+                            key: 'ProfileAdmin',
                             icon: <UserOutlined />,
                             label: "Profile",
                         },
                         {
-                            key: '/Admin/RecruitMgr',
+                            key: 'JobMgr',
                             icon: <ReconciliationOutlined />,
                             label: "Recruit Management",
 
                         },
                         {
-                            key: '/Admin/MailMgr',
+                            key: 'MailMgr',
                             icon: <MailOutlined />,
                             label: 'Mail Management',
                         },
                         {
-                            key: '/Admin/JobMgr',
+                            key: 'RecruitMgr',
                             icon: <UploadOutlined />,
                             label: 'Job Management',
                         },
