@@ -1,10 +1,11 @@
 import { Layout, theme } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, MailOutlined, SearchOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { Button, Input, Space, Table } from 'antd';
 import { Form, InputNumber, Popconfirm, Typography } from 'antd';
 import "./Admin.css"
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -64,6 +65,7 @@ const EditableCell = ({
 
 
 const RecruitMgr = () => {
+    const navigate = useNavigate()
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
@@ -196,6 +198,7 @@ const RecruitMgr = () => {
     const cancel = () => {
         setEditingKey('');
     };
+
     const save = async (key) => {
         try {
             const row = await form.validateFields();
@@ -218,6 +221,18 @@ const RecruitMgr = () => {
             console.log('Validate Failed:', errInfo);
         }
     };
+
+    // Delete Candidate
+    const onDelete = id => {  //Xóa candidate
+        const remove = [...data].filter(candidate => candidate.id !== id);
+        setData(remove)
+    }
+
+    // Link to mail page
+    const mailPage = () => {
+        navigate("/Admin/MailMgr")
+    }
+
     const columns = [
         {
             title: 'ID',
@@ -307,7 +322,7 @@ const RecruitMgr = () => {
             key: 'operation',
             dataIndex: 'operation',
             fixed: 'right',
-            width: 100,
+            width: 80,
             render: (_, record) => {
                 const editable = isEditing(record);
                 return editable ? (
@@ -327,12 +342,13 @@ const RecruitMgr = () => {
 
                 ) : (<div style={{ gap: "12px", display: "flex" }}>
                     <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-                        Edit
+                        <EditOutlined />
                     </Typography.Link>
-                    <a
-                    >
-                        delete
-                    </a>
+                    <div onClick={() => onDelete(record.id)} style={{ color: "#e8d207", cursor: "pointer" }}>
+                        <DeleteOutlined />
+                    </div>
+                    <MailOutlined onClick={() => mailPage()} style={{ cursor: "pointer" }}>
+                    </MailOutlined>
                 </div>)
             }
 
@@ -353,6 +369,8 @@ const RecruitMgr = () => {
             }),
         };
     });
+    // console.log(data.filter (data=>data.id ==="1"))
+
     return (
         <Content
             style={{
@@ -377,11 +395,12 @@ const RecruitMgr = () => {
                         rowClassName="editable-row"
                         scroll={{
                             x: 1500,
-                            y: 600,
+                            y: 800,
                         }}
                         pagination={{
                             onChange: cancel,
                         }}
+                        style={{height: '100vh'}}
                     />
                 </Form>
             </div>
