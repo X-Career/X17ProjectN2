@@ -44,8 +44,8 @@ const Admin = () => {
                             icon: <UserOutlined />,
                             label: "Profile",
                         },
-                        {
-                            key: 'JobMgr',
+                        { 
+                            key: 'RecruitMgr',
                             icon: <ReconciliationOutlined />,
                             label: "Recruit Management",
 
@@ -56,7 +56,7 @@ const Admin = () => {
                             label: 'Mail Management',
                         },
                         {
-                            key: 'RecruitMgr',
+                            key: 'JobMgr',
                             icon: <UploadOutlined />,
                             label: 'Job Management',
                         },
