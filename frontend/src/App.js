@@ -22,10 +22,10 @@ function App() {
         <Route path="/test" element={<Candidate/>} />
         <Route path="/admin/" element={<Admin/>} >
           <Route index element={<Navigate to ="ProfileAdmin" />}></Route>
-          <Route path='ProfileAdmin' element={<ProfileAdmin/>}></Route>
-          <Route path='JobMgr' element={<JobMgr/>}></Route>
-          <Route path='MailMgr' element={<MailMgr/>}></Route>
-          <Route path='RecruitMgr' element={<RecruittMgr/>}></Route>
+          <Route path='ProfileAdmin' element={<ProfileAdmin/>} activeClassName="active"></Route>
+          <Route path='JobMgr' element={<JobMgr/>} activeClassName="active"></Route>
+          <Route path='MailMgr' element={<MailMgr/>}activeClassName="active"></Route>
+          <Route path='RecruitMgr' element={<RecruittMgr/>}activeClassName="active"></Route>
         </Route>  
       </Routes>
     </Router>
