@@ -1,12 +1,12 @@
 import { Layout, theme } from 'antd';
 import { DeleteOutlined, EditOutlined, MailOutlined, SearchOutlined } from '@ant-design/icons';
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { Button, Input, Space, Table } from 'antd';
 import { Form, InputNumber, Popconfirm, Typography } from 'antd';
 import "./Admin.css"
 import { useNavigate } from 'react-router-dom';
-
+import { ActiveContext } from '../../context/active_menu';
 
 
 const { Content } = Layout;
@@ -68,6 +68,7 @@ const RecruitMgr = () => {
     const navigate = useNavigate()
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
+    const {active, setActive} = useContext(ActiveContext)
     const searchInput = useRef(null);
     const {
         token: { colorBgContainer },
@@ -230,7 +231,9 @@ const RecruitMgr = () => {
 
     // Link to mail page
     const mailPage = () => {
+        setActive('MailMgr')
         navigate("/Admin/MailMgr")
+
     }
 
     const columns = [

@@ -13,22 +13,24 @@ import ProfileAdmin from './component/admin/profileAdmin';
 function App() {
 
   return (
+
     <Router>
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         {/* router test upload infor candidate và CV của candidate */}
-        <Route path="/test" element={<Candidate/>} />
-        <Route path="/admin/" element={<Admin/>} >
-          <Route index element={<Navigate to ="ProfileAdmin" />}></Route>
-          <Route path='ProfileAdmin' element={<ProfileAdmin/>} activeClassName="active"></Route>
-          <Route path='JobMgr' element={<JobMgr/>} activeClassName="active"></Route>
-          <Route path='MailMgr' element={<MailMgr/>}activeClassName="active"></Route>
-          <Route path='RecruitMgr' element={<RecruittMgr/>}activeClassName="active"></Route>
-        </Route>  
+        <Route path="/test" element={<Candidate />} />
+        <Route path="/admin/" element={<Admin />} >
+          <Route index element={<Navigate to="ProfileAdmin" />}></Route>
+          <Route path='ProfileAdmin' element={<ProfileAdmin />} activeClassName="active"></Route>
+          <Route path='JobMgr' element={<JobMgr />} activeClassName="active"></Route>
+          <Route path='MailMgr' element={<MailMgr />} activeClassName="active"></Route>
+          <Route path='RecruitMgr' element={<RecruittMgr />} activeClassName="active"></Route>
+        </Route>
       </Routes>
     </Router>
+
   );
 }
 
