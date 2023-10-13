@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
+import ActiveProvider from './context/active_menu';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const themeConfig = {
@@ -20,7 +21,9 @@ const themeConfig = {
 };
 root.render(
   <ConfigProvider theme={themeConfig}>
-    <App />
+    <ActiveProvider>
+      <App />
+    </ActiveProvider>
   </ConfigProvider>
 );
 

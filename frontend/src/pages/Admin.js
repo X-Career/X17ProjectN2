@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import {
     LogoutOutlined,
     MailOutlined,
@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme, Row, Col } from 'antd';
 import { useNavigate } from "react-router-dom";
-
+import { ActiveContext } from '../context/active_menu';
 const { Header, Sider } = Layout;
 
 
@@ -22,19 +22,20 @@ const Admin = () => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-    const currentUrl = window.location.href;
-    const segments = currentUrl.split('/');
-    const selectedKeys  = segments[segments.length - 1];
+
+    const { active } = useContext(ActiveContext);
+
+   
     return (
         <Layout>
             <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed}>
-                <div className="demo-logo-vertical" style={{ padding: '20px' }}>
-                    <img src="../images/logo.webp" style={{ width: '100%' }} />
+                <div className="demo-logo-vertical flex-center" style={{ padding: '20px' }}>
+                    <img src="../images/logo.webp" style={{ width: '0%' }} />
                 </div>
                 <Menu
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={selectedKeys}
+                    selectedKeys={active}
                     onClick={(data)=>{
                         navigate('/Admin/' + data.key)
                     }}
