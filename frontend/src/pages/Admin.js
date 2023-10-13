@@ -23,14 +23,14 @@ const Admin = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
-    const { active } = useContext(ActiveContext);
+    const { active, setActive } = useContext(ActiveContext);
 
    
     return (
         <Layout>
             <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical flex-center" style={{ padding: '20px' }}>
-                    <img src="../images/logo.webp" style={{ width: '0%' }} />
+                    <img src="../images/logo.webp" style={{ width: '80%' }} />
                 </div>
                 <Menu
                     theme="dark"
@@ -38,6 +38,7 @@ const Admin = () => {
                     selectedKeys={active}
                     onClick={(data)=>{
                         navigate('/Admin/' + data.key)
+                        setActive(data.key)
                     }}
                     items={[
                         {
@@ -81,7 +82,7 @@ const Admin = () => {
                                 style={{
                                     fontSize: '16px',
                                     width: 64,
-                                    height: 64,
+height: 64,
                                 }}
                             />
                         </Col>
@@ -102,6 +103,3 @@ const Admin = () => {
     );
 }
 export default Admin
-
-
-
