@@ -16,7 +16,7 @@ const Header = () =>{
             type: 'divider',
         },
         {
-            label: <a style={{marginTop: '3rem'}} href="my-profile">My profile</a>,
+            label: <a style={{marginTop: '3rem'}} href="admin">My profile</a>,
             key: '2',
         },
         {
