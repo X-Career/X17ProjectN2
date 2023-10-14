@@ -8,3 +8,7 @@ export const signUp = async (user) => {
 export const signIn = async (user) => {
   return await axios.post(`${url}/auth/signin/`, user);
 };
+
+export const logOut = async (user) =>{
+  return await axios.post(`${url}/auth/logout/`, user);
+}

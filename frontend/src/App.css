@@ -222,6 +222,10 @@
   z-index: 100;
 }
 
+.ant-dropdown{
+  min-width: 150px !important;
+}
+
 .header_btn{
   border: none !important;
   height: 5rem;
@@ -542,4 +546,43 @@
 .service_item .title{
     font-size: 18px;
     font-weight: 500;
+}
+
+.not_found_box{
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.not_found_btn{
+  padding: .5rem 1rem;
+  height: unset !important;
+  color: #e8d207;
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-color: #e8d207;
+  background-color: transparent;
+}
+
+.not_found_btn:hover{
+  background-color: #e8d207;
+  color: #12141b !important;
+}
+
+.login_logo_box{
+  position: relative;
+  padding: 2rem;
+}
+
+.slogan{
+  font-size: 14px;
+  margin-bottom: 30px;
+  font-family: 'Jura', sans-serif;
+  position: absolute;
+  right: 3%;
+  top: 60%;
+  z-index: 3;
+  margin: 0;
 }

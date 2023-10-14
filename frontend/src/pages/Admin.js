@@ -15,7 +15,6 @@ import { ActiveContext } from '../context/active_menu';
 const { Header, Sider } = Layout;
 
 
-git 
 const Admin = () => {
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
@@ -25,7 +24,7 @@ const Admin = () => {
 
     const { active, setActive } = useContext(ActiveContext);
 
-   
+
     return (
         <Layout>
             <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed}>
@@ -36,7 +35,7 @@ const Admin = () => {
                     theme="dark"
                     mode="inline"
                     selectedKeys={active}
-                    onClick={(data)=>{
+                    onClick={(data) => {
                         navigate('/Admin/' + data.key)
                         setActive(data.key)
                     }}
@@ -46,7 +45,7 @@ const Admin = () => {
                             icon: <UserOutlined />,
                             label: "Profile",
                         },
-                        { 
+                        {
                             key: 'RecruitMgr',
                             icon: <ReconciliationOutlined />,
                             label: "Recruit Management",
@@ -63,7 +62,7 @@ const Admin = () => {
                             label: 'Job Management',
                         },
                     ]}
-                    >
+                >
                 </Menu>
             </Sider>
             <Layout>
@@ -82,14 +81,14 @@ const Admin = () => {
                                 style={{
                                     fontSize: '16px',
                                     width: 64,
-height: 64,
+                                    height: 64,
                                 }}
                             />
                         </Col>
                         <Col md={6}>
                             <div style={{ display: "flex", gap: "20px", alignItems: "center", justifyContent: "center" }}>
-                                <div className='avatar' style={{display:"flex", width:"40px"}}>
-                                <img src="../images/avatar.jpeg" style={{ width: '100%'}} />
+                                <div className='avatar' style={{ display: "flex", width: "40px" }}>
+                                    <img src="../images/avatar.jpeg" style={{ width: '100%' }} />
                                 </div>
                                 <span>Admin</span>
                                 <LogoutOutlined />
@@ -97,7 +96,7 @@ height: 64,
                         </Col>
                     </Row>
                 </Header>
-                <Outlet/>
+                <Outlet />
             </Layout>
         </Layout>
     );
