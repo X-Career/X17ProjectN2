@@ -15,7 +15,7 @@ import { ActiveContext } from '../context/active_menu';
 const { Header, Sider } = Layout;
 
 
-
+git 
 const Admin = () => {
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
@@ -23,7 +23,7 @@ const Admin = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
-    const { active } = useContext(ActiveContext);
+    const { active, setActive } = useContext(ActiveContext);
 
    
     return (
@@ -38,6 +38,7 @@ const Admin = () => {
                     selectedKeys={active}
                     onClick={(data)=>{
                         navigate('/Admin/' + data.key)
+                        setActive(data.key)
                     }}
                     items={[
                         {
