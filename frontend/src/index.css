@@ -72,3 +72,21 @@ a:hover {
 .ant-table-body{
   min-height: 40vh !important;
 }
+
+.ant-modal-body .ant-btn-primary{
+  background-color: #e8d207 !important;
+  color: white !important;
+}
+
+.ant-modal-body .ant-btn-primary:hover{
+  background-color: #fff387 !important;
+  color: #bba90b !important;
+}
+
+.ant-modal-body .ant-btn-default{
+  border-color: #e8d207 !important;
+}
+
+.ant-modal-body .ant-btn-default:hover{
+  color: #e8d207 !important;
+}

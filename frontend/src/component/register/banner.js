@@ -9,8 +9,7 @@ const Banner = () => {
             <Row justify="space-around" className="w-100"  style={{ backgroundColor: '#f8f8f8'}}>
                 <Col span={10}>
                     <div className="flex-start">
-                        <span style={{ cursor: 'pointer' }}><HomeTwoTone twoToneColor="#e8d207" style={{ fontSize: '200%' }} /></span>
-                        <img src="../images/logo.webp" style={{ width: '100px', marginLeft: '12px' }} />
+                        <Link to={'/'}><span style={{ cursor: 'pointer' }}><HomeTwoTone twoToneColor="#e8d207" style={{ fontSize: '200%' }} /></span></Link>
                     </div>
                 </Col>
               <Col span={10} style={{textAlign: 'end'}}>

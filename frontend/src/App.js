@@ -9,6 +9,7 @@ import JobMgr from './component/admin/jobMgr.js';
 import MailMgr from './component/admin/mailMgr.js';
 import RecruittMgr from './component/admin/recruitMgr.js';
 import ProfileAdmin from './component/admin/profileAdmin';
+import NotFound from './component/not_found';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
           <Route path='MailMgr' element={<MailMgr />} activeClassName="active"></Route>
           <Route path='RecruitMgr' element={<RecruittMgr />} activeClassName="active"></Route>
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
 

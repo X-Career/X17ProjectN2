@@ -1,8 +1,8 @@
 import React from "react";
-import LoginForm from "../component/login/form";
-import { Button, Row, Col } from "antd"
+import LoginForm from "../component/login";
+import { Row, Col } from "antd"
 import { Link } from "react-router-dom";
-import { HomeFilled } from '@ant-design/icons';
+import { HomeTwoTone } from '@ant-design/icons';
 
 const Login = () => {
     return (
@@ -10,8 +10,7 @@ const Login = () => {
             <Row justify="space-around" className="w-100" >
                 <Col span={10}>
                     <div className="flex-start">
-                        <span style={{ cursor: 'pointer' }}><HomeFilled style={{ fontSize: '200%', color: "#e8d207" }} /></span>
-                        <img src="../images/logo.webp" style={{ width: '100px', marginLeft: '12px' }} />
+                        <Link to={'/'}><span style={{ cursor: 'pointer' }}><HomeTwoTone twoToneColor="#e8d207" style={{ fontSize: '200%' }} /></span></Link>
                     </div>
                 </Col>
                 <Col span={10} style={{ textAlign: 'end' }}>

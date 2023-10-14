@@ -15,7 +15,8 @@ export const signUp = async (req,res) => {
         const {error} = signUpValid.validate(req.body, {abortEarly:false});
         if (error) {
         const errors = error.details.map(err => err.message)
-        return res.status(400).json({
+        return res.json({
+            status: 400,
             message: errors,
         });
     }
@@ -23,7 +24,8 @@ export const signUp = async (req,res) => {
         // Check email
     const userExists = await User.findOne({email})
     if (userExists) {
-        return res.status(400).json({
+        return res.json({
+            status: 400,
             message: "User already exists"
         });
     }
@@ -37,12 +39,14 @@ export const signUp = async (req,res) => {
     })
         //  Get info for client
     user.password = undefined;
-    return res.status(200).json({
+    return res.json({
+        status: 200,
         message: "User created successfully",
         user
     })
     } catch (error) {
-        return res.status(500).json({
+        return res.json({
+            status: 500,
             message: error,
             error
         })
@@ -56,19 +60,22 @@ export const singIn = async (req, res) =>{
         const {error} = signInValid.validate(req.body, {abortEarly:false})
         if(error) {
             const errors = error.details.map((err) => err.message)
-            return res.status(500).json({
+            return res.json({
+                status: 500,
                 message: errors
             })
         }
         const user = await User.findOne({email});
         if(!user){
-            return res.status(400).json({
+            return res.json({
+                status: 400,
                 message: "User not found"
             })
         }
         const isMatch = await bcrypyjs.compare(password, user.password);
         if(!isMatch){
-            return res.status(400).json({
+            return res.json({
+                status: 400,
                 message:"Invalid credentials"
             })
         }
@@ -78,18 +85,34 @@ export const singIn = async (req, res) =>{
             SECRET_CODE,
             {expiresIn: "1d"}
         )
-        console.log(token)
 
         //  Return result:
         user.password = undefined
-        return res.status(200).json({
+        return res.json({
+            status: 200,
             message:"User logged in successfully",
             user: user,
             accessToken: token
         })
     } catch (error) {
-        return res.status(500).json({
+        return res.json({
+            status: 500,
             message: error
         })
     }
 };
+
+
+export const logOut = async (req, res) => {
+    try {
+        return res.json({
+            status: 200,
+            message: "Logout success",
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error
+        })
+    }
+}
