@@ -235,15 +235,27 @@
   font-weight: bold;
   color: #fffcde;
   background-color: transparent;
+  display: inline-block;
+  position: relative;
 }
 
-.header_btn:hover {
-  border-bottom: 3px #e8d207 solid !important;
+.header_btn:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #e8d207;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
 }
 
-/* .ant-dropdown{
-  width: 10rem !important;
-} */
+.header_btn:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
 
 .ant-dropdown-menu-item{
   border: none !important;
