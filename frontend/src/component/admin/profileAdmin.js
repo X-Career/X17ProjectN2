@@ -24,7 +24,7 @@ const ProfileAdmin = () => {
                 <div>
                     <Row>
                         <Col md={10}>
-                            <div className='ProfileAdmin'>
+                            <div className='Profile_Container'>
                                 <div className='renderAva'>
                                     <img src="../images/avatar.jpeg" style={{ width: '100%' }} />
                                 </div>
@@ -46,7 +46,7 @@ const ProfileAdmin = () => {
                             </div>
                         </Col>
                         <Col md={14}>
-                            <div className='ProfileAdmin'>
+                            <div className='Profile_Container'>
                                 <div className='Tittle' style={{fontSize:"30px"}}>Edit acount</div>
                                 <form>
                                     <div className="Tittle_Element">First Name:</div>
@@ -76,9 +76,8 @@ const ProfileAdmin = () => {
                                         type="password"
                                         placeholder="Please enter your new password."
                                     />
-                                    <div className="Tittle_Element">
+                                    <div className="Tittle_Element" style={{color:"red"}}>
                                     <hr/>
-
                                         *You will be logged out of your account after changing your email.{" "}
                                     </div>
                                     <Button className="Tittle_Element" style={{height:"40px", marginTop:"12px"}} type='primary' shape='round'>Update Your Profile</Button>

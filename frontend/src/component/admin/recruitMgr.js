@@ -403,7 +403,6 @@ const RecruitMgr = () => {
                         pagination={{
                             onChange: cancel,
                         }}
-                        style={{minHeight: '100vh'}}
                     />
                 </Form>
             </div>
