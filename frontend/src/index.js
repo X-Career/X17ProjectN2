@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
 import ActiveProvider from './context/active_menu';
 import UserProvider from './context/user';
+import CandidateProvider from './context/candidate';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const themeConfig = {
@@ -22,11 +23,13 @@ const themeConfig = {
 };
 root.render(
   <ConfigProvider theme={themeConfig}>
-    <UserProvider>
-      <ActiveProvider>
-        <App />
-      </ActiveProvider>
-    </UserProvider>
+    <CandidateProvider>
+      <UserProvider>
+        <ActiveProvider>
+          <App />
+        </ActiveProvider>
+      </UserProvider>
+    </CandidateProvider>
   </ConfigProvider>
 );
 

@@ -1,4 +1,4 @@
-import { Layout, theme } from 'antd';
+import { Layout, Select, theme } from 'antd';
 import { DeleteOutlined, EditOutlined, MailOutlined, SearchOutlined } from '@ant-design/icons';
 import React, { useContext, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
@@ -236,6 +236,8 @@ const RecruitMgr = () => {
 
     }
 
+    const statusOption = ['Applying', 'Testing', 'Interviewing', 'Rejected'];
+
     const columns = [
         {
             title: 'ID',
@@ -292,9 +294,14 @@ const RecruitMgr = () => {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            width: 70,
+            width: 120,
             ...getColumnSearchProps('status'),
             editable: true,
+            render: (status) => <Select style={{ width: '100%' }} defaultValue={status}>
+                {statusOption.map((item, key) =>(
+                    <Select.Option key={key} value={item}>{item}</Select.Option>
+                ))}
+           </Select>
         },
         {
             title: 'Date to intern',

@@ -1,7 +1,7 @@
 import { Row, Col, Button, Dropdown, Space } from "antd"
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/user";
-import { useContext } from "react";
+import { useContext , useEffect, useState} from "react";
 import { logOut } from "../services/auth";
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import {Modal} from "antd";
@@ -11,6 +11,7 @@ const Header = () =>{
     const navigate = useNavigate();
     const { confirm } = Modal;
     const token = localStorage.getItem('token')
+    const [isSticky, setIsSticky] = useState(false);
 
     const showConfirm = () => {
         confirm({
@@ -28,12 +29,8 @@ const Header = () =>{
 
     const items = [
         {
-            label: <b>{user.firstName} {user.lastName}</b>,
+            label: <div><b>{user.firstName} {user.lastName}</b><div>{user.role}</div></div>,
             key: '0',
-        },
-        token && {
-            label: <p className="font-14">{user.role}</p>,
-            key: '1',
         },
         {
             type: 'divider',
@@ -55,8 +52,8 @@ const Header = () =>{
 
     
     const logOutAcc = async () => {
-        if (!localStorage.getItem('token', '')) {
-            navigate('/sign_in')
+        if (!localStorage.getItem('token')) {
+            navigate('/login')
         }
         try {
             const res = logOut();
@@ -70,15 +67,30 @@ const Header = () =>{
         }
     }
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.pageYOffset;
+            const threshold = 100; // Điều kiện cuộn để header thành sticky
+            const newIsSticky = scrollTop > threshold;
+            setIsSticky(newIsSticky);
+
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        // Gỡ bỏ bộ lắng nghe khi component bị unmount
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     return (
-        <div className="w-100 header_box">
+        <div className={`${isSticky ? 'header_sticky' : ''} header_box w-100`}>
             <Row justify="space-evenly">
                 <Col span={8}><Link style={{ alignItems: 'center', display: 'flex', height: '100%'}} to={'/'}><img src="../images/logo.webp" style={{ width: '120px' }} /></Link></Col>
                 <Col span={8} style={{display: 'flex', alignItems: 'center'}}>
-                    <Button className="header_btn">Home</Button>
-                    <Button className="header_btn">Job</Button>
-                    <Button className="header_btn">About US</Button>
+                    <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>Home</Button>
+                    <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>Job</Button>
+                    <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>About US</Button>
                     <Dropdown
                         menu={{
                             items,

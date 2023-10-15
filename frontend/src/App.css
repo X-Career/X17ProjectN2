@@ -215,11 +215,20 @@
 
 .header_box{
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
-  background-color: transparent;
   position: sticky;
   top: 0;
-  background-color: transparent;
   z-index: 100;
+  transition: .5s;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.123);
+}
+
+.header_sticky{
+  background-color: #f8f8f8;
+}
+
+.btn_color_sticky{
+  color: #3a4757 !important;
+  /* background-color: #a59502 !important; */
 }
 
 .ant-dropdown{
@@ -247,7 +256,7 @@
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: #e8d207;
+  background-color: #d1bd07;
   transform-origin: bottom right;
   transition: transform 0.25s ease-out;
 }

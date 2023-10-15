@@ -71,7 +71,7 @@ const HomeAfterLogin = () => {
                 </animated.div>
                 <animated.div style={line} className="home_line"></animated.div>
                 <animated.div style={bot_text} class="small_box">
-                    <h3>Metaverte</h3>
+                    <h3>Metaverse</h3>
                 </animated.div>
                 <div className="play_box">
                     <div className="circle-container">
