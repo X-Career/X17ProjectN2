@@ -19,6 +19,7 @@ const RecruitList = () => {
   const [isDetailModalVisible, setDetailModalVisible] = useState(false);
   const [selectedRecruit, setSelectedRecruit] = useState(null);
   const [form] = Form.useForm();
+  const [errors, setErrors] = useState([]);
   const [recruits, setRecruits] = useState([
     {
       id: 1,
@@ -50,7 +51,6 @@ const RecruitList = () => {
     },
   ]);
 
-  const [error, setError] = useState(null);
   const startIndex = (currentPage - 1) * recruitsPerPage;
   const endIndex = startIndex + recruitsPerPage;
   const recruitsOnCurrentPage = recruits.slice(startIndex, endIndex);
@@ -64,25 +64,66 @@ const RecruitList = () => {
   };
 
   const handleCreateRecruit = () => {
-    form.validateFields().then((values) => {
-      const { nameRecruit, datetoStart, datetoEnd, description } = values;
+    form
+      .validateFields()
+      .then((values) => {
+        const { nameRecruit, datetoStart, datetoEnd, description } = values;
+        const newErrors = [];
+  
+        if (isDuplicateName(nameRecruit)) {
+          newErrors.push(
+            "Tên đợt tuyển dụng đã tồn tại. Vui lòng chọn tên khác."
+          );
+        }
+        if (datetoStart.isAfter(datetoEnd)) {
+          newErrors.push("Ngày bắt đầu phải trước ngày kết thúc.");
+        }
+  
+        if (newErrors.length === 0) {
+          const newRecruit = {
+            id: recruits.length + 1,
+            nameRecruit,
+            datetoStart,
+            datetoEnd,
+            description,
+          };
+          setRecruits([...recruits, newRecruit]);
+          setCreateModalVisible(false);
+          form.resetFields();
+        } else {
+          setErrors(newErrors);
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "No field in form.") {
+          console.error(error);
+        }
+      });
+  };
+  
 
-      if (datetoStart.isBefore(datetoEnd)) {
-        const newRecruit = {
-          id: recruits.length + 1,
-          nameRecruit,
-          datetoStart,
-          datetoEnd,
-          description,
-        };
-        setRecruits([...recruits, newRecruit]);
-        setCreateModalVisible(false);
-        form.resetFields();
-        setError(null);
-        console.log(values);
-      } else {
-        setError("Ngày bắt đầu phải trước ngày kết thúc");
-      }
+  const isDuplicateName = (name) => {
+    return recruits.some((recruit) => recruit.nameRecruit === name);
+  };
+
+  const cardTitleClass = {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "400px",
+  };
+
+  const handleDeleteRecruit = (recruitId) => {
+    Modal.confirm({
+      title: "Xác nhận xóa đợt tuyển dụng",
+      content: "Bạn có chắc chắn muốn xóa đợt tuyển dụng này?",
+      onOk: () => {
+        const updatedRecruits = recruits.filter(
+          (recruit) => recruit.id !== recruitId
+        );
+        setRecruits(updatedRecruits);
+      },
+      onCancel: () => {},
     });
   };
 
@@ -90,6 +131,8 @@ const RecruitList = () => {
     setSelectedRecruit(recruit);
     setDetailModalVisible(true);
   };
+
+  
 
   return (
     <div>
@@ -102,21 +145,30 @@ const RecruitList = () => {
       <Row gutter={16} style={{ marginBottom: 8 }}>
         {recruitsOnCurrentPage.map((recruit) => (
           <Col span={8} key={recruit.id}>
-            <Card
-              hoverable
-              title={recruit.nameRecruit}
-              size="small"
-              onClick={() => showDetailModal(recruit)}
-            >
-              <p>
-                Thời gian bắt đầu:{" "}
-                {new Date(recruit.datetoStart).toISOString().slice(0, 10)}
-              </p>
-              <p>
-                Thời gian kết thúc:{" "}
-                {new Date(recruit.datetoEnd).toISOString().slice(0, 10)}
-              </p>
-            </Card>
+            <div style={{ position: "relative" }}>
+              <Card
+                hoverable
+                title={<div style={cardTitleClass}>{recruit.nameRecruit}</div>}
+                size="small"
+                onClick={() => showDetailModal(recruit)}
+              >
+                <p>
+                  Thời gian bắt đầu:{" "}
+                  {new Date(recruit.datetoStart).toISOString().slice(0, 10)}
+                </p>
+                <p>
+                  Thời gian kết thúc:{" "}
+                  {new Date(recruit.datetoEnd).toISOString().slice(0, 10)}
+                </p>
+              </Card>
+              <Button
+                type="danger"
+                onClick={() => handleDeleteRecruit(recruit.id)}
+                style={{ position: "absolute", top: 4, right: 0 }}
+              >
+                Xóa
+              </Button>
+            </div>
           </Col>
         ))}
       </Row>
@@ -135,7 +187,11 @@ const RecruitList = () => {
         title="Tạo đợt tuyển dụng mới"
         open={isCreateModalVisible}
         onOk={handleCreateRecruit}
-        onCancel={() => setCreateModalVisible(false)}
+        onCancel={() => {
+          setCreateModalVisible(false);
+          form.resetFields();
+          setErrors([]);
+        }}
         width="60%"
       >
         <Form form={form}>
@@ -188,7 +244,15 @@ const RecruitList = () => {
             <Input.TextArea rows={4} />
           </Form.Item>
         </Form>
-        {error && <Alert message={error} type="error" showIcon />}
+        {errors.length > 0 && (
+          <div>
+            {errors.map((error, index) => (
+              <div key={index} style={{ marginBottom: "5px" }}>
+                <Alert message={error} type="error" showIcon />
+              </div>
+            ))}
+          </div>
+        )}
       </Modal>
       <Modal
         title="Thông tin chi tiết đợt tuyển dụng"
