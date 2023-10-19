@@ -7,7 +7,7 @@ import { Form, InputNumber, Popconfirm, Typography } from 'antd';
 import "./Admin.css"
 import { useNavigate } from 'react-router-dom';
 import { ActiveContext } from '../../context/active_menu';
-
+import RecruitList from './RecruitList';
 
 const { Content } = Layout;
 
@@ -392,6 +392,7 @@ const RecruitMgr = () => {
         >
             <div>
                 <div className='Tittle'>Recruitment Management</div>
+                <RecruitList/>
                 <Form form={form} component={false}>
                     <Table
                         components={{
