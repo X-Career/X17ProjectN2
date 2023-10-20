@@ -8,7 +8,7 @@ const jobValidator = Joi.object({
     req: Joi.string().required().min(3),
     location: Joi.string().required().min(3).max(255),
     position: Joi.string().required().min(3).max(255),
-    date: Joi.date().format('YYYY-MM-DD HH:mm').required(),
+    date: Joi.date().format('YYYY-MM-DD').required(),
     salary: Joi.number().required()
 });
 

@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default:"member",
     },
+    img:[ {
+        type: Object, 
+        // default:"member",
+    }],
     },
     {
         timestamps: true, 
