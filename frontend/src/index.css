@@ -91,3 +91,7 @@ a:hover {
 .ant-modal-body .ant-btn-default:hover{
   color: #e8d207 !important;
 }
+
+.w-45{
+  width: 45% !important;
+}
