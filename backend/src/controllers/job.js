@@ -1,5 +1,7 @@
 import Job from "../models/job.js";
 import jobValidator from "../validation/job.js";
+import Recruitmgr from "../models/recruitmgr.js";
+
 
 
 
@@ -38,7 +40,7 @@ export const getAll = async (req, res)=>{
 }
 export const getDetail = async (req, res)=>{
     try {
-        const data = await Job.findById(req.params.id).populate("tests")
+        const data = await Job.findById(req.params.id).populate("candidates")
         if (!data){
             return res.status(404).json({
                 message: "No Job",
@@ -66,12 +68,22 @@ export const create = async (req, res)=>{
             })
         }
         const data = await Job.create(req.body);
+        const updateRecuit = await Recruitmgr.findByIdAndUpdate(data.recruitId, {
+            $addToSet: {
+                jobs: data._id,
+            },
+          });
+        if (!updateRecuit) {
+            return res.status(404).json({
+              message: "Add Recruit for new Job not successful",
+            });
+        }
         if (!data){
             return res.status(404).json({
                 message: "Create Job not successful",
             })
         }
-
+       
         return res.status(200).json({
             message: "Create Job successful",
             datas: data,
