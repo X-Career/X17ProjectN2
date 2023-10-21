@@ -1,5 +1,7 @@
 import Candidate from "../models/candidate.js";
 import candidateValidator from "../validation/candidate.js";
+import Job from "../models/job.js";
+
 
 
 
@@ -16,7 +18,7 @@ export const getAll = async (req, res)=>{
             }
         }
 
-        const data = await Job.paginate({}, options);
+        const data = await Candidate.paginate({}, options);
         console.log(data);
 
         if (!data.docs || data.docs.length === 0){
@@ -38,7 +40,7 @@ export const getAll = async (req, res)=>{
 }
 export const getDetail = async (req, res)=>{
     try {
-        const data = await Candidate.findById(req.params.id)
+        const data = await Candidate.findById(req.params.id).populate("jobId")
         if (!data){
             return res.status(404).json({
                 message: "No candidate found",
@@ -60,7 +62,7 @@ export const getDetail = async (req, res)=>{
 export const create = async (req, res)=>{
     try {
 
-        const {fullName, gender, age, phone, email, point, datetoInter, result, datetoGetjob, status, fileCV} = req.body;
+        const {fullName, gender, age, phone, email, point, datetoInter, result, datetoGetjob, status, fileCV, jobId} = req.body;
 
         const {error} = candidateValidator.validate(req.body, {abortEarly: false}); 
         if (error){
@@ -76,6 +78,7 @@ export const create = async (req, res)=>{
                     phone,
                     email,
                     point,
+                    jobId,
                     datetoInter,
                     result,
                     datetoGetjob,
@@ -83,15 +86,27 @@ export const create = async (req, res)=>{
                     fileCV,
                 })
                 const candidate = await newCandidate.save();
-                console.log(candidate)
+                console.log(candidate.jobId)
                 if(!candidate){
                     return res.status(404).json({message: "upload not successful"});
                 } 
+                const updateJobs = await Job.findByIdAndUpdate(candidate.jobId, {
+                    $addToSet: {
+                        candidates: candidate._id,
+                    },
+                  });
+                if (!updateJobs) {
+                    return res.status(404).json({
+                      message: "Add Job for new Candidates not successful",
+                    });
+                }
                 return res.status(200).json({
                     message: "Create Cadidate successful",
                     datas: candidate,
                 })
         }
+        
+
     } catch (error) {
         return res.status(500).json({
             name: error.name,
@@ -114,6 +129,17 @@ export const update = async (req, res)=>{
                 message: "Update Cadidate not successful",
             })
         }
+        const updateJobs = await Job.findByIdAndUpdate(data.jobId, {
+            $addToSet: {
+                candidates: data._id,
+            },
+          });
+        if (!updateJobs) {
+            return res.status(404).json({
+              message: "Add Job for new Candidates not successful",
+            });
+        }
+        
         return res.status(200).json({
             message: "Update Cadidate successful",
             datas: data,

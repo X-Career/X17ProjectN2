@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from "mongoose-paginate-v2";
+
 
 const candidateSchema = new mongoose.Schema({
     fullName: {
@@ -46,11 +48,17 @@ const candidateSchema = new mongoose.Schema({
         type: Object, 
         required: true
     }],
+    jobId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Job",
+            require: true
+        },
     },
     {
         timestamps: true, 
         versionKey: false,
     }
 );
+candidateSchema.plugin(mongoosePaginate)
 
 export default mongoose.model("Candidate", candidateSchema)

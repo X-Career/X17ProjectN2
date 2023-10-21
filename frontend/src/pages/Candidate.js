@@ -14,6 +14,7 @@ const Candidate = () => {
     const [age, setAge] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
+    const [jobId, setJobId] = useState("");
     const [fileCV, setFileCV] = useState(undefined);
     const [fileCVPerc, setFileCVPerc] = useState(0);
     const [inputs, setInputs] = useState({});
@@ -21,7 +22,7 @@ const Candidate = () => {
     const handleSubmit = async (e)=>{
         e.preventDefault();
         try {
-            if (!fullName || !gender || !age || !phone || !email || !fileCV) {
+            if (!fullName || !gender || !age || !phone || !email || !fileCV || !jobId) {
                 setTimeout(() => {
                   setFields(false);
                   setIsloading(false);
@@ -33,6 +34,7 @@ const Candidate = () => {
                   age: age,
                   phone: phone,
                   email: email,
+                  jobId: jobId,
                   fileCV: inputs.fileCVUrl,
                 };
                 const { candidate } = await addCandidate(data);
@@ -150,6 +152,17 @@ const Candidate = () => {
                     className="setEmail"
                     onChange={(e) => setEmail(e.target.value)} />
             </div>
+
+            <div className="jobID">
+                <input
+                    type="text"
+                    required
+                    value={jobId}
+                    placeholder="Give me jobId..."
+                    className="setjobId"
+                    onChange={(e) => setJobId(e.target.value)} />
+            </div>
+
             <label>
                 <p>click here to upload</p>
                 <label>filelCV</label>{fileCVPerc>0 && "uploading..." + fileCVPerc + "%"}
