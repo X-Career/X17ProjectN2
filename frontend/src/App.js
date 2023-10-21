@@ -3,13 +3,14 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Candidate from './pages/Candidate';
 import Admin from './pages/Admin';
 import JobMgr from './component/admin/jobMgr.js';
 import MailMgr from './component/admin/mailMgr.js';
 import RecruittMgr from './component/admin/recruitMgr.js';
 import ProfileAdmin from './component/admin/profileAdmin';
 import NotFound from './component/not_found';
+import Candidates from './component/candidate/Cadidates';
+import Job from './pages/Job';
 
 function App() {
 
@@ -21,7 +22,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         {/* router test upload infor candidate và CV của candidate */}
-        <Route path="/test" element={<Candidate />} />
+        <Route path="/candidate" element={<Candidates />} />
+        <Route path="/jobs" element={<Job />} />
         <Route path="/admin/" element={<Admin />} >
           <Route index element={<Navigate to="ProfileAdmin" />}></Route>
           <Route path='ProfileAdmin' element={<ProfileAdmin />} activeClassName="active"></Route>

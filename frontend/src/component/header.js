@@ -88,8 +88,8 @@ const Header = () =>{
             <Row justify="space-evenly">
                 <Col span={8}><Link style={{ alignItems: 'center', display: 'flex', height: '100%'}} to={'/'}><img src="../images/logo.webp" style={{ width: '120px' }} /></Link></Col>
                 <Col span={8} style={{display: 'flex', alignItems: 'center'}}>
-                    <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>Home</Button>
-                    <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>Job</Button>
+                    <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`} onClick={() => navigate('/')}>Home</Button>
+                    <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`} onClick={() => navigate('/jobs')} >Job</Button>
                     <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>About US</Button>
                     <Dropdown
                         menu={{
