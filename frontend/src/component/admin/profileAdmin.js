@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Col, Layout, Row, theme } from 'antd';
 import "./Admin.css"
 import { EditOutlined } from '@ant-design/icons';
+import { UserContext } from '../../context/user';
+
 
 const { Content } = Layout;
 
 
 const ProfileAdmin = () => {
+    const { user, setUser } = useContext(UserContext)
+    console.log(user)
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -19,7 +23,7 @@ const ProfileAdmin = () => {
                 background: colorBgContainer,
             }}
         >
-            <div>
+            <div style={{height:"100vh"}}>
                 <div className='Tittle'>Profile Admin</div>
                 <div>
                     <Row>
@@ -38,10 +42,10 @@ const ProfileAdmin = () => {
                                     Edit
                                 </label>
                                 <div className='renderEmail'>
-                                    <h2>taibooi97@gmail.com</h2>
+                                    <h2>{user.email}</h2>
                                 </div>
-                                <div className='renderRole'>
-                                    Admin
+                                <div className='renderRole' style={{textTransform:"capitalize"}}>
+                                    {user.role}
                                 </div>
                             </div>
                         </Col>

@@ -56,6 +56,7 @@ const Admin = () => {
             },
         });
     };
+    console.log(user)
 
     const items = [
         {
@@ -150,7 +151,7 @@ const Admin = () => {
                         </Col>
                     </Row>
                 </Header>
-                <Outlet />
+                <Outlet/>
             </Layout>
         </Layout>
     );
