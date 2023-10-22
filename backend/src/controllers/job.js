@@ -106,6 +106,18 @@ export const update = async (req, res)=>{
             })
         }
         const data = await Job.findByIdAndUpdate(req.params.id, req.body, {new:true});
+
+        const updateRecuit = await Recruitmgr.findByIdAndUpdate(data.recruitId, {
+            $addToSet: {
+                jobs: data._id,
+            },
+          });
+        if (!updateRecuit) {
+            return res.status(404).json({
+              message: "Add Recruit for new Job not successful",
+            });
+        }
+        
         if (!data){
             return res.status(404).json({
                 message: "Update Job not successful",

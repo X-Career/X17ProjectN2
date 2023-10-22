@@ -27,10 +27,6 @@ const jobSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    tests: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"Test",
-    },
     candidates: [{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Candidate",
@@ -39,10 +35,6 @@ const jobSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Recruitmgr",
         require: true
-    },
-    date:{
-        type: Date,
-        required: true
     },
 },{
     versionKey: false,
