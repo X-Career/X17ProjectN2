@@ -6,13 +6,14 @@ import Service from "../component/home/service_home"
 
 const Home = () => {
     return (
-        <>
+        <div className="home-box">
             <Header />
             <HomeAfterLogin />
             <Service/>
             <SwiperPartner/>
             <Footer/>
-        </>
+           
+        </div>
     )
 }
 

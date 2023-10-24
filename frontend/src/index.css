@@ -95,3 +95,21 @@ a:hover {
 .w-45{
   width: 45% !important;
 }
+
+.text-white{
+  color: whitesmoke;
+}
+
+
+.absolute{
+  position: absolute !important;
+}
+
+.z-index-2{
+  z-index: 2;
+}
+
+.flex-end{
+  display: flex;
+  justify-content: end;
+}

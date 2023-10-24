@@ -5,6 +5,7 @@ import React, { useState } from "react";
 const PopUpInfo = ( props ) => {
     const [open, setOpen] = useState(true)
     const { TextArea } = Input;
+
     return (
         <Modal
             title={`Detailed information of ${props.job.name} jobs`}
@@ -17,7 +18,7 @@ const PopUpInfo = ( props ) => {
                 <Button>
                     Close
                 </Button>,
-                <Button type="primary" >
+                <Button type="primary">
                     Apply
                 </Button>,
             ]}
