@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Layout, theme, message, Modal } from 'antd';
 import "./Admin.css"
 import { addJob } from '../../services/job';
+import { getallRecruitMgr } from '../../services/recruitMgr';
 
 const { Content } = Layout;
 
@@ -16,10 +17,10 @@ const JobMgr = () => {
     const [date, setDate] = useState("")
     const [modaOpen, setModaOpen] = useState(false);
 
-    const confirm = async (e) => { 
+    const confirm = async (e) => {
         e.preventDefault();
         try {
-            if (!nameofJob || !jobDes || !jobReq || !location || !position || !salary || !date ) {
+            if (!nameofJob || !jobDes || !jobReq || !location || !position || !salary || !date) {
                 setTimeout(() => {
                     message.error('fail to create job')
                 }, 3000);
@@ -35,7 +36,7 @@ const JobMgr = () => {
                 }
                 const { emailtoCandidate } = await addJob(Data)
                 console.log(emailtoCandidate)
-                setModaOpen(false);   
+                setModaOpen(false);
                 setTimeout(() => {
                     message.success('Job has been created successfully')
                 }, 3000);
@@ -43,14 +44,40 @@ const JobMgr = () => {
         } catch (error) {
             console.error("Đã xảy ra lỗi khi gửi email:", error);
         }
-      };
-      console.log(confirm)
+    };
+    console.log(confirm)
     const cancel = (e) => {
         console.log(e);
         setModaOpen(false);
         message.error('Cancel completed');
-      };
+    };
 
+    const [recruit, setRecruit] = useState("");
+
+
+    const [recruitMgr, setRecruitMgr] = useState([]);
+    useEffect(() => {
+        getRecruit();
+    }, [])
+
+    const getRecruit = async () => {
+        const { data } = await getallRecruitMgr();
+        setRecruitMgr(data.datas);
+    };
+
+    console.log(recruitMgr)
+    const list = recruitMgr.map(recruit => recruit.nameRecruit)
+    console.log(list)
+    
+    console.log(recruit)
+    const result = recruitMgr.find(id => id.nameRecruit === recruit )
+    console.log(result)
+ 
+    const handleSelectidRecruit = (e) =>{
+        setRecruit(e.target.value);
+    }
+
+    
 
 
     const {
@@ -70,6 +97,28 @@ const JobMgr = () => {
                 <div>
                     <div className='Profile_Container' style={{ width: "80%", margin: "auto" }}>
                         <form style={{ width: "100%" }}>
+                            <div className="Tittle_Element">Select Recruit Management</div>
+                            <select
+                                onClick={handleSelectidRecruit}
+                                placeholder='Select Recruitment'
+                            > 
+                            <option value="other">
+                                Select Recruitment
+                                </option> 
+                                    {recruitMgr &&
+                                        recruitMgr.map((list) => (
+                                            <option>
+                                                {list.nameRecruit}
+                                            </option>
+                                        ))}
+                            </select>
+                            <div
+                                className='TE_Input'
+                                type="text"
+                            >
+                                {result && result>0 ? (result._id) : (null)}
+                            </div>                
+                            <hr />
                             <div className="Tittle_Element">Name of Job:</div>
                             <input
                                 className='TE_Input'
@@ -134,7 +183,7 @@ const JobMgr = () => {
                             />
                             <hr />
                             <Button className="Tittle_Element" style={{ height: "40px", marginTop: "12px" }} type='primary' shape='round'
-                            onClick={()=>setModaOpen(true)}
+                                onClick={() => setModaOpen(true)}
                             >Upload New Job</Button>
                             <Modal
                                 title="Create New Job"
