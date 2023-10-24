@@ -79,7 +79,7 @@ const Admin = () => {
 
     return (
         <Layout>
-            <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed}>
+            <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed} style={{minHeight: '100vh'}}>
                 <div className="demo-logo-vertical flex-center" style={{ padding: '20px' }}>
                     <Link to={'/'} className="flex-center"><img src="../images/logo.webp" style={{ width: '60%' }} /></Link>
                 </div>

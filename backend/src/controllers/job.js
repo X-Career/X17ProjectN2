@@ -29,7 +29,7 @@ export const getAll = async (req, res)=>{
         return res.status(200).json({
             message: "Job has been",
             datas: data,
-        })
+        });
 
     } catch (error) {
         return res.status(500).json({
@@ -83,7 +83,6 @@ export const create = async (req, res)=>{
                 message: "Create Job not successful",
             })
         }
-       
         return res.status(200).json({
             message: "Create Job successful",
             datas: data,

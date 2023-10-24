@@ -4,7 +4,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
-import JobMgr from './component/admin/jobMgr.js';
+import JobMgr from './component/admin/Job/JobList';
 import MailMgr from './component/admin/mailMgr.js';
 import RecruittMgr from './component/admin/recruitMgr.js';
 import ProfileAdmin from './component/admin/profileAdmin';

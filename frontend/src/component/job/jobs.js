@@ -1,23 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { getallJob } from "../../services/job";
-import { Empty, Spin, Row, Col, Button} from "antd";
+import { Empty, Spin, Row, Col, Button, Select } from "antd";
 import { TagOutlined, UserOutlined, HomeOutlined } from "@ant-design/icons"
 import PopUpInfo from "./popup_info";
+import { getallRecruitMgr } from "../../services/recruitMgr";
+import { getallJob } from "../../services/job";
+import dayjs from 'dayjs';
+import { useNavigate } from "react-router-dom";
+const dateFormat = 'DD/MM/YYYY'
 
 const JobList = () => {
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState([])
+    const [crrRecurit, setCrrRecurit] = useState([])
     const [open, setOpen] = useState(false)
     const [jobDetail, setJobDetail] = useState({})
+    const [recruit, setRecurit] = useState([])
+    const [jobs, setJobs] = useState([])
+    const [jobLoad, setJobLoad] = useState(false)
     const token = localStorage.getItem('token')
-    
+    const navigate = useNavigate()
 
-    const getAllJob = async () => {
+    const getJob = async(id) =>{
+        setJobLoad(true)
         try {
-            const res = await getallJob();
+            const res = await getallJob(id);
             if (res.status === 200) {
-                setData(res.data.datas.docs)
+                setJobs(res.data.datas.docs);
+            }
+            setJobLoad(false)
+        } catch (e) {
+            console.log("Error: ", e.message);
+        }
+    }
 
+    const getRecurit = async () => {
+        try {
+            const res = await getallRecruitMgr();
+            if (res.status === 200) {
+                setRecurit(res.data.datas)
+                getJob(res.data.datas[0].jobs[0]._id)
             }
 
             setLoading(false)
@@ -28,7 +48,7 @@ const JobList = () => {
     }
 
     useEffect(() => {
-        getAllJob()
+        getRecurit()
     }, [])
 
     const toggleOpen = () => {
@@ -36,16 +56,26 @@ const JobList = () => {
     }
 
 
-    const showDetail = (job) =>{
+    const showDetail = (job) => {
         toggleOpen()
         setJobDetail(job)
     }
 
-    const handleApply = () =>{
-        if(!token){
-            
+    const handleApply = (id) => {
+        if (!token) {
+            navigate('/login')
+        }else{
+            alert(id)
         }
     }
+
+    const handleChangeRecruit = (value) =>{
+        setCrrRecurit(value)
+    }
+
+    useEffect(() =>{
+        getJob()
+    }, [crrRecurit])
 
 
 
@@ -54,17 +84,37 @@ const JobList = () => {
             <div id="stars"></div>
             <div id="stars2"></div>
             <div id="stars3"></div>
+            <Row className="w-100 flex-center absolute top-15">
+                {loading ? (<></>) : (
+                    <Select
+                        className="w-50"
+                        defaultValue={recruit[0]._id}
+                        onChange={handleChangeRecruit}
+                    >
+                        <>
+                            {
+                                recruit.length > 0 ? (
+                                    recruit.map((item, key) => {
+                                        return <Select.Option key={key} value={item._id}>{item.nameRecruit} - From: {dayjs(item.datetoStart).format(dateFormat)} - To: {dayjs(item.datetoEnd).format(dateFormat)}</Select.Option>
+                                    })
+
+                                ) : (<></>)
+                            }
+                        </>
+                    </Select>
+                )}
+            </Row>
             {
-                loading ? (
+                jobLoad ? (
                     <div className="flex-center">
                         <Spin />
                     </div>
                 ) : (
                     <>
                         <Row justify="start" className="flex-center job-container">
-                            {data.length > 0 ? (<>
+                            {jobs.length > 0 ? (<>
                                 {
-                                    data.map((item, key) => {
+                                    jobs.map((item, key) => {
                                         return (
                                             <Col span={4} key={key} className="job-item-box">
                                                 <h5 className="job-title" onClick={() => showDetail(item)}>{item.name}</h5>
@@ -83,7 +133,7 @@ const JobList = () => {
                                                     </span>
                                                 </div>
                                                 <div className="w-100 flex-center">
-                                                    <Button>Apply</Button>
+                                                    <Button onClick={() => handleApply(item._id)}>Apply</Button>
                                                 </div>
                                             </Col>
                                         )
@@ -105,7 +155,7 @@ const JobList = () => {
             <div className='air air3'></div>
             <div className='air air4'></div>
 
-            {open && (<PopUpInfo job={jobDetail} handleClose={toggleOpen} />) }
+            {open && (<PopUpInfo apply={handleApply} job={jobDetail} handleClose={toggleOpen} />)}
         </div>
     )
 }
