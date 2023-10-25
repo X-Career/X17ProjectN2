@@ -12,6 +12,7 @@ const PopupCreate = (props) =>{
     const { confirm } = Modal;
     const [form] = useForm();
 
+
     const [recruitMgr, setRecruitMgr] = useState([]);
     useEffect(() => {
         getRecruit();
@@ -33,6 +34,7 @@ const PopupCreate = (props) =>{
             }
         });
     };
+    console.log(recruitMgr)
 
     const handleCreate = async () =>{
         try{
@@ -73,7 +75,7 @@ const PopupCreate = (props) =>{
             >
                 <Form.Item
                     label="Select recruit management"
-                    name="recruit_id"
+                    name="recruitId"
                     rules={[{ required: true, message: "Please select recruit management!" }]}
                 >
                     <Select
@@ -92,7 +94,7 @@ const PopupCreate = (props) =>{
                                         key={key}
                                         value={list._id}
                                     >
-                                        {list.nameRecruit}
+                                        <span>{list.nameRecruit}</span>
                                     </Select.Option>
                                 ))
                             }
@@ -110,15 +112,14 @@ const PopupCreate = (props) =>{
 
                 </Form.Item>
                 <Form.Item
-                    name="description"
+                    name="des"
                     label="Description"
                     rules={[{ required: true, message: "Please enter description of job!" }]}
                 >
-                    <TextArea rows={4} size="25" placeholder="Description" />
-
+                    <TextArea rows={4} size="25" placeholder="Description"/>
                 </Form.Item>
                 <Form.Item
-                    name="requirement"
+                    name="req"
                     label="Requirement"
                     rules={[{ required: true, message: "Please enter description of job!" }]}
                 >
@@ -155,7 +156,7 @@ const PopupCreate = (props) =>{
                 >
                     <InputNumber
                         name="salary"
-                        addonAfter={"VND"}
+                        addonAfter={"USD"}
                         max={100000000}
                         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
