@@ -6,6 +6,7 @@ import { getallRecruitMgr } from "../../services/recruitMgr";
 import { getallJob } from "../../services/job";
 import dayjs from 'dayjs';
 import { useNavigate } from "react-router-dom";
+import InfiniteScroll from 'react-infinite-scroll-component';
 const dateFormat = 'DD/MM/YYYY'
 
 const JobList = () => {
@@ -15,6 +16,7 @@ const JobList = () => {
     const [jobDetail, setJobDetail] = useState({})
     const [recruit, setRecurit] = useState([])
     const [jobs, setJobs] = useState([])
+    const [hasMore, setHasMore] = useState(true);
     const [jobLoad, setJobLoad] = useState(false)
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
@@ -84,7 +86,7 @@ const JobList = () => {
             <div id="stars"></div>
             <div id="stars2"></div>
             <div id="stars3"></div>
-            <Row className="w-100 flex-center absolute top-15">
+            {/* <Row className="w-100 flex-center absolute top-15">
                 {loading ? (<></>) : (
                     <Select
                         className="w-50"
@@ -103,15 +105,75 @@ const JobList = () => {
                         </>
                     </Select>
                 )}
-            </Row>
+            </Row> */}
             {
                 jobLoad ? (
                     <div className="flex-center">
                         <Spin />
                     </div>
                 ) : (
-                    <>
-                        <Row justify="start" className="flex-center job-container">
+                    <div className="hide-scrollbar">
+                        <InfiniteScroll 
+                            dataLength={2}
+                            hasMore={hasMore}
+                            loader= {
+                                <Col span={24} className="flex-center">
+                                    <Spin/>
+                                </Col>
+                            }
+                            endMessage={
+                                <p style={{ textAlign: 'center' }}>
+                                    <b>Yay! You have seen it all</b>
+                                </p>
+                            }
+                        >   
+                                {
+                                    recruit.map((item, key) =>{
+                                        return <div className="text-center">
+                                            <h5 className="recruit_name" >{item.nameRecruit} - From: {dayjs(item.datetoStart).format(dateFormat)} - To: {dayjs(item.datetoEnd).format(dateFormat)}</h5>
+                                            <Row justify="start" className="flex-center job-container">
+                                              
+                                                {jobs.length > 0 ? (<>
+                                                    {
+                                                        jobs.map((item, key) => {
+                                                            return (
+                                                                <Col span={4} key={key} className="job-item-box">
+                                                                    <h5 className="job-title" onClick={() => showDetail(item)}>{item.name}</h5>
+                                                                    <span>
+                                                                        <HomeOutlined />
+                                                                        Location: {item.location}
+                                                                    </span>
+                                                                    <div className="flex-between w-100 job-content">
+                                                                        <span className="flex-start">
+                                                                            <UserOutlined />
+                                                                            <p>Position: {item.position}</p>
+                                                                        </span>
+                                                                        <span className="flex-start">
+                                                                            <TagOutlined />
+                                                                            <p>Salary: {item.salary}</p>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className="w-100 flex-center">
+                                                                        <Button onClick={() => handleApply(item._id)}>Apply</Button>
+                                                                    </div>
+                                                                </Col>
+                                                            )
+                                                        })
+                                                    }
+                                                </>) : (
+                                                    <div className="flex-center h-100">
+                                                        <Empty />
+                                                    </div>
+                                                )}
+                                            </Row>
+                                        </div>  
+                                        
+                                    })
+                                }
+                               
+                        </InfiniteScroll>
+            
+                        {/* <Row justify="start" className="flex-center job-container">
                             {jobs.length > 0 ? (<>
                                 {
                                     jobs.map((item, key) => {
@@ -144,8 +206,8 @@ const JobList = () => {
                                     <Empty />
                                 </div>
                             )}
-                        </Row>
-                    </>
+                        </Row> */}
+                    </div>
 
                 )
 

@@ -113,3 +113,7 @@ a:hover {
   display: flex;
   justify-content: end;
 }
+
+.text-center{
+  text-align: center;
+}
