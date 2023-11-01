@@ -8,6 +8,13 @@ import dayjs from 'dayjs';
 import { useNavigate } from "react-router-dom";
 const dateFormat = 'DD/MM/YYYY'
 
+const user = {
+    firstName: 'Admin',
+    lastName: 'User',
+    email: 'admin@example.com',
+    role: 'admin', 
+};// giả lập thông tin của admin để có quyền chỉnh sửa job
+
 const JobList = () => {
     const [loading, setLoading] = useState(true);
     const [crrRecurit, setCrrRecurit] = useState([])
@@ -155,7 +162,7 @@ const JobList = () => {
             <div className='air air3'></div>
             <div className='air air4'></div>
 
-            {open && (<PopUpInfo apply={handleApply} job={jobDetail} handleClose={toggleOpen} />)}
+            {open && (<PopUpInfo user={user} apply={handleApply} job={jobDetail} handleClose={toggleOpen} />)}
         </div>
     )
 }
