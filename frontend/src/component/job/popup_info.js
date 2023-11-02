@@ -1,6 +1,5 @@
 import { Modal, Form, Input, Button } from "antd";
 import React, { useState } from "react";
-import axios from "axios";
 import { deleteJob, editJob } from "../../services/job";
 
 const PopUpInfo = (props) => {
@@ -24,13 +23,15 @@ const PopUpInfo = (props) => {
   };
 
   const handleApply = async () => {
-    const job = props.job;
+    const updatedJob = job;
 
     try {
-      const response = await editJob(job._id, job);
+      const response = await editJob(updatedJob._id, updatedJob);
 
       if (response.status === 200) {
         console.log("Cập nhật thông tin công việc thành công!");
+        window.location.reload();
+        window.scrollTo(0, 0);
       } else {
         console.error("Có lỗi xảy ra khi cập nhật thông tin công việc");
       }
@@ -86,20 +87,23 @@ const PopUpInfo = (props) => {
             <Button key="delete" type="primary" danger onClick={showConfirm}>
               Delete
             </Button>
-            {editing ? (
-              <Button key="save" type="primary" onClick={handleSave}>
-                Save
-              </Button>
-            ) : (
-              <Button key="edit" type="primary" onClick={handleEdit}>
-                Edit
+            {isAdmin &&
+              (editing ? (
+                <Button key="save" type="primary" onClick={handleSave}>
+                  Save
+                </Button>
+              ) : (
+                <Button key="edit" type="primary" onClick={handleEdit}>
+                  Edit
+                </Button>
+              ))}
+            {isAdmin && (
+              <Button key="apply" type="primary" onClick={handleApply}>
+                Apply
               </Button>
             )}
           </>
         ),
-        <Button key="apply" type="primary" onClick={handleApply}>
-          Apply
-        </Button>,
       ]}
     >
       <Form layout="vertical">
