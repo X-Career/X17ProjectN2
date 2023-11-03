@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Empty, Spin, Row, Col, Button, Select } from "antd";
 import { TagOutlined, UserOutlined, HomeOutlined } from "@ant-design/icons";
 import PopUpInfo from "./popup_info";
@@ -6,16 +6,13 @@ import { getallRecruitMgr } from "../../services/recruitMgr";
 import { getallJob } from "../../services/job";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/user";
 const dateFormat = "DD/MM/YYYY";
 
-const user = {
-  firstName: "Admin",
-  lastName: "User",
-  email: "admin@example.com",
-  role: "admin",
-}; // giả lập thông tin của admin để có quyền chỉnh sửa job
+
 
 const JobList = () => {
+  const { user, setUser } = useContext(UserContext)
   const [loading, setLoading] = useState(true);
   const [crrRecurit, setCrrRecurit] = useState([]);
   const [open, setOpen] = useState(false);
@@ -170,7 +167,7 @@ const JobList = () => {
 
       {open && (
         <PopUpInfo
-          user={user}
+          user={user.role && user}
           apply={handleApply}
           job={jobDetail}
           handleClose={toggleOpen}
