@@ -145,7 +145,7 @@ const Admin = () => {
                                 trigger={['click']}
                             >
                                 <a onClick={(e) => e.preventDefault()}>
-                                    <img src="https://res.cloudinary.com/dz96u1u2a/image/upload/v1683774881/d970d56d5350d2624041937de985370c_fzbyaf.jpg" style={{ width: '50px', borderRadius: '100%' }} />
+                                    <img src={user.img} style={{ width: '50px', borderRadius: '100%' }} />
                                 </a>
                             </Dropdown>
                         </Col>

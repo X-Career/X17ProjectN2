@@ -1,49 +1,49 @@
 import User from "../models/user.js"
-import { signInValid, signUpValid } from "../validation/user.js"
+import { signInValid, signUpValid, updateValid } from "../validation/user.js"
 import bcrypyjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 dotenv.config()
 
-const {SECRET_CODE} = process.env;
+const { SECRET_CODE } = process.env;
 
 
-export const signUp = async (req,res) => {
+export const signUp = async (req, res) => {
     try {
         // Validation
-        const {firstName, lastName, email, password} = req.body
-        const {error} = signUpValid.validate(req.body, {abortEarly:false});
+        const { firstName, lastName, email, password } = req.body
+        const { error } = signUpValid.validate(req.body, { abortEarly: false });
         if (error) {
-        const errors = error.details.map(err => err.message)
-        return res.json({
-            status: 400,
-            message: errors,
-        });
-    }
+            const errors = error.details.map(err => err.message)
+            return res.json({
+                status: 400,
+                message: errors,
+            });
+        }
 
         // Check email
-    const userExists = await User.findOne({email})
-    if (userExists) {
-        return res.json({
-            status: 400,
-            message: "User already exists"
-        });
-    }
+        const userExists = await User.findOne({ email })
+        if (userExists) {
+            return res.json({
+                status: 400,
+                message: "User already exists"
+            });
+        }
         // Hash password
-    const hashedPassword = await bcrypyjs.hash(password, 10);
-    const user = await User.create({
-        firstName,
-        lastName,
-        email,
-        password: hashedPassword,
-    })
+        const hashedPassword = await bcrypyjs.hash(password, 10);
+        const user = await User.create({
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword,
+        })
         //  Get info for client
-    user.password = undefined;
-    return res.json({
-        status: 200,
-        message: "User created successfully",
-        user
-    })
+        // user.password = undefined;
+        return res.json({
+            status: 200,
+            message: "User created successfully",
+            user
+        })
     } catch (error) {
         return res.json({
             status: 500,
@@ -53,44 +53,80 @@ export const signUp = async (req,res) => {
     }
 };
 
-
-export const singIn = async (req, res) =>{
+export const updateUser = async (req, res) => {
     try {
-        const {email, password} = req.body;
-        const {error} = signInValid.validate(req.body, {abortEarly:false})
-        if(error) {
+        const { firstName, lastName, email, password, img } = req.body
+        const { error } = updateValid.validate(req.body, { abortEarly: false });
+        if (error) {
+            return res.status(400).json({
+                message: error.details.map(err => err.message),
+            })
+        }
+        
+        const hashedPassword = await bcrypyjs.hash(password, 10);
+        const data = await User.findByIdAndUpdate(req.params.id,{
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword,
+            img,
+        }, {new:true})
+        if (!data) {
+            return res.status(404).json({
+                message: "Update User not successful",
+            })
+        }
+        return res.status(200).json({
+            message: "Update User successful",
+            datas: data,
+        })
+
+    } catch (error) {
+        return res.json({
+            status: 500,
+            message: error
+        })
+    }
+}
+
+
+export const singIn = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const { error } = signInValid.validate(req.body, { abortEarly: false })
+        if (error) {
             const errors = error.details.map((err) => err.message)
             return res.json({
                 status: 500,
                 message: errors
             })
         }
-        const user = await User.findOne({email});
-        if(!user){
+        const user = await User.findOne({ email });
+        if (!user) {
             return res.json({
                 status: 400,
                 message: "User not found"
             })
         }
         const isMatch = await bcrypyjs.compare(password, user.password);
-        if(!isMatch){
+        if (!isMatch) {
             return res.json({
                 status: 400,
-                message:"Invalid credentials"
+                message: "Invalid credentials"
             })
         }
         //  Creat jwt token
         const token = jwt.sign(
-            {id: user.id},
+            { id: user.id },
             SECRET_CODE,
-            {expiresIn: "1d"}
+            { expiresIn: "1d" }
         )
 
         //  Return result:
         user.password = undefined
         return res.json({
             status: 200,
-            message:"User logged in successfully",
+            message: "User logged in successfully",
             user: user,
             accessToken: token
         })
