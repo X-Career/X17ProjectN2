@@ -21,16 +21,13 @@ const ProfileAdmin = () => {
     const lastName = user.lastName 
     const firstName = user.firstName
     const email = user.email
-    const password = user.password
-    const [isLoading, setIsloading] = useState(false);
+    const [password, setPassword] = useState(`${user.password}`)
+    // Update
     const handleUpdate = async(e)=>{
         e.preventDefault();
+        
         try {
-            if (!lastName || !firstName || !email || !password || !img) {
-                setTimeout(() => {
-                  setIsloading(false);
-                }, 3000);
-              } else {
+            console.log('abc')
                 const data = {
                     lastName: lastName,
                     firstName: firstName,
@@ -42,7 +39,7 @@ const ProfileAdmin = () => {
                 console.log(updateprofile);
                 setTimeout(() => {
                 }, 3000);
-              }
+
         } catch (error) {
             console.error("Đã xảy ra lỗi khi update profile:", error);
         }
@@ -172,19 +169,20 @@ const ProfileAdmin = () => {
                                         className='TE_Input'
                                         type="password"
                                         placeholder="Please enter your new password."
+                                        onChange={(e) => setPassword(e.target.value)} 
                                     />
                                     <div className="Tittle_Element" style={{color:"red"}}>
                                     <hr/>
                                         *You will be logged out of your account after changing your email.{" "}
                                     </div>
-                                    <Button 
+                                </form>
+                                <Button 
                                     className="Tittle_Element" 
                                     style={{height:"40px", marginTop:"12px"}} 
                                     type='primary' 
                                     shape='round'
                                     onClick={handleUpdate}
                                     >Update Your Profile</Button>
-                                </form>
                             </div>
                         </Col>
                     </Row>
