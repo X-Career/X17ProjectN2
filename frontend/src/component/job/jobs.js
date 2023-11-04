@@ -6,6 +6,7 @@ import { getallRecruitMgr } from "../../services/recruitMgr";
 import { getallJob } from "../../services/job";
 import dayjs from 'dayjs';
 import { useNavigate } from "react-router-dom";
+import { useSpring, animated } from '@react-spring/web'
 import InfiniteScroll from 'react-infinite-scroll-component';
 const dateFormat = 'DD/MM/YYYY'
 
@@ -20,11 +21,12 @@ const JobList = () => {
     const [jobLoad, setJobLoad] = useState(false)
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
+    const [_page, setPage] = useState(1)
 
     const getJob = async(id) =>{
         setJobLoad(true)
         try {
-            const res = await getallJob(id);
+            const res = await getallJob(id, _page);
             if (res.status === 200) {
                 setJobs(res.data.datas.docs);
             }
@@ -78,6 +80,14 @@ const JobList = () => {
     useEffect(() =>{
         getJob()
     }, [crrRecurit])
+
+    const item_animate = useSpring({
+        from: { transform: 'translateZ(0)' },
+        to: { transform: 'translateZ(160px)' },
+        config: { duration: 450, easing: [0.25, 0.46, 0.45, 0.94] },
+    })
+
+
 
 
 
@@ -138,24 +148,27 @@ const JobList = () => {
                                                         jobs.map((item, key) => {
                                                             return (
                                                                 <Col span={4} key={key} className="job-item-box">
-                                                                    <h5 className="job-title" onClick={() => showDetail(item)}>{item.name}</h5>
-                                                                    <span>
-                                                                        <HomeOutlined />
-                                                                        Location: {item.location}
-                                                                    </span>
-                                                                    <div className="flex-between w-100 job-content">
-                                                                        <span className="flex-start">
-                                                                            <UserOutlined />
-                                                                            <p>Position: {item.position}</p>
+                                                                    <animated.div style={item_animate}>
+                                                                        <h5 className="job-title" onClick={() => showDetail(item)}>{item.name}</h5>
+                                                                        <span>
+                                                                            <HomeOutlined />
+                                                                            Location: {item.location}
                                                                         </span>
-                                                                        <span className="flex-start">
-                                                                            <TagOutlined />
-                                                                            <p>Salary: {item.salary}</p>
-                                                                        </span>
-                                                                    </div>
-                                                                    <div className="w-100 flex-center">
-                                                                        <Button onClick={() => handleApply(item._id)}>Apply</Button>
-                                                                    </div>
+                                                                        <div className="flex-between w-100 job-content">
+                                                                            <span className="flex-start">
+                                                                                <UserOutlined />
+                                                                                <p>Position: {item.position}</p>
+                                                                            </span>
+                                                                            <span className="flex-start">
+                                                                                <TagOutlined />
+                                                                                <p>Salary: {item.salary}</p>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div className="w-100 flex-center">
+                                                                            <Button onClick={() => handleApply(item._id)}>Apply</Button>
+                                                                        </div>
+                                                                    </animated.div>
+                                                                
                                                                 </Col>
                                                             )
                                                         })

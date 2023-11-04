@@ -29,7 +29,7 @@ const Header = () =>{
 
     const items = [
         {
-            label: <div><b>{user.firstName} {user.lastName}</b><div>{user.role}</div></div>,
+            label: <a href="user"><b>{user.firstName} {user.lastName}</b><div>{user.role}</div></a>,
             key: '0',
         },
         {

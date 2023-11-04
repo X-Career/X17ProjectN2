@@ -11,6 +11,7 @@ import ProfileAdmin from './component/admin/profileAdmin';
 import NotFound from './component/not_found';
 import Candidates from './component/candidate/Cadidates';
 import Job from './pages/Job';
+import User from './pages/User';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" element={<Home />} />
         {/* router test upload infor candidate và CV của candidate */}
         <Route path="/candidate" element={<Candidates />} />
+        <Route path="/user" element={<User />} />
         <Route path="/jobs" element={<Job />} />
         <Route path="/admin/" element={<Admin />} >
           <Route index element={<Navigate to="ProfileAdmin" />}></Route>

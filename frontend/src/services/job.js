@@ -1,9 +1,9 @@
 import axios from "axios";
 import { url } from "./api"
 
-export const getallJob= async (id) => {
+export const getallJob= async (id, _page) => {
   id = id || "";
-  return await axios.get(`${url}/jobs/${id}`);
+  return await axios.get(`${url}/jobs/?id=${id}&_page=${_page}`);
 };
 
 export const addJob = async (Job) => {
