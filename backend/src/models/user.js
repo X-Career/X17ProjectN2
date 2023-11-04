@@ -22,10 +22,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default:"member",
     },
-    img:[ {
-        type: Object, 
-        // default:"member",
-    }],
+    img: {
+        type: String, 
+        default:"https://firebasestorage.googleapis.com/v0/b/projectn2-68dd7.appspot.com/o/avatars%2Favatar.jpeg?alt=media&token=968edf8b-8ad8-47bb-88b2-56fd96576430&_gl=1*1upi0cp*_ga*MzU0Nzk1MDI2LjE2OTYzMDg4NjY.*_ga_CW55HF8NVT*MTY5ODk5NzAzMS4xMy4xLjE2OTg5OTcwNDQuNDcuMC4w"
+    },
     },
     {
         timestamps: true, 

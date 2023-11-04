@@ -97,6 +97,7 @@ export const create = async (req, res)=>{
 }
 
 export const update = async (req, res)=>{
+    console.log('update', req.body);
     try {
         const {error} = jobValidator.validate(req.body, {abortEarly: false}); 
         if (error){

@@ -8,7 +8,6 @@ import routerRecruitmgr from './recruitmgr.js';
 const router = express.Router()
 
 router.use('/auth', routerAuth)
-
 router.use('/jobs', routerJobs)
 router.use('/candidates', routerCandidates)
 router.use('/mails', routerMail)

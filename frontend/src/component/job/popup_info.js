@@ -1,73 +1,159 @@
-import { useScroll } from "@react-spring/web";
 import { Modal, Form, Input, Button } from "antd";
 import React, { useState } from "react";
+import { deleteJob, editJob } from "../../services/job";
 
-const PopUpInfo = ( props ) => {
-    const [open, setOpen] = useState(true)
-    const { TextArea } = Input;
+const PopUpInfo = (props) => {
+  const { TextArea } = Input;
+  const [editing, setEditing] = useState(false);
+  const [job, setJob] = useState({ ...props.job });
+  const [open, setOpen] = useState(true);
 
-    return (
-        <Modal
-            title={`Detailed information of ${props.job.name} jobs`}
-            centered
-            open={open}
-            width={900}
-            onOk={() => setOpen(false)}
-            onCancel={props.handleClose}
-            footer={[
-                <Button>
-                    Close
-                </Button>,
-                <Button type="primary">
-                    Apply
-                </Button>,
-            ]}
-        >
-            <Form
-                layout="vertical"
-            >
-                <Form.Item
-                    label='Job name:'
-                >
-                    <Input value={props.job.name} />
-                </Form.Item>
-                <Form.Item
-                    label='Location:'
-                >
-                    <Input value={props.job.location} />
-                </Form.Item>
-                <div className="flex-between">
-                    <Form.Item
-                        label='Position:'
-                        className="w-45"
-                    >
-                        <Input value={props.job.position} />
-                    </Form.Item>
-                    <Form.Item
-                        label='Salary:'
-                        className="w-45"
-                    >
-                        <Input value={props.job.salary} />
-                    </Form.Item>
-                </div>
-                <Form.Item
-                    label='Description:'
-                    className="w-100"
-                >
-                    <TextArea rows={4} size="25" value={props.job.des} />
-                </Form.Item>
+  const isAdmin = props.user && props.user.role === "admin";
 
-                <Form.Item
-                    label='Job Requirements:'
-                    className="w-100"
-                >
-                    <TextArea rows={4} size="25" value={props.job.req} />
-                </Form.Item>
+  const handleEdit = () => {
+    setEditing(true);
+  };
 
-            </Form>
+  const handleSave = () => {
+    setEditing(false);
+  };
 
-        </Modal>
-    )
-}
+  const handleChange = (e, fieldName) => {
+    setJob({ ...job, [fieldName]: e.target.value });
+  };
 
-export default PopUpInfo
+  const handleApply = async () => {
+    const updatedJob = job;
+
+    try {
+      const response = await editJob(updatedJob._id, updatedJob);
+
+      if (response.status === 200) {
+        console.log("Cập nhật thông tin công việc thành công!");
+        window.location.reload();
+        window.scrollTo(0, 0);
+      } else {
+        console.error("Có lỗi xảy ra khi cập nhật thông tin công việc");
+      }
+    } catch (error) {
+      console.error("Lỗi khi gửi yêu cầu cập nhật: ", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    const jobID = job._id;
+
+    try {
+      const response = await deleteJob(jobID);
+
+      if (response.status === 200) {
+        console.log("Xóa công việc thành công!");
+        setOpen(false);
+      } else {
+        console.error("Có lỗi xảy ra khi xóa công việc");
+      }
+    } catch (error) {
+      console.error("Lỗi khi gửi yêu cầu xóa công việc: ", error);
+    }
+  };
+
+  const showConfirm = () => {
+    Modal.confirm({
+      title: "Xác nhận xóa công việc",
+      content: "Bạn có chắc chắn muốn xóa công việc này?",
+      okText: "Xác nhận",
+      okType: "danger",
+      cancelText: "Hủy",
+      onOk() {
+        handleDelete();
+      },
+    });
+  };
+
+  return (
+    <Modal
+      title={`Detailed information of ${props.job.name} jobs`}
+      centered
+      open={open}
+      width={900}
+      onOk={() => setOpen(false)}
+      onCancel={props.handleClose}
+      footer={[
+        <Button key="close" onClick={props.handleClose}>
+          Close
+        </Button>,
+        isAdmin && (
+          <>
+            <Button key="delete" type="primary" danger onClick={showConfirm}>
+              Delete
+            </Button>
+            {isAdmin &&
+              (editing ? (
+                <Button key="save" type="primary" onClick={handleSave}>
+                  Save
+                </Button>
+              ) : (
+                <Button key="edit" type="primary" onClick={handleEdit}>
+                  Edit
+                </Button>
+              ))}
+            {isAdmin && (
+              <Button key="apply" type="primary" onClick={handleApply}>
+                Apply
+              </Button>
+            )}
+          </>
+        ),
+      ]}
+    >
+      <Form layout="vertical">
+        <Form.Item label="Job name">
+          <Input
+            value={job.name}
+            readOnly={!editing}
+            onChange={(e) => handleChange(e, "name")}
+          />
+        </Form.Item>
+        <Form.Item label="Location">
+          <Input
+            value={job.location}
+            readOnly={!editing}
+            onChange={(e) => handleChange(e, "location")}
+          />
+        </Form.Item>
+        <Form.Item label="Position">
+          <Input
+            value={job.position}
+            readOnly={!editing}
+            onChange={(e) => handleChange(e, "position")}
+          />
+        </Form.Item>
+        <Form.Item label="Salary">
+          <Input
+            value={job.salary}
+            readOnly={!editing}
+            onChange={(e) => handleChange(e, "salary")}
+          />
+        </Form.Item>
+        <Form.Item label="Description">
+          <TextArea
+            rows={4}
+            value={job.des}
+            readOnly={!editing}
+            onChange={(e) => handleChange(e, "des")}
+          />
+        </Form.Item>
+        <Form.Item label="Job Requirements">
+          <TextArea
+            rows={4}
+            value={job.req}
+            readOnly={!editing}
+            onChange={(e) => handleChange(e, "req")}
+          />
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+};
+
+export default PopUpInfo;
