@@ -145,7 +145,7 @@ const Admin = () => {
                                 trigger={['click']}
                             >
                                 <a onClick={(e) => e.preventDefault()}>
-                                    <img src={user.img} style={{ width: '50px', borderRadius: '100%' }} />
+                                    <img src={user.img} style={{ width: '50px', height: '50px', borderRadius: '100%' }} />
                                 </a>
                             </Dropdown>
                         </Col>

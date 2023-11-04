@@ -99,7 +99,7 @@ const Header = () =>{
                     >
                         <a onClick={(e) => e.preventDefault()} style={{ marginLeft: '2rem'}}>
                             <Space>
-                                <img src={user.img} style={{width: '50px', borderRadius: '100%'}} />
+                                <img src={user.img} style={{width: '50px', height:'50px', borderRadius: '100%'}} />
                             </Space>
                         </a>
                     </Dropdown>
