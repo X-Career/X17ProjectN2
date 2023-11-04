@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Layout, theme, message, Modal, Form, Item } from 'antd';
+import { Button, Layout, theme, message, Modal, Form } from 'antd';
 import "./Admin.css"
 import { sendMail } from "../../services/mail"
 import { useForm } from 'antd/es/form/Form';
@@ -55,8 +55,6 @@ const MailMgr = () => {
         >
             <div style={{ height: "100vh" }}>
                 <div className='Tittle'>Mail to Candidate</div>
-                <div>
-                    {/* <div className='Profile_Container' style={{ width: "80%", margin: "auto" }}> */}
                     <Form
                         style={{ width: "100%" }}
                         layout="vertical"
@@ -122,9 +120,7 @@ const MailMgr = () => {
                             <p>Are you sure to send this mail?</p>
                         </Modal>
                     </Form>
-                    {/* </div> */}
                 </div>
-            </div>
         </Content>
     );
 }
