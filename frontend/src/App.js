@@ -14,9 +14,7 @@ import Job from './pages/Job';
 import User from './pages/User';
 
 function App() {
-
   return (
-
     <Router>
       <Routes>
         <Route path="/register" element={<Register />} />

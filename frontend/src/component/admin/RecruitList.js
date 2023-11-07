@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Card,
   Row,
@@ -10,50 +10,24 @@ import {
   Input,
   DatePicker,
   Alert,
+  message,
 } from "antd";
-
+import { addRecruitMgr, getallRecruitMgr } from "../../services/recruitMgr";
+import dayjs from "dayjs";
+import RecruitContext from "../../context/recruit";
 const RecruitList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const recruitsPerPage = 3;
   const [isCreateModalVisible, setCreateModalVisible] = useState(false);
-  const [isDetailModalVisible, setDetailModalVisible] = useState(false);
   const [selectedRecruit, setSelectedRecruit] = useState(null);
   const [form] = Form.useForm();
   const [errors, setErrors] = useState([]);
-  const [recruits, setRecruits] = useState([
-    {
-      id: 1,
-      nameRecruit: "Đợt tuyển dụng 1",
-      datetoStart: "2023-10-01",
-      datetoEnd: "2023-10-10",
-      description: "Mô tả cho đợt tuyển dụng 1",
-    },
-    {
-      id: 2,
-      nameRecruit: "Đợt tuyển dụng 2",
-      datetoStart: "2023-10-15",
-      datetoEnd: "2023-10-25",
-      description: "Mô tả cho đợt tuyển dụng 2",
-    },
-    {
-      id: 3,
-      nameRecruit: "Đợt tuyển dụng 3",
-      datetoStart: "2023-10-30",
-      datetoEnd: "2023-11-05",
-      description: "Mô tả cho đợt tuyển dụng 3",
-    },
-    {
-      id: 4,
-      nameRecruit: "Đợt tuyển dụng 4",
-      datetoStart: "2023-10-30",
-      datetoEnd: "2023-11-05",
-      description: "Mô tả cho đợt tuyển dụng 4",
-    },
-  ]);
+  const [recruits, setRecruits] = useState([]);
+  const {setRecruit } = useContext(RecruitContext)
 
-  const startIndex = (currentPage - 1) * recruitsPerPage;
-  const endIndex = startIndex + recruitsPerPage;
-  const recruitsOnCurrentPage = recruits.slice(startIndex, endIndex);
+  // const startIndex = (currentPage - 1) * recruitsPerPage;
+  // const endIndex = startIndex + recruitsPerPage;
+  // const recruitsOnCurrentPage = recruits.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -67,7 +41,7 @@ const RecruitList = () => {
     form
       .validateFields()
       .then((values) => {
-        const { nameRecruit, datetoStart, datetoEnd, description } = values;
+        const { nameRecruit, datetoStart, datetoEnd } = values;
         const newErrors = [];
   
         if (isDuplicateName(nameRecruit)) {
@@ -81,13 +55,15 @@ const RecruitList = () => {
   
         if (newErrors.length === 0) {
           const newRecruit = {
-            id: recruits.length + 1,
             nameRecruit,
             datetoStart,
             datetoEnd,
-            description,
           };
-          setRecruits([...recruits, newRecruit]);
+
+          newRecruit['datetoStart'] = dayjs(newRecruit['datetoStart']).format('YYYY-MM-DD');
+          newRecruit['datetoEnd'] = dayjs(newRecruit['datetoEnd']).format('YYYY-MM-DD');
+          
+          handleAddNewRecruit(newRecruit)
           setCreateModalVisible(false);
           form.resetFields();
         } else {
@@ -100,7 +76,33 @@ const RecruitList = () => {
         }
       });
   };
+
+  const handleAddNewRecruit = async (newRecruit) =>{
+    try {
+      const res = await addRecruitMgr(newRecruit);
+      if(res.status === 200){
+        message.success(res.data.message);
+        getAllRecruit();
+      }else{
+        message.error(res.data.message)
+      }
+    } catch (error) {
+      console.log("Error:", error.message);
+    }
+  }
   
+  const getAllRecruit = async() =>{
+    try {
+      const res = await getallRecruitMgr();
+      setRecruits(res.data.datas)
+    } catch (error) {
+      console.log('Error', error.message);
+    }
+  }
+
+  useEffect(() =>{
+    getAllRecruit()
+  }, [])
 
   const isDuplicateName = (name) => {
     return recruits.some((recruit) => recruit.nameRecruit === name);
@@ -127,37 +129,43 @@ const RecruitList = () => {
     });
   };
 
-  const showDetailModal = (recruit) => {
-    setSelectedRecruit(recruit);
-    setDetailModalVisible(true);
+  const showDetailModal = (id) => {
+    setSelectedRecruit(id);
+    setRecruit(id)
   };
 
+  const handleCancel = () =>{
+    setCreateModalVisible(false);
+    form.resetFields();
+    setErrors([]);
+  }
   
 
   return (
     <div>
-      <Row justify={"space-between"} style={{ marginBottom: 8 }}>
-        <h2>Danh sách đợt tuyển dụng</h2>
+      <Row justify="end" style={{ marginBottom: 8 }}>
+        {/* <h2>Danh sách đợt tuyển dụng</h2> */}
         <Button type="primary" onClick={handleCreateNewRecruit}>
-          Tạo đợt tuyển dụng mới
+          New recruit
         </Button>
       </Row>
       <Row gutter={16} style={{ marginBottom: 8 }}>
-        {recruitsOnCurrentPage.map((recruit) => (
-          <Col span={8} key={recruit.id}>
+        {recruits.map((recruit) => (
+          <Col span={8} key={recruit._id}>
             <div style={{ position: "relative" }}>
               <Card
+                style={{ border: `${selectedRecruit === recruit._id ? '1px solid #e8d207' : '1px solid #efefef'} `}}
                 hoverable
                 title={<div style={cardTitleClass}>{recruit.nameRecruit}</div>}
                 size="small"
-                onClick={() => showDetailModal(recruit)}
+                onClick={() => showDetailModal(recruit._id)}
               >
                 <p>
-                  Thời gian bắt đầu:{" "}
+                  Start date:{" "}
                   {new Date(recruit.datetoStart).toISOString().slice(0, 10)}
                 </p>
                 <p>
-                  Thời gian kết thúc:{" "}
+                  Startr date:{" "}
                   {new Date(recruit.datetoEnd).toISOString().slice(0, 10)}
                 </p>
               </Card>
@@ -166,7 +174,7 @@ const RecruitList = () => {
                 onClick={() => handleDeleteRecruit(recruit.id)}
                 style={{ position: "absolute", top: 4, right: 0 }}
               >
-                Xóa
+                Detail
               </Button>
             </div>
           </Col>
@@ -184,65 +192,72 @@ const RecruitList = () => {
       </Row>
 
       <Modal
-        title="Tạo đợt tuyển dụng mới"
+        title="Add new recruit"
         open={isCreateModalVisible}
-        onOk={handleCreateRecruit}
-        onCancel={() => {
-          setCreateModalVisible(false);
-          form.resetFields();
-          setErrors([]);
-        }}
-        width="60%"
+        onCancel={handleCancel}
+        footer={[
+          <Button key="close"  onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button key="apply" type="primary" onClick={handleCreateRecruit}>
+            Create
+          </Button>
+        ]}
+    
+        width="45%"
       >
-        <Form form={form}>
+        <Form 
+          layout="vertical"
+          form={form}
+        >
           <Form.Item
             name="nameRecruit"
-            label="Tên đợt tuyển dụng"
+            label="Name of recruit"
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập tên đợt tuyển dụng",
+                message: "Please enter name of recruit",
               },
             ]}
           >
-            <Input />
+            <Input placeholder="Name of recruit"/>
           </Form.Item>
-          <Form.Item
-            name="datetoStart"
-            label="Ngày bắt đầu"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng chọn ngày bắt đầu",
-              },
-            ]}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
-            name="datetoEnd"
-            label="Ngày kết thúc"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng chọn ngày kết thúc",
-              },
-            ]}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
+         <div className="flex-between w-100">
+            <Form.Item
+              name="datetoStart"
+              label="Start date"
+              style={{width: '49%'}}
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter start date",
+                },
+              ]}
+            >
+              <DatePicker style={{width: '100%'}}/>
+            </Form.Item>
+            <Form.Item
+              name="datetoEnd"
+              label="End date"
+              style={{ width: '49%' }}
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter end date",
+                },
+              ]}
+            >
+              <DatePicker 
+              style={{ width: '100%' }}
+               />
+            </Form.Item>
+         </div>
+          {/* <Form.Item
             name="description"
-            label="Mô tả"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập mô tả",
-              },
-            ]}
+            label="Description"
           >
-            <Input.TextArea rows={4} />
-          </Form.Item>
+            <Input.TextArea rows={4} placeholder="Description"/>
+          </Form.Item> */}
         </Form>
         {errors.length > 0 && (
           <div>
@@ -254,8 +269,8 @@ const RecruitList = () => {
           </div>
         )}
       </Modal>
-      <Modal
-        title="Thông tin chi tiết đợt tuyển dụng"
+      {/* <Modal
+        title="Detail infomation of the recruit"
         open={isDetailModalVisible}
         onCancel={() => setDetailModalVisible(false)}
         footer={null}
@@ -275,7 +290,7 @@ const RecruitList = () => {
             <p>Mô tả: {selectedRecruit.description}</p>
           </div>
         )}
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

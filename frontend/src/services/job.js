@@ -22,3 +22,4 @@ export const editJob = async (id, Job) => {
 export const deleteJob = async (id) => {
   return await axios.delete(`${url}/jobs/${id}`);
 };
+

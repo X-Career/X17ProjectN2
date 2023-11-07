@@ -1,6 +1,6 @@
 import { Layout, Select, theme } from 'antd';
 import { DeleteOutlined, EditOutlined, MailOutlined, SearchOutlined } from '@ant-design/icons';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState} from 'react';
 import Highlighter from 'react-highlight-words';
 import { Button, Input, Space, Table } from 'antd';
 import { Form, InputNumber, Popconfirm, Typography } from 'antd';
@@ -8,7 +8,8 @@ import "./Admin.css"
 import { useNavigate } from 'react-router-dom';
 import { ActiveContext } from '../../context/active_menu';
 import RecruitList from './RecruitList';
-
+import RecruitContext from '../../context/recruit';
+import { getallCandidate } from '../../services/candidate';
 const { Content } = Layout;
 
 const originData = [];  //Lấy dữ liệu từ trên sever xuống
@@ -70,6 +71,7 @@ const RecruitMgr = () => {
     const [searchedColumn, setSearchedColumn] = useState('');
     const {active, setActive} = useContext(ActiveContext)
     const searchInput = useRef(null);
+    const { recruit } = useContext(RecruitContext)
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -82,6 +84,19 @@ const RecruitMgr = () => {
         clearFilters();
         setSearchText('');
     };
+
+
+
+    const getAllCanddidate = async() =>{
+        try {
+            const res = await getallCandidate(recruit)
+            console.log(res);
+        } catch (error) {
+            console.log('Error:', error.message);
+        }
+    }
+ 
+
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div

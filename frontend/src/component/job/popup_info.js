@@ -1,4 +1,5 @@
 import { Modal, Form, Input, Button, InputNumber } from "antd";
+import { editJob } from "../../services/job";
 import React, { useState } from "react";
 
 const PopUpInfo = (props) => {
@@ -21,23 +22,22 @@ const PopUpInfo = (props) => {
   //   setJob({ ...job, [fieldName]: e.target.value });
   // };
 
-  // const handleApply = async () => {
-  //   const updatedJob = job;
+  const handleApply = async () => {
+    const updatedJob = job;
 
-  //   try {
-  //     const response = await editJob(updatedJob._id, updatedJob);
-
-  //     if (response.status === 200) {
-  //       console.log("Cập nhật thông tin công việc thành công!");
-  //       window.location.reload();
-  //       window.scrollTo(0, 0);
-  //     } else {
-  //       console.error("Có lỗi xảy ra khi cập nhật thông tin công việc");
-  //     }
-  //   } catch (error) {
-  //     console.error("Lỗi khi gửi yêu cầu cập nhật: ", error);
-  //   }
-  // };
+    try {
+      const response = await editJob(updatedJob._id, updatedJob);
+      if (response.status === 200) {
+        console.log("Cập nhật thông tin công việc thành công!");
+        window.location.reload();
+        window.scrollTo(0, 0);
+      } else {
+        console.error("Có lỗi xảy ra khi cập nhật thông tin công việc");
+      }
+    } catch (error) {
+      console.error("Lỗi khi gửi yêu cầu cập nhật: ", error);
+    }
+  };
 
   // const handleDelete = async () => {
   //   const jobID = job._id;
