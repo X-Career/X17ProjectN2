@@ -1,11 +1,10 @@
 import { Modal, Form, Input, Button, InputNumber } from "antd";
 import React, { useState } from "react";
-import { deleteJob, editJob } from "../../services/job";
 
 const PopUpInfo = (props) => {
   const { TextArea } = Input;
   const [editing, setEditing] = useState(false);
-  // const [job, setJob] = useState({ ...props.job });
+  const [job, setJob] = useState({ ...props.job });
   const [open, setOpen] = useState(true);
 
   // const isAdmin = props.user && props.user.role === "admin";
