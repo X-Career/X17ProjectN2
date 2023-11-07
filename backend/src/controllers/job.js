@@ -8,7 +8,6 @@ import Recruitmgr from "../models/recruitmgr.js";
 export const getAll = async (req, res)=>{
     try {
         // const data = await Job.find({});
-
         const {_page = 1, _limit = 7, _sort = "createdAt", _order = "asc"} = req.query;
         const options = {
             page: _page,

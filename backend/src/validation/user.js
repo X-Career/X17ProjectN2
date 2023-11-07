@@ -42,6 +42,7 @@ export const signUpValid = Joi.object(
             "any.only": "confirmpassword is not matching",
             "string.empty": "confirmpassword is not empty",
         }),
+        candidates: Joi.array(),
     });
 export const updateValid = Joi.object(
     {
@@ -80,7 +81,8 @@ export const updateValid = Joi.object(
             "any.required": "password is required",
             "string.min": "password must be at least 6 characters",
         }),
-        img: Joi.string()
+        img: Joi.string(),
+        candidates: Joi.array(),
     }
 )
 
