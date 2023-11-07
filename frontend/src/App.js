@@ -11,6 +11,7 @@ import ProfileAdmin from './component/admin/profileAdmin';
 import NotFound from './component/not_found';
 import Candidates from './component/candidate/Cadidates';
 import Job from './pages/Job';
+import CandidateTest from './pages/Candidate_test.js';
 
 function App() {
 
@@ -22,6 +23,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         {/* router test upload infor candidate và CV của candidate */}
+        <Route path="/test" element={<CandidateTest />} />
+
         <Route path="/candidate" element={<Candidates />} />
         <Route path="/jobs" element={<Job />} />
         <Route path="/admin/" element={<Admin />} >
