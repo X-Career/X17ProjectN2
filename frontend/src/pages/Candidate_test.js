@@ -7,14 +7,10 @@ import Candidates from "../component/candidate/Cadidates";
 
 
 
-const Candidate = () => {
+const CandidateTest = () => {
     const [fields, setFields] = useState(false);
     const [isLoading, setIsloading] = useState(false);
-    const [fullName, setFullName] = useState("");
-    const [gender, setGender] = useState("");
-    const [age, setAge] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
+    const [jobId, setjobId] = useState("");
     const [fileCV, setFileCV] = useState(undefined);
     const [fileCVPerc, setFileCVPerc] = useState(0);
     const [inputs, setInputs] = useState({});
@@ -22,19 +18,15 @@ const Candidate = () => {
     const handleSubmit = async (e)=>{
         e.preventDefault();
         try {
-            if (!fullName || !gender || !age || !phone || !email || !fileCV) {
+            if (!jobId || !fileCV) {
                 setTimeout(() => {
                   setFields(false);
                   setIsloading(false);
                 }, 3000);
               } else {
                 const data = {
-                  fullName: fullName,
-                  gender: gender,
-                  age: age,
-                  phone: phone,
-                  email: email,
-                  fileCV: inputs.fileCVUrl,
+                jobId: jobId,
+                fileCV: inputs.fileCVUrl,
                 };
                 const { candidate } = await addCandidate(data);
                 console.log(candidate);
@@ -106,50 +98,14 @@ const Candidate = () => {
     return (
         <>
         <h1>Test</h1>
-        <div className="fullName">
+        <div className="jobId">
                 <input
                     type="text"
                     required
-                    value={fullName}
-                    placeholder="Give me a fullName..."
+                    value={jobId}
+                    placeholder="Give me a JobId..."
                     className="setFullName"
-                    onChange={(e) => setFullName(e.target.value)} />
-            </div>
-            <div className="gender">
-                <input
-                    type="text"
-                    required
-                    value={gender}
-                    placeholder="Give me a gender..."
-                    className="setGender"
-                    onChange={(e) => setGender(e.target.value)} />
-            </div>
-            <div className="age">
-                <input
-                    type="text"
-                    required
-                    value={age}
-                    placeholder="Give me a age..."
-                    className="setAge"
-                    onChange={(e) => setAge(e.target.value)} />
-            </div>
-            <div className="phone">
-                <input
-                    type="text"
-                    required
-                    value={phone}
-                    placeholder="Give me a phone..."
-                    className="setPhone"
-                    onChange={(e) => setPhone(e.target.value)} />
-            </div>
-            <div className="email">
-                <input
-                    type="text"
-                    required
-                    value={email}
-                    placeholder="Give me a email..."
-                    className="setEmail"
-                    onChange={(e) => setEmail(e.target.value)} />
+                    onChange={(e) => setjobId(e.target.value)} />
             </div>
             <label>
                 <p>click here to upload</p>
@@ -168,4 +124,4 @@ const Candidate = () => {
         </>
     )
 }
-export default Candidate
+export default CandidateTest

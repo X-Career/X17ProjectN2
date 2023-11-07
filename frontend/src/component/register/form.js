@@ -87,6 +87,51 @@ const RegisterForm = () => {
                     />
                 </Form.Item>
                 <Form.Item
+                    name="gender"
+                    label="Gender"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your gender',
+                        },
+                    ]}>
+                    <Input
+                        placeholder="Input your gender"
+                        type="string"
+                        name="gender"
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="age"
+                    label="Age"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your age',
+                        },
+                    ]}>
+                    <Input
+                        placeholder="Input your age"
+                        type="number"
+                        name="age"
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="phone"
+                    label="Phone Number"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your phone',
+                        },
+                    ]}>
+                    <Input
+                        placeholder="Input phone number"
+                        type="number"
+                        name="phone"
+                    />
+                </Form.Item>
+                <Form.Item
                     name="password"
                     label="Password"
                     rules={[

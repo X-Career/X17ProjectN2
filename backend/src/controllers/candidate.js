@@ -62,7 +62,7 @@ export const getDetail = async (req, res)=>{
 export const create = async (req, res)=>{
     try {
 
-        const {fullName, gender, age, phone, email, point, datetoInter, result, datetoGetjob, status, fileCV, jobId} = req.body;
+        const {point, datetoInter, result, datetoGetjob, status, fileCV, jobId} = req.body;
 
         const {error} = candidateValidator.validate(req.body, {abortEarly: false}); 
         if (error){
@@ -72,11 +72,6 @@ export const create = async (req, res)=>{
         }
         if(fileCV){
                 const newCandidate = new Candidate({
-                    fullName,
-                    gender,
-                    age,
-                    phone,
-                    email,
                     point,
                     jobId,
                     datetoInter,

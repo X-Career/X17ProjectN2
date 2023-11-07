@@ -21,6 +21,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         {/* router test upload infor candidate và CV của candidate */}
+        {/* <Route path="/test" element={<CandidateTest />} /> */}
+
         <Route path="/candidate" element={<Candidates />} />
         <Route path="/user" element={<User />} />
         <Route path="/jobs" element={<Job />} />
