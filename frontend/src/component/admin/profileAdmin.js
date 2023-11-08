@@ -123,7 +123,7 @@ const ProfileAdmin = () => {
                 background: colorBgContainer,
             }}
         >
-            <div style={{ height: "100vh" }}>
+            <div>
                 <div className='Tittle'>Profile Admin</div>
                 <div>
                     <Row>
