@@ -10,7 +10,8 @@ const candidateValidator = Joi.object({
     datetoGetjob:Joi.date().format('YYYY-MM-DD HH:mm'),
     fileCV: Joi.string().required(),
     jobId:  Joi.string().required(),
-    userId: Joi.string().required()
+    userId: Joi.string().required(),
+    recruitId: Joi.string().required(),
 });
 
 export default candidateValidator;

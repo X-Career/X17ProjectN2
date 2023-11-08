@@ -12,6 +12,8 @@ const CandidateTest = () => {
     const [isLoading, setIsloading] = useState(false);
     const [jobId, setjobId] = useState("");
     const [userId, setuserId] = useState("");
+    const [recruitId, setrecruitId] = useState("");
+
 
     const [fileCV, setFileCV] = useState(undefined);
     const [fileCVPerc, setFileCVPerc] = useState(0);
@@ -19,7 +21,7 @@ const CandidateTest = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (!jobId || !fileCV ) {
+            if (!jobId || !fileCV || !userId || !recruitId ) {
                 setTimeout(() => {
                     setFields(false);
                     setIsloading(false);
@@ -28,6 +30,7 @@ const CandidateTest = () => {
                 const data = {
                     jobId: jobId,
                     userId: userId,
+                    recruitId: recruitId,
                     fileCV: inputs.fileCVUrl,
                 };
                 const { candidate } = await addCandidate(data);
@@ -101,6 +104,15 @@ const CandidateTest = () => {
     return (
         <>
             <h1>Test</h1>
+            <div className="recruitId">
+                <input
+                    type="text"
+                    required
+                    value={recruitId}
+                    placeholder="Give me a RecruitId..."
+                    className="setFullName"
+                    onChange={(e) => setrecruitId(e.target.value)} />
+            </div>
             <div className="jobId">
                 <input
                     type="text"

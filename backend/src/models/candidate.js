@@ -32,6 +32,11 @@ const candidateSchema = new mongoose.Schema({
         ref: "Job",
         require: true
     },
+    recruitId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Recruitmgr",
+        require: true
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

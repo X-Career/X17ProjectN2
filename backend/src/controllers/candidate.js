@@ -2,6 +2,7 @@ import Candidate from "../models/candidate.js";
 import candidateValidator from "../validation/candidate.js";
 import Job from "../models/job.js";
 import User from "../models/user.js";
+import recruitmgr from "../models/recruitmgr.js";
 
 
 
@@ -50,7 +51,7 @@ export const getDetail = async (req, res) => {
 export const create = async (req, res) => {
     try {
 
-        const { point, datetoInter, result, datetoGetjob, status, fileCV, jobId, userId } = req.body;
+        const { point, datetoInter, result, datetoGetjob, status, fileCV, jobId, userId, recruitId } = req.body;
 
         const { error } = candidateValidator.validate(req.body, { abortEarly: false });
         if (error) {
@@ -63,6 +64,7 @@ export const create = async (req, res) => {
                 point,
                 jobId,
                 userId,
+                recruitId,
                 datetoInter,
                 result,
                 datetoGetjob,
@@ -74,6 +76,9 @@ export const create = async (req, res) => {
             if (!candidate) {
                 return res.status(404).json({ message: "upload not successful" });
             }
+            
+
+             // Gửi CV Gửi theo job
 
             const updateJobs = await Job.findByIdAndUpdate(candidate.jobId, {
                 $addToSet: {
@@ -86,6 +91,7 @@ export const create = async (req, res) => {
                 });
             }
 
+            // Gửi CV Gửi vào user tuyển dụng
 
             const updateUsers = await User.findByIdAndUpdate(candidate.userId, {
                 $addToSet: {
@@ -97,10 +103,27 @@ export const create = async (req, res) => {
                     message: "Add Infor User for Candidates not successful",
                 });
             }
+
+            // Gửi CV Gửi vào đợt tuyển dụng
+            const updateRecuit = await recruitmgr.findByIdAndUpdate(candidate.recruitId, {
+                $addToSet: {
+                    candidates: candidate._id,
+                },
+              });
+            if (!updateRecuit) {
+                return res.status(404).json({
+                  message: "Add RecruitId for new Candidates not successful",
+                });
+            }
+            
+
+
             return res.status(200).json({
                 message: "Create Cadidate successful",
                 datas: candidate,
             })
+
+            
         }
 
 
