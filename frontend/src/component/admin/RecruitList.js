@@ -144,7 +144,6 @@ const RecruitList = () => {
   return (
     <div>
       <Row justify="end" style={{ marginBottom: 8 }}>
-        {/* <h2>Danh sách đợt tuyển dụng</h2> */}
         <Button type="primary" onClick={handleCreateNewRecruit}>
           New recruit
         </Button>

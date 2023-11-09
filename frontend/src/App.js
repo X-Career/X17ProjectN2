@@ -7,7 +7,7 @@ import Admin from './pages/Admin';
 import JobMgr from './component/admin/Job/JobList';
 import MailMgr from './component/admin/mailMgr.js';
 import RecruittMgr from './component/admin/recruitMgr.js';
-import ProfileAdmin from './component/admin/profileAdmin';
+import ProfileAdmin from './component/admin/Profile/ProfileAdmin.js';
 import NotFound from './component/not_found';
 import Candidates from './component/candidate/Cadidates';
 import Job from './pages/Job';
