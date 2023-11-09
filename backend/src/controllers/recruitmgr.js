@@ -25,7 +25,7 @@ export const getAll = async (req, res)=>{
 }
 export const getDetail = async (req, res)=>{
     try {
-        const data = await Recruitmgr.findById(req.params.id).populate("jobs")
+        const data = await Recruitmgr.findById(req.params.id).populate("jobs").populate("candidates")
         if (!data){
             return res.status(404).json({
                 message: "There is no recruitment",

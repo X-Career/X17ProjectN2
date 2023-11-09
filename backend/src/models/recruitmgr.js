@@ -17,6 +17,10 @@ const recruitmgrSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:"Job",
     }],
+    candidates: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Candidate",
+    }],
 },{
     versionKey: false,
     timestamps: true

@@ -15,19 +15,19 @@ const JobMgr = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [recordToEdit, setRecordToEdit] = useState(null);
-  const [totalPages, setTotalPages] = useState(1);
+  // const [totalPages, setTotalPages] = useState("");
 
   const getAllJob = async () => {
     setLoading(true);
     try {
       const res = await getallJob();
-      setData(res.data.datas.docs);
+      setData(res.data.datas);
       setLoading(false);
     } catch (e) {
       console.log("Error: ", e.message);
     }
   };
-
+  
   useEffect(() => {
     getAllJob();
   }, []);
@@ -149,7 +149,7 @@ const JobMgr = () => {
           dataSource={data}
           columns={columns}
           loading={loading}
-          pagination={{ pageSize: 10, total: totalPages }}
+          pagination={{ defaultCurrent:`${1}`, pageSize: 7, total: `${10}` }}
         />
 
         {open && <PopupCreate handleClose={toggleOpen} refresh={getAllJob} />}
