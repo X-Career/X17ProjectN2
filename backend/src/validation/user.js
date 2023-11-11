@@ -17,6 +17,21 @@ export const signUpValid = Joi.object(
             "any.required": "email is required",
             "string.email": "email is invalid"
         }),
+        gender: Joi.string().required().min(2).messages({
+            "string.empty": "gender is required",
+            "any.required": "gender is required",
+            "string.email": "gender is invalid",
+        }),
+        age: Joi.number().required().messages({
+            "string.empty": "age is required",
+            "any.required": "age is required",
+            "string.email": "age is invalid",
+        }),
+        phone: Joi.number().required().messages({
+            "string.empty": "phone is required",
+            "any.required": "phone is required",
+            "string.email": "phone is invalid",
+        }),
         password: Joi.string().required().messages({
             "string.empty": "password is required",
             "any.required": "password is required",
@@ -27,6 +42,7 @@ export const signUpValid = Joi.object(
             "any.only": "confirmpassword is not matching",
             "string.empty": "confirmpassword is not empty",
         }),
+        candidates: Joi.array(),
     });
 export const updateValid = Joi.object(
     {
@@ -45,12 +61,24 @@ export const updateValid = Joi.object(
             "any.required": "email is required",
             "string.email": "email is invalid"
         }),
-        password: Joi.string().required().messages({
-            "string.empty": "password is required",
-            "any.required": "password is required",
-            "string.min": "password must be at least 6 characters",
+        gender: Joi.string().required().min(2).messages({
+            "string.empty": "gender is required",
+            "any.required": "gender is required",
+            "string.email": "gender is invalid",
         }),
-        img: Joi.string()
+        age: Joi.number().required().messages({
+            "string.empty": "age is required",
+            "any.required": "age is required",
+            "string.email": "age is invalid",
+        }),
+        phone: Joi.number().required().messages({
+            "string.empty": "phone is required",
+            "any.required": "phone is required",
+            "string.email": "phone is invalid",
+        }),
+        password: Joi.string(),
+        img: Joi.string(),
+        candidates: Joi.array(),
     }
 )
 

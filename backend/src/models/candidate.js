@@ -3,59 +3,48 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 
 const candidateSchema = new mongoose.Schema({
-    fullName: {
-        type: String,
-        required: true,
-    },
-    gender: {
-        type: String,
-        required: true,
-    },
-    age:{
-        type: Number,
-        required: true,
-    },
-    phone: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    point:{
+    point: {
         type: Number,
         default: null,
     },
-    datetoInter:{
+    datetoInter: {
         type: Date,
         default: null,
     },
-    result:{
+    result: {
         type: String,
         default: null,
     },
-    datetoGetjob:{
+    datetoGetjob: {
         type: Date,
         default: null,
     },
     status: {
         type: String,
-        default:"Applying",
+        default: "Applying",
     },
-    fileCV:[ {
-        type: Object, 
+    fileCV: [{
+        type: Object,
         required: true
     }],
-    jobId:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Job",
-            require: true
-        },
+    jobId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Job",
+        require: true
     },
+    recruitId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Recruitmgr",
+        require: true
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        require: true
+    },
+},
     {
-        timestamps: true, 
+        timestamps: true,
         versionKey: false,
     }
 );

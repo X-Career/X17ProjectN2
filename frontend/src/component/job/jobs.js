@@ -28,7 +28,7 @@ const JobList = () => {
     try {
       const res = await getallJob(id);
       if (res.status === 200) {
-        setJobs(res.data.datas.docs);
+        setJobs(res.data.datas);
       }
       setJobLoad(false);
     } catch (e) {
@@ -167,7 +167,7 @@ const JobList = () => {
 
       {open && (
         <PopUpInfo
-          user={user.role && user}
+          user={user}
           apply={handleApply}
           job={jobDetail}
           handleClose={toggleOpen}
