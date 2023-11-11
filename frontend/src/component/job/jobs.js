@@ -167,7 +167,7 @@ const JobList = () => {
 
       {open && (
         <PopUpInfo
-          user={user.role && user}
+          user={user}
           apply={handleApply}
           job={jobDetail}
           handleClose={toggleOpen}

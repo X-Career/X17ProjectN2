@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
 import ActiveProvider from './context/active_menu';
 import UserProvider from './context/user';
-
+import { RecruitProvider } from './context/recruit';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const themeConfig = {
   token: {
@@ -24,7 +24,9 @@ root.render(
   <ConfigProvider theme={themeConfig}>
       <UserProvider>
         <ActiveProvider>
+          <RecruitProvider>
           <App />
+          </RecruitProvider>
         </ActiveProvider>
       </UserProvider>
   </ConfigProvider>

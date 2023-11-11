@@ -29,7 +29,7 @@ const Header = () =>{
 
     const items = [
         {
-            label: <div><b>{user.firstName} {user.lastName}</b><div>{user.role}</div></div>,
+            label: <a href="user"><b>{user.firstName} {user.lastName}</b><div>{user.role}</div></a>,
             key: '0',
         },
         {
@@ -86,7 +86,8 @@ const Header = () =>{
     return (
         <div className={`${isSticky ? 'header_sticky' : ''} header_box w-100`}>
             <Row justify="space-evenly">
-                <Col span={8}><Link style={{ alignItems: 'center', display: 'flex', height: '100%'}} to={'/'}><img src="../images/logo.webp" style={{ width: '120px' }} /></Link></Col>
+                <Col span={8}><Link style={{ alignItems: 'center', display: 'flex', height: '100%'}} to={'/'}>
+                    <img src="../images/logo.webp" style={{ width: '120px' }} /></Link></Col>
                 <Col span={8} style={{display: 'flex', alignItems: 'center'}}>
                     <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`} onClick={() => navigate('/')}>Home</Button>
                     <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`} onClick={() => navigate('/jobs')} >Job</Button>

@@ -579,7 +579,8 @@
 .job-wrapper {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  /* padding-top: 10rem; */
   /* background: #3586ff; */
   overflow: hidden;
 }
@@ -777,4 +778,22 @@
 
 .form_create_job .ant-input-number-group-wrapper{
   width: 100% !important;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+
+  /* IE 10+ */
+  ::-webkit-scrollbar {
+    width: 0;
+    /* Safari and Chrome */
+    height: 0;
+  }
+}
+
+.recruit_name{
+  color: #e8d207;
+  text-shadow: 0px 1px 0px #d1bd07;
 }

@@ -1,6 +1,6 @@
 import { Layout, Select, theme } from 'antd';
 import { DeleteOutlined, EditOutlined, MailOutlined, SearchOutlined } from '@ant-design/icons';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState} from 'react';
 import Highlighter from 'react-highlight-words';
 import { Button, Input, Space, Table } from 'antd';
 import { Form, InputNumber, Popconfirm, Typography } from 'antd';
@@ -8,25 +8,26 @@ import "./Admin.css"
 import { useNavigate } from 'react-router-dom';
 import { ActiveContext } from '../../context/active_menu';
 import RecruitList from './RecruitList';
-
+import RecruitContext from '../../context/recruit';
+import { getallCandidate } from '../../services/candidate';
 const { Content } = Layout;
 
-const originData = [];  //Lấy dữ liệu từ trên sever xuống
-for (let i = 0; i < 20; i++) {
-    originData.push({
-        key: i.toString(),
-        id: i.toString(),
-        fullname: `Tài ${i}`,
-        age: 32,
-        email: `taiboi${i}@gmail.com`,
-        phone: `0${i}0151`,
-        point: i.toString(),
-        status: `Applying`,
-        datetointern: `2023-10-0${i}`,
-        resultintern: `Pass`,
-        datetogetjob: `2023-10-0${i}`,
-    });
-}
+// const originData = [];  //Lấy dữ liệu từ trên sever xuống
+// for (let i = 0; i < 20; i++) {
+//     originData.push({
+//         key: i.toString(),
+//         id: i.toString(),
+//         fullname: `Tài ${i}`,
+//         age: 32,
+//         email: `taiboi${i}@gmail.com`,
+//         phone: `0${i}0151`,
+//         point: i.toString(),
+//         status: `Applying`,
+//         datetointern: `2023-10-0${i}`,
+//         resultintern: `Pass`,
+//         datetogetjob: `2023-10-0${i}`,
+//     });
+// }
 const EditableCell = ({
     editing,
     dataIndex,
@@ -70,9 +71,33 @@ const RecruitMgr = () => {
     const [searchedColumn, setSearchedColumn] = useState('');
     const {active, setActive} = useContext(ActiveContext)
     const searchInput = useRef(null);
+    const { recruit } = useContext(RecruitContext)
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
+    const [dataSource, setDataSource] = useState([])
+
+    const getAllCanddidate = async () => {
+        try {
+            const res = await getallCandidate('', recruit)
+            // const array = [];
+            // await res.data.datas.map(item => {
+            //     if (item.userId){
+            //         return array.push(item.userId)
+            //     }
+            // });
+            setDataSource(res.data.datas)
+
+        } catch (error) {
+            console.log('Error:', error.message);
+        }
+    }
+
+    useEffect(() => {
+        getAllCanddidate()
+    }, [recruit])
+
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         setSearchText(selectedKeys[0]);
@@ -82,6 +107,7 @@ const RecruitMgr = () => {
         clearFilters();
         setSearchText('');
     };
+
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div
@@ -178,7 +204,6 @@ const RecruitMgr = () => {
     });
     // EDIT DATA
     const [form] = Form.useForm();
-    const [data, setData] = useState(originData);
     const [editingKey, setEditingKey] = useState('');
     const isEditing = (record) => record.key === editingKey;
     const edit = (record) => {
@@ -200,34 +225,34 @@ const RecruitMgr = () => {
         setEditingKey('');
     };
 
-    const save = async (key) => {
-        try {
-            const row = await form.validateFields();
-            const newData = [...data];
-            const index = newData.findIndex((item) => key === item.key);
-            if (index > -1) {
-                const item = newData[index];
-                newData.splice(index, 1, {
-                    ...item,
-                    ...row,
-                });
-                setData(newData);
-                setEditingKey('');
-            } else {
-                newData.push(row);
-                setData(newData);
-                setEditingKey('');
-            }
-        } catch (errInfo) {
-            console.log('Validate Failed:', errInfo);
-        }
-    };
+    // const save = async (key) => {
+    //     try {
+    //         const row = await form.validateFields();
+    //         const newData = [...data];
+    //         const index = newData.findIndex((item) => key === item.key);
+    //         if (index > -1) {
+    //             const item = newData[index];
+    //             newData.splice(index, 1, {
+    //                 ...item,
+    //                 ...row,
+    //             });
+    //             setData(newData);
+    //             setEditingKey('');
+    //         } else {
+    //             newData.push(row);
+    //             setData(newData);
+    //             setEditingKey('');
+    //         }
+    //     } catch (errInfo) {
+    //         console.log('Validate Failed:', errInfo);
+    //     }
+    // };
 
-    // Delete Candidate
-    const onDelete = id => {  //Xóa candidate
-        const remove = [...data].filter(candidate => candidate.id !== id);
-        setData(remove)
-    }
+    // // Delete Candidate
+    // const onDelete = id => {  //Xóa candidate
+    //     const remove = [...data].filter(candidate => candidate.id !== id);
+    //     setData(remove)
+    // }
 
     // Link to mail page
     const mailPage = () => {
@@ -251,11 +276,12 @@ const RecruitMgr = () => {
         {
             title: 'Full Name',
             width: 150,
-            dataIndex: 'fullname',
-            key: 'fullname',
+            dataIndex: 'firstName',
+            key: 'firstName',
             fixed: 'left',
             ...getColumnSearchProps('fullname'),
             editable: true,
+            render: (firstName, record) => <span>{firstName}{' '}{record.lastName}</span>
         },
         {
             title: 'Age',
@@ -337,14 +363,14 @@ const RecruitMgr = () => {
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
-                        <Typography.Link
+                        {/* <Typography.Link
                             onClick={() => save(record.key)}
                             style={{
                                 marginRight: 8,
                             }}
                         >
                             Save
-                        </Typography.Link>
+                        </Typography.Link> */}
                         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
                             <a>Cancel</a>
                         </Popconfirm>
@@ -354,9 +380,9 @@ const RecruitMgr = () => {
                     <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
                         <EditOutlined />
                     </Typography.Link>
-                    <div onClick={() => onDelete(record.id)} style={{ color: "#e8d207", cursor: "pointer" }}>
+                    {/* <div onClick={() => onDelete(record.id)} style={{ color: "#e8d207", cursor: "pointer" }}>
                         <DeleteOutlined />
-                    </div>
+                    </div> */}
                     <MailOutlined onClick={() => mailPage()} style={{ cursor: "pointer" }}>
                     </MailOutlined>
                 </div>)
@@ -402,7 +428,7 @@ const RecruitMgr = () => {
                         }}
                         bordered
                         columns={mergedColumns}
-                        dataSource={data}
+                        dataSource={dataSource}
                         rowClassName="editable-row"
                         scroll={{
                             x: 1500,

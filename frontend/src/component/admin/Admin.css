@@ -9,24 +9,29 @@
 }
 
 
-.Profile_Container{
+.image_box{
     display: flex;
     align-items: center;
     flex-direction: column;
     gap: 15px;
-    border: solid 2px;
-    border-radius: 30px;
     padding: 15px;
     width: auto;
     height: auto;
     margin: 0 15px;
-    border-color: #e8d207;
     justify-content: center;
+}
+
+.admin_container{
+    /* border: solid 2px #e8d207;; */
+    border-radius: 30px;
+    padding: 32px;
+    position: absolute;
+    top: 30%;
 }
 .renderAva{
     display: flex;
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
 }
 .edit-img {
     display: flex;
@@ -44,9 +49,6 @@
       background-color: #949292;
     }
   }
-.renderEmail & .renderRole{
-    font-family: "font-family: 'Poppins', sans-serif;";
-}
 
 .Tittle_Element{
     font-size: 23px;
@@ -77,4 +79,63 @@
 .ant-dropdown-trigger{
     display: flex;
     align-items: center;
+}
+
+#profile .ant-form-item-label label{
+    color: white;
+}
+
+#profile .ant-input, #profile .ant-input-number, #profile .ant-select-selector, #profile .ant-input-password{
+    background-color: transparent !important;
+    color: #e8d207 !important;
+    border-color: #d9d9d978 !important;
+}
+
+#profile .ant-input-number-input{
+    color: #e8d207 !important;
+}
+
+.admin_name{
+    color: #e8d207;
+}
+
+.admin_role{
+    color: white;
+    text-align: center;
+     margin-top: 5px;
+}
+
+#profile .anticon{
+    color: #e8d207 !important;
+}
+
+.ant-layout-sider{
+    background-color: rgb(252, 249, 221) !important;
+}
+
+.ant-menu-item{
+    color: #12141b !important;
+}
+
+.ant-menu{
+    background-color: #f5efb3 !important;
+   
+}
+
+.ant-menu .anticon{
+    color: #12141b !important;
+}
+
+.ant-menu-item-active{
+    background-color: #e8d207 !important;
+    color: #12141b  !important;
+}
+
+.ant-menu-item-selected{
+    background-color: #354759 !important;
+    color: white !important;
+}
+
+.ant-menu-item-selected .anticon{
+    color: white !important;
 }

@@ -113,3 +113,17 @@ a:hover {
   display: flex;
   justify-content: end;
 }
+
+.text-center{
+  text-align: center;
+}
+
+.ant-btn-secondary {
+  color: white !important;
+  background-color: #233c69;
+}
+
+.ant-btn-secondary:hover{
+  color: #282c34 !important;
+  background-color: #cadafa;
+}
