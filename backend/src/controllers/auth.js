@@ -12,7 +12,7 @@ const { SECRET_CODE } = process.env;
 export const signUp = async (req, res) => {
     try {
         // Validation
-        const { firstName, lastName, email, password, gender, age, phone } = req.body
+        const { firstName, lastName, email, password } = req.body
         const { error } = signUpValid.validate(req.body, { abortEarly: false });
         if (error) {
             const errors = error.details.map(err => err.message)
@@ -36,13 +36,10 @@ export const signUp = async (req, res) => {
             firstName,
             lastName,
             email,
-            gender,
-            age,
-            phone,
             password: hashedPassword,
         })
         //  Get info for client
-        user.password = undefined;
+        // user.password = undefined;
         return res.json({
             status: 200,
             message: "User created successfully",
@@ -89,7 +86,7 @@ export const getUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, gender, age, phone, img } = req.body
+        const { firstName, lastName, email, password, img } = req.body
         const { error } = updateValid.validate(req.body, { abortEarly: false });
         if (error) {
             return res.status(400).json({
@@ -103,9 +100,6 @@ export const updateUser = async (req, res) => {
             lastName,
             email,
             password: hashedPassword,
-            gender,
-            age,
-            phone,
             img,
         }, {new:true})
         if (!data) {
@@ -251,7 +245,7 @@ export const singIn = async (req, res) => {
             status: 200,
             message: "User logged in successfully",
             user: user,
-            accessToken: token,
+            accessToken: token
         })
     } catch (error) {
         return res.json({

@@ -51,8 +51,18 @@ const Profile = () => {
       setAge(updatedUser.age);
 
       console.log("Profile updated successfully!");
+
+      notification.success({
+        message: "Update Successful",
+        description: "Your profile has been updated successfully.",
+      });
     } catch (error) {
       console.error("Đã xảy ra lỗi khi update profile:", error);
+
+      notification.error({
+        message: "Update Failed",
+        description: "An error occurred while updating your profile. Please try again.",
+      });
     }
   };
 
@@ -98,6 +108,7 @@ const Profile = () => {
           justifyContent: "center",
         }}
       >
+        
         <div style={{ height: "85vh", width: "80%" }}>
           <Row>
             <Col md={10}>
