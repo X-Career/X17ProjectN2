@@ -194,3 +194,24 @@ export const remove = async (req, res) => {
         });
     }
 }
+
+
+export const getCandidateOfRecruit = async (req, res) => {
+    try {
+        const data = await Candidate.find({ recruitId: req.params.recruitId });
+        if (!data) {
+            return res.status(404).json({
+                message: "No candidate found",
+            });
+        }
+        return res.status(200).json({
+            message: "Find candidate of recruit success",
+            data: data,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            name: error.name,
+            message: error.message,
+        });
+    }
+};

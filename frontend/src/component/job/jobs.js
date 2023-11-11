@@ -3,7 +3,7 @@ import { Empty, Spin, Row, Col, Button, Select } from "antd";
 import { TagOutlined, UserOutlined, HomeOutlined } from "@ant-design/icons";
 import PopUpInfo from "./popup_info";
 import { getallRecruitMgr } from "../../services/recruitMgr";
-import { getallJob } from "../../services/job";
+import { getJobsOfRecruit } from "../../services/job";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/user";
@@ -21,14 +21,15 @@ const JobList = () => {
   const [jobs, setJobs] = useState([]);
   const [jobLoad, setJobLoad] = useState(false);
   const token = localStorage.getItem("token");
+  const [recruitSelected, setRecruitSelected] = useState()
   const navigate = useNavigate();
 
   const getJob = async (id) => {
     setJobLoad(true);
     try {
-      const res = await getallJob(id);
+      const res = await getJobsOfRecruit(id);
       if (res.status === 200) {
-        setJobs(res.data.datas);
+        setJobs(res.data.data);
       }
       setJobLoad(false);
     } catch (e) {
@@ -41,9 +42,8 @@ const JobList = () => {
       const res = await getallRecruitMgr();
       if (res.status === 200) {
         setRecurit(res.data.datas);
-        getJob(res.data.datas[0].jobs[0]._id);
+        setRecruitSelected(res.data.datas[0]._id)
       }
-
       setLoading(false);
     } catch (e) {
       console.log("Error: ", e.message);
@@ -53,6 +53,10 @@ const JobList = () => {
   useEffect(() => {
     getRecurit();
   }, []);
+
+  useEffect(() => {
+    getJob(recruitSelected);
+  }, [recruitSelected])
 
   const toggleOpen = () => {
     setOpen(!open);

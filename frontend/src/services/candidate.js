@@ -7,6 +7,10 @@ export const getallCandidate = async (id, recruitId) => {
   return await axios.get(`${url}/candidates/?id=${id}&recruitId=${recruitId}`);
 };
 
+export const getCandidateOfRecruit = async (recruitId) =>{
+  return await axios.get(`${url}/candidates/get-candidate-of-recruit/${recruitId}`);
+}
+
 export const addCandidate = async (Candidate) => {
 //   const token = localStorage.getItem('accessToken')
 //   const config = {

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { ActiveContext } from '../../context/active_menu';
 import RecruitList from './RecruitList';
 import RecruitContext from '../../context/recruit';
-import { getallCandidate } from '../../services/candidate';
+import { getCandidateOfRecruit } from '../../services/candidate';
 const { Content } = Layout;
 
 // const originData = [];  //Lấy dữ liệu từ trên sever xuống
@@ -78,15 +78,10 @@ const RecruitMgr = () => {
 
     const [dataSource, setDataSource] = useState([])
 
-    const getAllCanddidate = async () => {
+    const getCanddidateTable = async () => {
         try {
-            const res = await getallCandidate('', recruit)
-            // const array = [];
-            // await res.data.datas.map(item => {
-            //     if (item.userId){
-            //         return array.push(item.userId)
-            //     }
-            // });
+          
+            const res = await getCandidateOfRecruit(String(recruit))
             setDataSource(res.data.datas)
 
         } catch (error) {
@@ -95,7 +90,7 @@ const RecruitMgr = () => {
     }
 
     useEffect(() => {
-        getAllCanddidate()
+        getCanddidateTable()
     }, [recruit])
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
