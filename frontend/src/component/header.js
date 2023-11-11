@@ -1,5 +1,5 @@
 import { Row, Col, Button, Dropdown, Space } from "antd"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { UserContext } from "../context/user";
 import { useContext , useEffect, useState} from "react";
 import { logOut } from "../services/auth";
@@ -12,7 +12,8 @@ const Header = () =>{
     const { confirm } = Modal;
     const token = localStorage.getItem('token')
     const [isSticky, setIsSticky] = useState(false);
-
+    const { userId } = useParams();
+    const isProfile = useLocation().pathname === `/profile/${userId}`;
     const showConfirm = () => {
         confirm({
             title: 'Log Out ',
@@ -27,9 +28,20 @@ const Header = () =>{
         });
     };
 
+    const handleProfileClick = () => {
+        navigate(`/profile/${user._id}`);
+    };
+
     const items = [
         {
-            label: <a href="user"><b>{user.firstName} {user.lastName}</b><div>{user.role}</div></a>,
+
+            label: (
+                <div onClick={handleProfileClick} style={{ cursor: 'pointer' }}>
+                    <b>{user.firstName} {user.lastName}</b>
+                    <div>{user.role}</div>
+                </div>
+            ),
+
             key: '0',
         },
         {
@@ -70,18 +82,23 @@ const Header = () =>{
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.pageYOffset;
-            const threshold = 100; // Điều kiện cuộn để header thành sticky
-            const newIsSticky = scrollTop > threshold;
+            const threshold = 100;
+            const newIsSticky = scrollTop > threshold && !isProfile; // Thay đổi điều kiện ở đây
             setIsSticky(newIsSticky);
-
         };
-
-        window.addEventListener('scroll', handleScroll);
-        // Gỡ bỏ bộ lắng nghe khi component bị unmount
+    
+        if (!isProfile) {
+            window.addEventListener('scroll', handleScroll);
+        } else {
+            setIsSticky(true); // Ngay khi vào trang profile, áp dụng hiệu ứng sticky
+        }
+    
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [isProfile]);
+    
+    
 
     return (
         <div className={`${isSticky ? 'header_sticky' : ''} header_box w-100`}>
