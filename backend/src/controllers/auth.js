@@ -1,8 +1,9 @@
 import User from "../models/user.js"
-import { signInValid, signUpValid, updateValid } from "../validation/user.js"
+import { signInValid, signUpValid, updateInfoValidation, updatePasswordValid, updateValid } from "../validation/user.js"
 import bcrypyjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import mongoose from "mongoose"
 dotenv.config()
 
 const { SECRET_CODE } = process.env;
@@ -53,6 +54,36 @@ export const signUp = async (req, res) => {
     }
 };
 
+export const getUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                message: "Invalid user ID",
+            });
+        }
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+        return res.status(200).json({
+            message: "Get user information successfully",
+            user: user,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message,
+        });
+    }
+};
+
 export const updateUser = async (req, res) => {
     try {
         const { firstName, lastName, email, password, img } = req.body
@@ -89,6 +120,92 @@ export const updateUser = async (req, res) => {
     }
 }
 
+export const updateInfo = async (req, res) => {
+    try {
+        const { firstName, lastName, age, phone, img } = req.body;
+        const { error } = updateInfoValidation.validate(req.body, { abortEarly: false });
+
+        if (error) {
+            return res.status(400).json({
+                message: error.details.map(err => err.message),
+            });
+        }
+
+        // Kiểm tra xem các trường có thể thay đổi không
+        const allowedFields = ['firstName', 'lastName', 'age', 'phone', 'img'];
+        const invalidFields = Object.keys(req.body).filter(field => !allowedFields.includes(field));
+
+        if (invalidFields.length > 0) {
+            return res.status(400).json({
+                message: `Cannot update the following fields: ${invalidFields.join(', ')}`,
+            });
+        }
+
+        // Cập nhật thông tin
+        const data = await User.findByIdAndUpdate(
+            req.params.id,
+            {
+                firstName,
+                lastName,
+                age,
+                phone,
+                img,
+            },
+            { new: true }
+        );
+
+        if (!data) {
+            return res.status(404).json({
+                message: "Update Info not successful",
+            });
+        }
+
+        return res.status(200).json({
+            message: "Update Info successful",
+            datas: data,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message,
+        });
+    }
+};
+
+
+export const updatePassword = async (req, res) => {
+    try {
+        const { password } = req.body;
+        const { error } = updatePasswordValid.validate(req.body, { abortEarly: false });
+        if (error) {
+            return res.status(400).json({
+                message: error.details.map(err => err.message),
+            });
+        }
+  
+        const hashedPassword = await bcrypyjs.hash(password, 10);
+  
+        const data = await User.findByIdAndUpdate(req.params.id, {
+            password: hashedPassword,
+        }, { new: true });
+  
+        if (!data) {
+            return res.status(404).json({
+                message: "Update Password not successful",
+            });
+        }
+  
+        return res.status(200).json({
+            message: "Update Password successful",
+            datas: data,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message,
+        });
+    }
+  };
 
 export const singIn = async (req, res) => {
     try {

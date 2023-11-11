@@ -54,6 +54,26 @@ export const updateValid = Joi.object(
     }
 )
 
+export const updateInfoValidation = Joi.object({
+    firstName: Joi.string().required().min(3),
+    lastName: Joi.string().required().min(3),
+    email: Joi.string().email(),
+    gender: Joi.string().min(2),
+    age: Joi.number().required(),
+    phone: Joi.number().required(),
+    img: Joi.string(),
+  });
+
+export const updatePasswordValid = Joi.object({
+    password: Joi.string().required().messages({
+      "string.empty": "password is required",
+      "any.required": "password is required",
+      "string.min": "password must be at least 6 characters",
+    }),
+    
+  });
+  
+
 export const signInValid = Joi.object(
     {
         email: Joi.string().email().required().messages({
