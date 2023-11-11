@@ -76,11 +76,7 @@ export const updateValid = Joi.object(
             "any.required": "phone is required",
             "string.email": "phone is invalid",
         }),
-        password: Joi.string().required().messages({
-            "string.empty": "password is required",
-            "any.required": "password is required",
-            "string.min": "password must be at least 6 characters",
-        }),
+        password: Joi.string(),
         img: Joi.string(),
         candidates: Joi.array(),
     }

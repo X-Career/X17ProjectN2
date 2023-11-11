@@ -45,7 +45,6 @@ const PopupCreate = (props) =>{
                 }
                 return acc;
             }, {});
-            console.log(values);
             const res = await addJob(values)
             showMessage(res.status, res.data.message)
             if(res.status === 200 ){

@@ -56,7 +56,6 @@ const Admin = () => {
             },
         });
     };
-    console.log(user)
 
     const items = [
         {
@@ -81,10 +80,12 @@ const Admin = () => {
         <Layout>
             <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed} style={{minHeight: '100vh'}}>
                 <div className="demo-logo-vertical flex-center" style={{ padding: '20px' }}>
-                    <Link to={'/'} className="flex-center"><img src="../images/logo.webp" style={{ width: '60%' }} /></Link>
+                    <Link to={'/'} className="flex-center">
+                        {collapsed ? <img src="../images/logo_small.webp" style={{ width: '90%' }} /> : <img src="../images/logo.webp" style={{ width: '60%' }} /> }
+                        </Link>
                 </div>
                 <Menu
-                    theme="dark"
+                    style={{ backgroundColor: '#12141b'}}
                     mode="inline"
                     selectedKeys={active}
                     onClick={(data) => {

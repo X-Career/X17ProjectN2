@@ -1,9 +1,10 @@
 import axios from "axios";
 import { url } from "./api"
 
-export const getallCandidate = async (id) => {
+export const getallCandidate = async (id, recruitId) => {
   id = id || "";
-  return await axios.get(`${url}/candidates/${id}`);
+  recruitId = recruitId || "";
+  return await axios.get(`${url}/candidates/?id=${id}&recruitId=${recruitId}`);
 };
 
 export const addCandidate = async (Candidate) => {

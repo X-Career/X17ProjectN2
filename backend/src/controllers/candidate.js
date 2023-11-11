@@ -10,12 +10,13 @@ import recruitmgr from "../models/recruitmgr.js";
 export const getAll = async (req, res) => {
     try {
 
-        const data = await Candidate.find({}).populate("jobId").populate('userId');
+        const data = await Candidate.find({'recruitId':req.params.recruitId}).populate("jobId").populate('userId');
         if (!data || data.length === 0) {
             return res.status(404).json({
                 message: "There is no recruitment",
             })
         }
+        console.log(data);
         return res.status(200).json({
             message: "Recruitmgr has been",
             datas: data,

@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Layout, Row, theme, Form, Input, Select, InputNumber } from 'antd';
+import { Col, Layout, Row, Form, Input, Select, InputNumber, Button } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { UserContext } from '../../../context/user';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import fbConfig from "../../../firebaseConfig";
 import { editUser } from '../../../services/auth';
-
+import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons';
+import '../Admin.css';
+import { useForm } from "antd/es/form/Form";
 
 
 
@@ -18,29 +20,24 @@ const ProfileAdmin = () => {
     const [inputs, setInputs] = useState({});
     const [fileImgPerc, setFileImgPerc] = useState(0);
     const [img, setImg] = useState('');
-    const lastName = user.lastName
-    const firstName = user.firstName
-    const email = user.email
-    const gender = user.gender
-    const [phone,setPhone] = useState(`${user.phone}`)
-    const [age,setAge] = useState(`${user.age}`)
-    const [password, setPassword] = useState('')
-
+    const [isUpdate, setUpdate] = useState(false)
+    const [form] = useForm();
+    const [newPass, setNewPass] = useState();
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const data = {
-                lastName: lastName,
-                firstName: firstName,
-                email: email,
-                password: password,
-                gender: gender,
-                age: age,
-                phone: phone,
-                img: inputs.imgUrl
-            };
-            const { updateprofile } = await editUser(user._id, data);
-            console.log(updateprofile);
+            const formData = await form.validateFields();
+            let data = Object.entries(formData).reduce((acc, [key, value]) => {
+                if (value !== '') {
+                    acc[key] = value;
+                }
+                return acc;
+            }, {});
+            console.log(data);
+            const res = await editUser(user._id, data);
+            console.log(res);
+            localStorage.setItem('user', res.data.user)
+        
             setTimeout(() => {
             }, 3000);
 
@@ -101,115 +98,179 @@ const ProfileAdmin = () => {
     }
     useEffect(() => {
         img && uploadFile(img, "imgUrl")
+        
     }, [img])
-    console.log(inputs)
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
+
+    const handleShowEdit = () =>{
+        setUpdate(!isUpdate)
+    
+    }
+
+    useEffect(() =>{
+        //Form
+        form.setFieldsValue({ firstName: user.firstName })
+        form.setFieldsValue( { lastName: user.lastName })
+        form.setFieldsValue({ email: user.email })
+        form.setFieldsValue({ gender: user.gender })
+        form.setFieldsValue({ age: user.age })
+        form.setFieldsValue({ phone: user.phone })
+    }, [])
+
     return (
+
         <Content
+            id='profile'
             style={{
                 margin: '24px 16px',
                 padding: 24,
                 minHeight: 280,
-                background: colorBgContainer,
+                backgroundColor: '#262d35'
             }}
         >
-            <div>
-                <div className='Tittle'>Profile Admin</div>
-                <div>
-                    <Row>
-                        <Col md={10}>
-                            <div className='Profile_Container'>
-                                <div className='renderAva'>
-                                    <img src={inputs.imgUrl || user.img} style={{ width: '100%', borderRadius: "100%" }} />
-                                </div>
-                                <label className="edit-img">
-                                    <EditOutlined />
-                                    <input
-                                        style={{ display: 'none' }}
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={(e) => setImg((prev) => e.target.files[0])}
-                                    />
-                                    Edit
-                                </label>
-                                <div className='renderEmail'>
-                                    <h2>{user.email}</h2>
-                                </div>
-                                <div className='renderRole' style={{ textTransform: "capitalize" }}>
-                                    {user.role}
-                                </div>
-                            </div>
-                        </Col>
+                <div id="stars"></div>
+                <div id="stars2"></div>
+                <div id="stars3"></div>
+            <div className='column-center relative'>
+                <Row justify='end' className='w-100'>
+                    <Button type='primary' onClick={handleShowEdit}>Edit</Button>
+                </Row>
 
+                <Row justify='center' className='admin_container'>
+                    <Col md={24} className='relative'>
+                        <div className='image_box'>
+                            <div className='renderAva'>
+                                <img src={inputs.imgUrl || user.img} style={{ width: '100%', borderRadius: "100%" }} />
+                            </div>
+                            <label className="edit-img">
+                                <EditOutlined />
+                                <input
+                                    style={{ display: 'none' }}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setImg((prev) => e.target.files[0])}
+                                />
+                                Edit
+                            </label>
+                            <div className='admin_name'>
+                                <h1>{user.firstName} {user.lastName}</h1>
+                                <h3 className='admin_role' style={{ textTransform: "capitalize" }}>
+                                    {user.role}
+                                </h3>
+                            </div>
+
+                        </div>
+                    </Col>
+
+                    <Col span={20}>
                         <Form
                             layout='vertical'
-                            style={{width: '30%'}}
+                            style={{ width: '100%' }}
+                            form={form}
                         >
                             <div className='flex-between'>
                                 <Form.Item
+                                    style={{ width: '49%' }}
                                     label='First Name'
-                                    // name='firstName'
-                                    rules={[{ required: true, message: 'Please enter first name!' }]}
+                                    name='firstName'
+                                    rules={[{ required: isUpdate, message: 'Please enter first name!' }]}
                                 >
-                                    <Input value={user.firstName} />
+                                    <Input readOnly={!isUpdate} />
                                 </Form.Item>
                                 <Form.Item
                                     label='Last Name'
-                                    // name='lastName'
-                                    rules={[{ required: true, message: 'Please enter last name!' }]}
+                                    name='lastName'
+                                    style={{ width: '49%' }}
+                                    rules={[{ required: isUpdate, message: 'Please enter last name!' }]}
                                 >
-                                    <Input value={user.lastName} />
+                                    <Input readOnly={!isUpdate} />
+                                </Form.Item>
+                            </div>
+                            <Form.Item
+                                label='Password'
+                                readOnly={!isUpdate}
+                                rules={[{ required: isUpdate, message: 'Please enter your pasword!' }]}
+                            >
+                                <Input type='password' readOnly={!isUpdate} onChange={(e) => setNewPass(e.target.value)}/>
+                            </Form.Item>
+                            <div className='flex-between'>
+                                <Form.Item
+                                    label='Password'
+                                    name ='password'
+                                    readOnly={!isUpdate}
+                                    style={{ width: '49%' }}
+                                    rules={[{ required: isUpdate, message: 'Please enter your pasword!' }]}
+                                >
+                                    <Input.Password
+                                        placeholder="input password"
+                                        iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                                    />
+                                </Form.Item>
+                                <Form.Item
+                                    label='Repeat password'
+                                    name='repeatPassword'
+                                    readOnly={!isUpdate}
+                                    style={{ width: '49%' }}
+                                    rules={[{ required: isUpdate, message: 'Please repeat your repepasword!' }]}
+                                >
+                                    <Input.Password
+                                        placeholder="input password"
+                                        iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                                    />
                                 </Form.Item>
                             </div>
                             <div className='flex-between'>
                                 <Form.Item
                                     label='Gender'
-                                    // name='gender'
-                                    style={{ width: '30%' }}
-                                    rules={[{ required: true, message: 'Please select your gender!' }]}
+                                    name='gender'
+                                    style={{ width: '49%' }}
+                                    rules={[{ required: isUpdate, message: 'Please select your gender!' }]}
                                 >
-                                    <Select value={user.gender} > 
-                                       <>
-                                            {['Male', 'Female', 'Other'].map((item, key) =>{
+                                    <Select disabled={!isUpdate}>
+                                        <>
+                                            {['Male', 'Female', 'Other'].map((item, key) => {
                                                 return <Select.Option value={item} key={key}>{item}</Select.Option>
                                             })
-                                       }
-                                       </>
+                                            }
+                                        </>
                                     </Select>
                                 </Form.Item>
                                 <Form.Item
                                     label='Age'
-                                    // name='age'
-                                    style={{ width: '50%' }}
-                                    rules={[{ required: true, message: 'Please select your age!' }]}
+                                    name='age'
+                                    style={{ width: '49%' }}
+                                    rules={[{ required: isUpdate, message: 'Please select your age!' }]}
                                 >
-                                    <InputNumber value={user.age} />
+                                    <InputNumber style={{ width: '100%' }} value={user.age} readOnly={!isUpdate} />
                                 </Form.Item>
                             </div>
                             <div className='flex-between'>
                                 <Form.Item
                                     label='Email'
-                                    // name='Email'
-                                    rules={[{ required: true, message: 'Please enter your email!' }]}
+                                    name='email'
+                                    style={{ width: '49%' }}
+                                    rules={[{ required: isUpdate, message: 'Please enter your email!' }]}
                                 >
-                                    <Input value={user.email} />
+                                    <Input value={user.email} readOnly={!isUpdate} />
                                 </Form.Item>
                                 <Form.Item
                                     label='Phone number'
-                                    // name='phone'
-                                    style={{ width: '50%' }}
-                                    rules={[{ required: true, message: 'Please enter your phone!' }]}
+                                    name='phone'
+                                    style={{ width: '49%' }}
+                                    rules={[{ required: isUpdate, message: 'Please enter your phone!' }]}
                                 >
-                                    <InputNumber value={user.age} />
+                                    <InputNumber style={{ width: '100%' }} value={user.age} readOnly={!isUpdate} />
                                 </Form.Item>
                             </div>
-
+                            <div className='flex-center'>
+                                {isUpdate && <Button type='secondary' style={{ marginTop: '8px' }} onClick={handleUpdate}>
+                                    Update
+                                </Button>}
+                            </div>
                         </Form>
-                    </Row>
-                </div>
+                    </Col>
+                </Row>
             </div>
+
         </Content>
     );
 }
