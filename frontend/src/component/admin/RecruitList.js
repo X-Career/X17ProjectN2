@@ -95,6 +95,8 @@ const RecruitList = () => {
     try {
       const res = await getallRecruitMgr();
       setRecruits(res.data.datas)
+      setRecruit(res.data.datas[0]._id)
+      setSelectedRecruit(res.data.datas[0]._id)
     } catch (error) {
       console.log('Error', error.message);
     }

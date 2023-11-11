@@ -185,17 +185,10 @@ const ProfileAdmin = () => {
                                     <Input readOnly={!isUpdate} />
                                 </Form.Item>
                             </div>
-                            <Form.Item
-                                label='Password'
-                                readOnly={!isUpdate}
-                                rules={[{ required: isUpdate, message: 'Please enter your pasword!' }]}
-                            >
-                                <Input type='password' readOnly={!isUpdate} onChange={(e) => setNewPass(e.target.value)}/>
-                            </Form.Item>
                             <div className='flex-between'>
                                 <Form.Item
                                     label='Password'
-                                    name ='password'
+                                    // name ='password'
                                     readOnly={!isUpdate}
                                     style={{ width: '49%' }}
                                     rules={[{ required: isUpdate, message: 'Please enter your pasword!' }]}
