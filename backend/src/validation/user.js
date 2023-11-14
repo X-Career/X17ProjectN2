@@ -50,7 +50,11 @@ export const updateValid = Joi.object(
             "any.required": "password is required",
             "string.min": "password must be at least 6 characters",
         }),
-        img: Joi.string()
+        img: Joi.string(),
+        gender: Joi.string(),
+        age: Joi.number(),
+        phone: Joi.number(),
+        repeatPassword: Joi.string()
     }
 )
 

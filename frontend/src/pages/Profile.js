@@ -5,6 +5,11 @@ import Footer from "../component/footer";
 import { EditOutlined } from "@ant-design/icons";
 import { UserContext } from "../context/user";
 import { editUser, updateInfo, updatePassword } from "../services/auth";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import fbConfig from "../firebaseConfig";
+import {getallCandidate2 } from "../services/candidate";
+
+
 
 const { TabPane } = Tabs;
 const { Content } = Layout;
@@ -20,7 +25,24 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState("");
   const [inputs, setInputs] = useState({});
+  const [fileImgPerc, setFileImgPerc] = useState(0);
+  const [img, setImg] = useState('');
 
+
+
+  // Đang làm
+  const [candidate,setCandidate] = useState([]);
+  useEffect(() => {
+    getCandidates();
+  }, []);
+  const getCandidates = async () => {
+    const { data } = await getallCandidate2(user.candidates);
+    setCandidate(data.datas);
+  };
+  
+  console.log(candidate)
+
+  
   useEffect(() => {
     setFirstName(user.firstName);
     setLastName(user.lastName);
@@ -94,7 +116,61 @@ const Profile = () => {
     }
   };
 
-  
+  const uploadFile = (file, fileType) => {
+    const storage = getStorage(fbConfig);
+    const folder = fileType === 'imgUrl' ? "avatars/" : null;
+    const fileName = new Date().getTime() + file.name
+    const storageRef = ref(storage, folder + fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on('state_changed',
+        (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            if (fileType === 'imgUrl') {
+                setFileImgPerc(Math.round(progress))
+            }
+            switch (snapshot.state) {
+                case 'paused':
+                    console.log('Upload is paused');
+                    break;
+                case 'running':
+                    console.log('Upload is running');
+                    break;
+                default:
+                    break;
+            }
+        },
+        (error) => {
+            console.log(error)
+            switch (error.code) {
+                case 'storage/unauthorized':
+                    console.log(error)
+                    break;
+                case 'storage/canceled':
+                    break;
+                case 'storage/unknown':
+                    break;
+                default:
+                    break;
+            }
+        },
+        () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                console.log('File available at', downloadURL);
+                setInputs((prev) => {
+                    return {
+                        ...prev,
+                        [fileType]: downloadURL,
+                    }
+                })
+            });
+        }
+    );
+}
+useEffect(() => {
+    img && uploadFile(img, "imgUrl")
+
+}, [img])
 
   return (
     <div>
@@ -128,9 +204,7 @@ const Profile = () => {
                     style={{ display: "none" }}
                     type="file"
                     accept="image/*"
-                    onChange={(e) => {
-                      // Handle logic to upload a new image
-                    }}
+                    onChange={(e) => setImg((prev) => e.target.files[0])}
                   />
                   Edit
                 </label>

@@ -33,7 +33,7 @@ const ProfileAdmin = () => {
             }, {});
             const res = await editUser(user._id, data);
             localStorage.setItem('user', res.data.user)
-        
+
             setTimeout(() => {
             }, 3000);
 
@@ -94,18 +94,18 @@ const ProfileAdmin = () => {
     }
     useEffect(() => {
         img && uploadFile(img, "imgUrl")
-        
+
     }, [img])
 
-    const handleShowEdit = () =>{
+    const handleShowEdit = () => {
         setUpdate(!isUpdate)
-    
+
     }
 
-    useEffect(() =>{
+    useEffect(() => {
         //Form
         form.setFieldsValue({ firstName: user.firstName })
-        form.setFieldsValue( { lastName: user.lastName })
+        form.setFieldsValue({ lastName: user.lastName })
         form.setFieldsValue({ email: user.email })
         form.setFieldsValue({ gender: user.gender })
         form.setFieldsValue({ age: user.age })
@@ -123,9 +123,9 @@ const ProfileAdmin = () => {
                 backgroundColor: '#262d35'
             }}
         >
-                <div id="stars"></div>
-                <div id="stars2"></div>
-                <div id="stars3"></div>
+            <div id="stars"></div>
+            <div id="stars2"></div>
+            <div id="stars3"></div>
             <div className='column-center relative'>
                 <Row justify='end' className='w-100'>
                     <Button type='primary' onClick={handleShowEdit}>Edit</Button>
@@ -184,7 +184,7 @@ const ProfileAdmin = () => {
                             <div className='flex-between'>
                                 <Form.Item
                                     label='Password'
-                                    // name ='password'
+                                    name='password'
                                     readOnly={!isUpdate}
                                     style={{ width: '49%' }}
                                     rules={[{ required: isUpdate, message: 'Please enter your pasword!' }]}
