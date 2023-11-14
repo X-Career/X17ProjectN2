@@ -123,8 +123,7 @@ const RecruitList = () => {
       content: "Bạn có chắc chắn muốn xóa đợt tuyển dụng này?",
       onOk: () => {
         const updatedRecruits = recruits.filter(
-          (recruit) => recruit.id !== recruitId
-        );
+          (recruit) => recruit.id !== recruitId);
         setRecruits(updatedRecruits);
       },
       onCancel: () => {},

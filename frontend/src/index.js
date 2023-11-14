@@ -7,6 +7,7 @@ import { ConfigProvider } from 'antd';
 import ActiveProvider from './context/active_menu';
 import UserProvider from './context/user';
 import { RecruitProvider } from './context/recruit';
+import CanidateProvider from './context/candidate';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const themeConfig = {
   token: {
@@ -22,6 +23,7 @@ const themeConfig = {
 };
 root.render(
   <ConfigProvider theme={themeConfig}>
+    <CanidateProvider>
       <UserProvider>
         <ActiveProvider>
           <RecruitProvider>
@@ -29,7 +31,9 @@ root.render(
           </RecruitProvider>
         </ActiveProvider>
       </UserProvider>
+    </CanidateProvider>
   </ConfigProvider>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function

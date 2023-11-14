@@ -13,7 +13,6 @@ import { useForm } from "antd/es/form/Form";
 
 const { Content } = Layout;
 
-
 const ProfileAdmin = () => {
 
     const { user, setUser } = useContext(UserContext)
@@ -22,7 +21,6 @@ const ProfileAdmin = () => {
     const [img, setImg] = useState('');
     const [isUpdate, setUpdate] = useState(false)
     const [form] = useForm();
-    const [newPass, setNewPass] = useState();
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
@@ -33,9 +31,7 @@ const ProfileAdmin = () => {
                 }
                 return acc;
             }, {});
-            console.log(data);
             const res = await editUser(user._id, data);
-            console.log(res);
             localStorage.setItem('user', res.data.user)
         
             setTimeout(() => {
