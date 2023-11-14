@@ -52,7 +52,7 @@ export const getDetail = async (req, res) => {
 export const create = async (req, res) => {
     try {
 
-        const { point, datetoInter, result, datetoGetjob, status, fileCV, jobId, userId, recruitId } = req.body;
+        const { fileCV, jobId, userId, recruitId } = req.body;
 
         const { error } = candidateValidator.validate(req.body, { abortEarly: false });
         if (error) {
@@ -62,14 +62,9 @@ export const create = async (req, res) => {
         }
         if (fileCV) {
             const newCandidate = new Candidate({
-                point,
                 jobId,
                 userId,
                 recruitId,
-                datetoInter,
-                result,
-                datetoGetjob,
-                status,
                 fileCV,
             })
             const candidate = await newCandidate.save();
@@ -198,7 +193,7 @@ export const remove = async (req, res) => {
 
 export const getCandidateOfRecruit = async (req, res) => {
     try {
-        const data = await Candidate.find({ recruitId: req.params.recruitId });
+        const data = await Candidate.find({ recruitId: req.params.recruitId }).populate('jobId').populate('userId');
         if (!data) {
             return res.status(404).json({
                 message: "No candidate found",

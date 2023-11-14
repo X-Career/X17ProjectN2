@@ -7,6 +7,7 @@ import { getJobsOfRecruit } from "../../services/job";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/user";
+import Apply from "./apply";
 const dateFormat = "DD/MM/YYYY";
 
 
@@ -21,7 +22,7 @@ const JobList = () => {
   const [jobs, setJobs] = useState([]);
   const [jobLoad, setJobLoad] = useState(false);
   const token = localStorage.getItem("token");
-  const [recruitSelected, setRecruitSelected] = useState()
+  const [applyOpen, setApplyOpen] = useState(false)
   const navigate = useNavigate();
 
   const getJob = async (id) => {
@@ -42,7 +43,7 @@ const JobList = () => {
       const res = await getallRecruitMgr();
       if (res.status === 200) {
         setRecurit(res.data.datas);
-        setRecruitSelected(res.data.datas[0]._id)
+        setCrrRecurit(res.data.datas[0]._id)
       }
       setLoading(false);
     } catch (e) {
@@ -54,33 +55,35 @@ const JobList = () => {
     getRecurit();
   }, []);
 
-  useEffect(() => {
-    getJob(recruitSelected);
-  }, [recruitSelected])
 
   const toggleOpen = () => {
     setOpen(!open);
   };
 
   const showDetail = (job) => {
-    toggleOpen();
     setJobDetail(job);
+    toggleOpen();
   };
 
-  const handleApply = (id) => {
+  const handleApply = (job) => {
     if (!token) {
       navigate("/login");
     } else {
-      alert(id);
+      setJobDetail(job);
+      toggleApply()
     }
   };
+
+  const toggleApply = () =>{
+    setApplyOpen(!applyOpen)
+  }
 
   const handleChangeRecruit = (value) => {
     setCrrRecurit(value);
   };
 
   useEffect(() => {
-    getJob();
+    getJob(crrRecurit);
   }, [crrRecurit]);
 
   return (
@@ -122,7 +125,7 @@ const JobList = () => {
       ) : (
         <>
           <Row justify="start" className="flex-center job-container">
-            {jobs.length > 0 ? (
+            {jobs.length > 0 && (
               <>
                 {jobs.map((item, key) => {
                   return (
@@ -148,7 +151,7 @@ const JobList = () => {
                         </span>
                       </div>
                       <div className="w-100 flex-center">
-                        <Button onClick={() => handleApply(item._id)}>
+                        <Button onClick={() => handleApply(item)}>
                           Apply
                         </Button>
                       </div>
@@ -156,10 +159,6 @@ const JobList = () => {
                   );
                 })}
               </>
-            ) : (
-              <div className="flex-center h-100">
-                <Empty />
-              </div>
             )}
           </Row>
         </>
@@ -172,10 +171,14 @@ const JobList = () => {
       {open && (
         <PopUpInfo
           user={user}
-          apply={handleApply}
           job={jobDetail}
           handleClose={toggleOpen}
+          handleApply={toggleApply}
         />
+      )}
+
+      {applyOpen && (
+        <Apply job={jobDetail} recruit={crrRecurit} handleClose={toggleApply} refresh={getJobsOfRecruit}/>
       )}
     </div>
   );

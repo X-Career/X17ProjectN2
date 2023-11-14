@@ -12,6 +12,8 @@ import NotFound from './component/not_found';
 import Candidates from './component/candidate/Cadidates';
 import Job from './pages/Job';
 import User from './pages/User';
+import CandidateTest from './pages/Candidate_test.js';
+import ReviewInfo from './pages/ReviewInfo.js';
 
 function App() {
   return (
@@ -21,17 +23,18 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         {/* router test upload infor candidate và CV của candidate */}
-        {/* <Route path="/test" element={<CandidateTest />} /> */}
+        <Route path="/test" element={<CandidateTest />} />
 
         <Route path="/candidate" element={<Candidates />} />
         <Route path="/user" element={<User />} />
         <Route path="/jobs" element={<Job />} />
         <Route path="/admin/" element={<Admin />} >
+          <Route path='info' element={<ReviewInfo />} activeClassName="active"></Route>
           <Route index element={<Navigate to="ProfileAdmin" />}></Route>
-          <Route path='ProfileAdmin' element={<ProfileAdmin />} activeClassName="active"></Route>
-          <Route path='JobMgr' element={<JobMgr />} activeClassName="active"></Route>
-          <Route path='MailMgr' element={<MailMgr />} activeClassName="active"></Route>
-          <Route path='RecruitMgr' element={<RecruittMgr />} activeClassName="active"></Route>
+          <Route path='profile-admin' element={<ProfileAdmin />} activeClassName="active"></Route>
+          <Route path='job-manager' element={<JobMgr />} activeClassName="active"></Route>
+          <Route path='mail-manager' element={<MailMgr />} activeClassName="active"></Route>
+          <Route path='recruit-manager' element={<RecruittMgr />} activeClassName="active"></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

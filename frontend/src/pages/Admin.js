@@ -89,28 +89,28 @@ const Admin = () => {
                     mode="inline"
                     selectedKeys={active}
                     onClick={(data) => {
-                        navigate('/Admin/' + data.key)
+                        navigate('/admin/' + data.key)
                         setActive(data.key)
                     }}
                     items={[
                         {
-                            key: 'ProfileAdmin',
+                            key: 'profile-admin',
                             icon: <UserOutlined />,
                             label: "Profile",
                         },
                         {
-                            key: 'RecruitMgr',
+                            key: 'recruit-manager',
                             icon: <ReconciliationOutlined />,
                             label: "Recruit Management",
 
                         },
                         {
-                            key: 'MailMgr',
+                            key: 'mail-manager',
                             icon: <MailOutlined />,
                             label: 'Mail Management',
                         },
                         {
-                            key: 'JobMgr',
+                            key: 'job-manager',
                             icon: <UploadOutlined />,
                             label: 'Job Management',
                         },
