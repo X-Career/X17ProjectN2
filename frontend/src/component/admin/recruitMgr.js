@@ -1,9 +1,9 @@
 import { Layout, Select, theme } from 'antd';
-import { DeleteOutlined, EditOutlined, MailOutlined, SearchOutlined } from '@ant-design/icons';
+import {EditOutlined, MailOutlined, SearchOutlined } from '@ant-design/icons';
 import React, { useContext, useEffect, useRef, useState} from 'react';
 import Highlighter from 'react-highlight-words';
 import { Button, Input, Space, Table } from 'antd';
-import { Form, InputNumber, Popconfirm, Typography } from 'antd';
+import { Form } from 'antd';
 import "./Admin.css"
 import { useNavigate } from 'react-router-dom';
 import { ActiveContext } from '../../context/active_menu';
@@ -156,6 +156,7 @@ const RecruitMgr = () => {
 
     const handleUpdateCandidate = (row) =>{
         setCandidate(row)
+        localStorage.setItem('candidate', JSON.stringify(row))
         navigate("/admin/info")
     }
 

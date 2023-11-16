@@ -77,8 +77,8 @@ const Admin = () => {
 
 
     return (
-        <Layout>
-            <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed} style={{minHeight: '100vh'}}>
+        <Layout style={{height: '100%'}}>
+            <Sider width={'300px'} trigger={null} collapsible collapsed={collapsed} style={{minHeight: '100%'}}>
                 <div className="demo-logo-vertical flex-center" style={{ padding: '20px' }}>
                     <Link to={'/'} className="flex-center">
                         {collapsed ? <img src="../images/logo_small.webp" style={{ width: '90%' }} /> : <img src="../images/logo.webp" style={{ width: '60%' }} /> }

@@ -15,7 +15,7 @@ const { Content } = Layout;
 
 const ProfileAdmin = () => {
 
-    const { user, setUser } = useContext(UserContext)
+    const { user } = useContext(UserContext)
     const [inputs, setInputs] = useState({});
     const [fileImgPerc, setFileImgPerc] = useState(0);
     const [img, setImg] = useState('');
@@ -119,7 +119,7 @@ const ProfileAdmin = () => {
             style={{
                 margin: '24px 16px',
                 padding: 24,
-                minHeight: 280,
+                minHeight: '85vh',
                 backgroundColor: '#262d35'
             }}
         >

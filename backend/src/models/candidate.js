@@ -42,6 +42,10 @@ const candidateSchema = new mongoose.Schema({
         ref: "User",
         require: true
     },
+    denyReason: {
+        type: String,
+        default: null,
+    },
 },
     {
         timestamps: true,

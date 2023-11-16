@@ -154,3 +154,11 @@
     border-color: #e8d207;
     justify-content: center;
 }
+
+.ant-picker-status-error{
+    background-color: transparent !important;
+}
+
+::placeholder {
+    color: white !important;
+}
