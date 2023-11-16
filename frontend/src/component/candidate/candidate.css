@@ -1,3 +1,80 @@
 .candidate_avt{
     width: 150px;
 }
+
+.img{
+    position: relative;
+    transform: translate(.4%, 0.4%);
+}
+.img_box {
+        width: 130px;
+        height: 130px;
+        border-radius: 100%;
+        display: grid;
+        place-content: center;
+        text-align: center;
+        font-size: 1em;
+        margin-bottom: 1rem;
+        --border-size: 0.1rem;
+        border: var(--border-size) solid transparent;
+        /* Create a circular border-image */
+        background: linear-gradient( rgb(241, 227, 97), #fdf7c1);
+        /* position: absolute; */
+        /* animation: rotate 4s line?ar infinite ; */
+}
+
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.name_job{
+    padding-left: 1rem;
+}
+
+.candidate_info{
+    height: 70vh;
+}
+
+.info-main{
+    padding: 3rem;
+}
+.ant-timeline-item-tail{
+    border-color: rgba(241, 227, 97, 0.377) !important;
+}
+
+.timeline_title{
+    font-size: 24px;
+    margin-bottom: 1rem;
+    margin-top: -.5rem;
+    color: #fdf7c1;
+}
+
+.change_status_btn{
+    margin-bottom: 1rem;
+    margin-top: -.5rem;
+    color: #fdf7c1;
+    background-color: transparent;
+    border: none;
+}
+
+.change_status_btn_active {
+    margin-bottom: 1rem;
+    margin-top: -.5rem;
+    color: #fdf7c1;
+    background-color: transparent;
+    border: unset ;
+    border-bottom: 1px solid #e8d207 !important;
+}
+
+.ant-picker{
+    width: 100%;
+    background-color: transparent;
+
+}
+
+.ant-picker-input input {
+    color: white !important;
+}

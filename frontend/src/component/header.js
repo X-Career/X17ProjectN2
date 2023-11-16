@@ -29,7 +29,9 @@ const Header = () =>{
     };
 
     const handleProfileClick = () => {
-        navigate(`/profile/${user._id}`);
+       if(user._id){
+           navigate(`/profile/${user._id}`);
+       }
     };
 
     const items = [
@@ -70,8 +72,8 @@ const Header = () =>{
         try {
             const res = logOut();
             localStorage.removeItem('token');
-            localStorage.setItem('user', JSON.stringify({firstName: 'Guest', role: ''}))
-            setUser({ firstName: 'Guest'})
+            localStorage.setItem('user', JSON.stringify({ 'firstName': 'Hi!', 'lastName': 'Guest', 'role': "Let's register" }))
+            setUser({ 'firstName': 'Hi!', 'lastName': 'Guest', 'role': "Let's register" })
             navigate('/login')
         }
         catch (e) {

@@ -11,7 +11,6 @@ import ProfileAdmin from './component/admin/Profile/ProfileAdmin.js';
 import NotFound from './component/not_found';
 import Candidates from './component/candidate/Cadidates';
 import Job from './pages/Job';
-
 // import CandidateTest from './pages/Candidate_test.js';
 import Profile from './pages/Profile.js';
 import User from './pages/User';
@@ -34,7 +33,7 @@ function App() {
         <Route path="/user" element={<User />} />
         <Route path="/jobs" element={<Job />} />
         <Route path="/profile/:userId" element={<Profile/>} />
-        <Route path="/admin/" element={<Admin />} >
+        <Route path="/admin/" element={<Admin/>} >
           <Route path='info' element={<ReviewInfo />} activeClassName="active"></Route>
           <Route index element={<Navigate to="profile-admin" />}></Route>
           <Route path='profile-admin' element={<ProfileAdmin />} activeClassName="active"></Route>

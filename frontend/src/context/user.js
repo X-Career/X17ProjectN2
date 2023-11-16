@@ -9,6 +9,8 @@ export const UserProvider = ({ children }) => {
         const userData = localStorage.getItem("user");
         if (userData) {
             setUser(JSON.parse(userData));
+        }else{
+            setUser({'firstName': 'Hi!', 'lastName': 'Guest', 'role': "Let's register"})
         }
     }, []);
     return (
