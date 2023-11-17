@@ -11,10 +11,12 @@ import {
   DatePicker,
   Alert,
   message,
+  Table,
 } from "antd";
-import { addRecruitMgr, getallRecruitMgr } from "../../services/recruitMgr";
+import { addRecruitMgr, deleteRecruitMgr, getallRecruitMgr } from "../../services/recruitMgr";
 import dayjs from "dayjs";
 import RecruitContext from "../../context/recruit";
+import { DeleteOutlined } from "@ant-design/icons";
 const RecruitList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const recruitsPerPage = 3;
@@ -25,12 +27,13 @@ const RecruitList = () => {
   const [recruits, setRecruits] = useState([]);
   const {setRecruit } = useContext(RecruitContext)
 
-  // const startIndex = (currentPage - 1) * recruitsPerPage;
-  // const endIndex = startIndex + recruitsPerPage;
-  // const recruitsOnCurrentPage = recruits.slice(startIndex, endIndex);
+  const startIndex = (currentPage - 1) * recruitsPerPage;
+  const endIndex = startIndex + recruitsPerPage;
+  const recruitsOnCurrentPage = recruits.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    console.log(page)
   };
 
   const handleCreateNewRecruit = () => {
@@ -117,14 +120,27 @@ const RecruitList = () => {
     maxWidth: "400px",
   };
 
-  const handleDeleteRecruit = (recruitId) => {
+  
+  const handleDeleteRecruit = (recruit) => {
+    console.log('list:',recruitsOnCurrentPage);
+    console.log(recruit._id)
     Modal.confirm({
       title: "Xác nhận xóa đợt tuyển dụng",
       content: "Bạn có chắc chắn muốn xóa đợt tuyển dụng này?",
-      onOk: () => {
-        const updatedRecruits = recruits.filter(
-          (recruit) => recruit.id !== recruitId);
-        setRecruits(updatedRecruits);
+      onOk: async () => {
+
+        try {
+          const res = await deleteRecruitMgr(recruit._id);
+          if(res.status === "success"){
+            message.success(res.data.message);
+          }
+          } catch (error) {
+          console.log("Error:", error.message);
+
+        }
+        // const updatedRecruits = recruits.filter(
+        //   (recruit) => recruit.id !== recruitId);
+        // setRecruits(updatedRecruits);
       },
       onCancel: () => {},
     });
@@ -140,7 +156,6 @@ const RecruitList = () => {
     form.resetFields();
     setErrors([]);
   }
-  
 
   return (
     <div>
@@ -149,10 +164,14 @@ const RecruitList = () => {
           New recruit
         </Button>
       </Row>
-      <Row gutter={16} style={{ marginBottom: 8 }}>
-        {recruits.map((recruit) => (
+      <Row 
+      gutter={16} 
+      style={{ marginBottom: 8 }}
+      >
+        {recruitsOnCurrentPage.map((recruit) => (
           <Col span={8} key={recruit._id}>
             <div style={{ position: "relative" }}>
+              
               <Card
                 style={{ border: `${selectedRecruit === recruit._id ? '1px solid #e8d207' : '1px solid #efefef'} `}}
                 hoverable
@@ -171,17 +190,19 @@ const RecruitList = () => {
               </Card>
               <Button
                 type="danger"
-                onClick={() => handleDeleteRecruit(recruit.id)}
+                onClick={() => handleDeleteRecruit(recruit)}
                 style={{ position: "absolute", top: 4, right: 0 }}
               >
-                Detail
+                <DeleteOutlined />
               </Button>
             </div>
           </Col>
         ))}
+      
       </Row>
+
       <Row justify="space-between" style={{ marginBottom: 8 }}>
-        <Col />
+        <Col/>
         <Pagination
           current={currentPage}
           pageSize={recruitsPerPage}
@@ -190,6 +211,7 @@ const RecruitList = () => {
           showSizeChanger={false}
         />
       </Row>
+     
 
       <Modal
         title="Add new recruit"

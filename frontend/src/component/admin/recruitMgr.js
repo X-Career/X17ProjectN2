@@ -51,7 +51,6 @@ const RecruitMgr = () => {
         clearFilters();
         setSearchText('');
     };
-
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div
@@ -166,7 +165,7 @@ const RecruitMgr = () => {
     const columns = [
         {
             title: 'ID',
-            width: 50,
+            width: 170,
             dataIndex: '_id',
             key: '_id',
             fixed: 'left',
@@ -175,7 +174,7 @@ const RecruitMgr = () => {
         },
         {
             title: 'Full Name',
-            width: 150,
+            width: 100,
             dataIndex: 'userId',
             key: 'firstName',
             fixed: 'left',
@@ -303,6 +302,7 @@ const RecruitMgr = () => {
                         //         cell: EditableCell,
                         //     },
                         // }}
+                        pagination={{ defaultCurrent:`${1}`, pageSize: 6, total: `${10}` }}
                         bordered
                         columns={columns}
                         dataSource={dataSource}
