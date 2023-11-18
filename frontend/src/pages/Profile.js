@@ -31,16 +31,16 @@ const Profile = () => {
 
 
   // Đang làm
-  const [candidate,setCandidate] = useState([]);
-  useEffect(() => {
-    getCandidates();
-  }, []);
-  const getCandidates = async () => {
-    const { data } = await getallCandidate2(user.candidates);
-    setCandidate(data.datas);
-  };
+  // const [candidate,setCandidate] = useState([]);
+  // useEffect(() => {
+  //   getCandidates();
+  // }, []);
+  // const getCandidates = async () => {
+  //   const { data } = await getallCandidate2(user.candidates);
+  //   setCandidate(data.datas);
+  // };
   
-  console.log(candidate)
+  // console.log(candidate)
 
   
   useEffect(() => {
