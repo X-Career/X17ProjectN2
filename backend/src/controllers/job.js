@@ -175,6 +175,7 @@ export const getJobOfRecruit = async (req, res) => {
                 message: "No candidate found",
             });
         }
+        const userId = req.params.userId;
         return res.status(200).json({
             message: "Find job of recruit success",
             data: data,

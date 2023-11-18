@@ -12,6 +12,6 @@ routerJobs.get("/:id", getDetail);
 routerJobs.post("/", create);
 routerJobs.put("/:id", update);
 routerJobs.delete("/:id", remove);
-routerJobs.get("/get-job-of-recruit/:recruitId", getJobOfRecruit);
+routerJobs.get("/get-job-of-recruit/:recruitId/:userId", getJobOfRecruit);
 
 export default routerJobs;

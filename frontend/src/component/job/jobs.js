@@ -28,7 +28,7 @@ const JobList = () => {
   const getJob = async (id) => {
     setJobLoad(true);
     try {
-      const res = await getJobsOfRecruit(id);
+      const res = await getJobsOfRecruit(id, user._id);
       if (res.status === 200) {
         setJobs(res.data.data);
       }
