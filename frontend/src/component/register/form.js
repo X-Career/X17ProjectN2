@@ -86,36 +86,44 @@ const RegisterForm = () => {
                         name="email"
                     />
                 </Form.Item>
-                <Form.Item
-                    name="gender"
-                    label="Gender"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your gender',
-                        },
-                    ]}>
-                    <Input
-                        placeholder="Input your gender"
-                        type="string"
+                <div className='flex-between'>
+
+                    <Form.Item
                         name="gender"
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="age"
-                    label="Age"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your age',
-                        },
-                    ]}>
-                    <Input
-                        placeholder="Input your age"
-                        type="number"
+                        label="Gender"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your gender',
+                            },
+                        ]}
+                        style={{width: '49%'}}
+                        >
+                        <Input
+                            placeholder="Input your gender"
+                            type="string"
+                            name="gender"
+                        />
+                    </Form.Item>
+                    <Form.Item
                         name="age"
-                    />
-                </Form.Item>
+                        label="Age"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your age',
+                            },
+                        ]}
+                        style={{ width: '49%' }}
+                        >
+                        <Input
+                            placeholder="Input your age"
+                            type="number"
+                            name="age"
+                        />
+                    </Form.Item>
+                </div>
+                
                 <Form.Item
                     name="phone"
                     label="Phone Number"
@@ -131,39 +139,45 @@ const RegisterForm = () => {
                         name="phone"
                     />
                 </Form.Item>
-                <Form.Item
-                    name="password"
-                    label="Password"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password',
-                        },
-                    ]}
-                >
-                    <Input.Password
-                        placeholder="Input password"
-                        type="password"
+                <div className='flex-between'>
+                    <Form.Item
                         name="password"
-                        iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="confirmPassword"
-                    label="Confirm Password"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please confirm your password',
-                        },
-                    ]}>
-                    <Input.Password
-                        placeholder="Confirm password"
-                        type="password"
+                        label="Password"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your password',
+                            },
+                        ]}
+                        style={{ width: '49%' }}
+                    >
+                        <Input.Password
+                            placeholder="Input password"
+                            type="password"
+                            name="password"
+                            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                        />
+                    </Form.Item>
+                    <Form.Item
                         name="confirmPassword"
-                        iconRender={(visible) => (visible ? <EyeTwoTone twoToneColor={'#e8d207'}/> : <EyeInvisibleOutlined />)}
-                    />
-                </Form.Item>
+                        label="Confirm Password"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please confirm your password',
+                            },
+                        ]}
+                        style={{ width: '49%' }}
+                        >
+                        <Input.Password
+                            placeholder="Confirm password"
+                            type="password"
+                            name="confirmPassword"
+                            iconRender={(visible) => (visible ? <EyeTwoTone twoToneColor={'#e8d207'} /> : <EyeInvisibleOutlined />)}
+                        />
+                    </Form.Item>
+                </div>
+                
                 <div className='flex-center' style={{marginTop: '20px'}}>
                     <Button type='primary' htmlType='submit'>Register</Button>
                 </div>
