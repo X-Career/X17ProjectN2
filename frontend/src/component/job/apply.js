@@ -13,7 +13,6 @@ const Apply = (props) => {
 
     const handleSubmit = async (e) => {
         try {
-            if (inputs.fileCVUrl) {
                 const data = {
                     jobId: job._id,
                     recruitId: props.recruit,
@@ -21,17 +20,18 @@ const Apply = (props) => {
                     fileCV: inputs.fileCVUrl,
                 };
                 const res = await addCandidate(data);
-                if (res.status === 200) {
-                    message.success(res.data.message)
+                if (res.status === 201) {
+                    if(!res.data.status){
+                        message.success(res.data.message)
+                    }else{
+                        message.error(res.data.message)
+                    }
                     props.handleClose();
                     props.refresh(props.recruit);
                 } else {
                     message.error(res.data.message)
                 }
-            } else {
-                message.error('Please choose your CV to apply!')
             }
-        }
         catch (error) {
             console.error("Đã xảy ra lỗi khi tải CV:", error);
         }
@@ -77,7 +77,6 @@ const Apply = (props) => {
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    console.log('File available at', downloadURL);
                     setInputs((prev) => {
                         return {
                             ...prev,

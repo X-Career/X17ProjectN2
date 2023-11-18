@@ -60,63 +60,71 @@ export const create = async (req, res) => {
                 message: error.details.map(err => err.message),
             })
         }
-        if (fileCV) {
-            const newCandidate = new Candidate({
-                jobId,
-                userId,
-                recruitId,
-                fileCV,
-            })
-            const candidate = await newCandidate.save();
-            console.log(candidate.jobId)
-            if (!candidate) {
-                return res.status(404).json({ message: "upload not successful" });
-            }
-            
 
-             // Gửi CV Gửi theo job
-
-            const updateJobs = await Job.findByIdAndUpdate(candidate.jobId, {
-                $addToSet: {
-                    candidates: candidate._id,
-                },
+        const data = Candidate.find({ userId: userId ,jobId:jobId})
+        if(data){
+            return res.status(201).json({
+                status: "error",
+                message: "You have applied for this job before!",
             });
-            if (!updateJobs) {
-                return res.status(404).json({
-                    message: "Add Job for new Candidates not successful",
-                });
-            }
-            // Gửi CV Gửi vào user tuyển dụng
+        }else {
 
-            const updateUsers = await User.findByIdAndUpdate(candidate.userId, {
-                $addToSet: {
-                    candidates: candidate._id,
-                },
-            });
-            if (!updateUsers) {
-                return res.status(404).json({
-                    message: "Add Infor User for Candidates not successful",
-                });
-            }
+            if (fileCV) {
+                const newCandidate = new Candidate({
+                    jobId,
+                    userId,
+                    recruitId,
+                    fileCV,
+                })
+                const candidate = await newCandidate.save();
+                console.log(candidate.jobId)
+                if (!candidate) {
+                    return res.status(404).json({ message: "upload not successful" });
+                }
 
-            // Gửi CV Gửi vào đợt tuyển dụng
-            const updateRecuit = await recruitmgr.findByIdAndUpdate(candidate.recruitId, {
-                $addToSet: {
-                    candidates: candidate._id,
-                },
-              });
-            if (!updateRecuit) {
-                return res.status(404).json({
-                  message: "Add RecruitId for new Candidates not successful",
-                });
-            }
-            
-            return res.status(200).json({
-                message: "Create Cadidate successful",
-                datas: candidate,
-            })
 
-            
+                // Gửi CV Gửi theo job
+
+                const updateJobs = await Job.findByIdAndUpdate(candidate.jobId, {
+                    $addToSet: {
+                        candidates: candidate._id,
+                    },
+                });
+                if (!updateJobs) {
+                    return res.status(404).json({
+                        message: "Add Job for new Candidates not successful",
+                    });
+                }
+                // Gửi CV Gửi vào user tuyển dụng
+
+                const updateUsers = await User.findByIdAndUpdate(candidate.userId, {
+                    $addToSet: {
+                        candidates: candidate._id,
+                    },
+                });
+                if (!updateUsers) {
+                    return res.status(404).json({
+                        message: "Add Infor User for Candidates not successful",
+                    });
+                }
+
+                // Gửi CV Gửi vào đợt tuyển dụng
+                const updateRecuit = await recruitmgr.findByIdAndUpdate(candidate.recruitId, {
+                    $addToSet: {
+                        candidates: candidate._id,
+                    },
+                });
+                if (!updateRecuit) {
+                    return res.status(404).json({
+                        message: "Add RecruitId for new Candidates not successful",
+                    });
+                }
+
+                return res.status(200).json({
+                    message: "Create Cadidate successful",
+                    datas: candidate,
+                })
+            }
         }
 
 
