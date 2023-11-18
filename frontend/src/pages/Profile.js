@@ -4,10 +4,10 @@ import Header from "../component/header";
 import Footer from "../component/footer";
 import { EditOutlined } from "@ant-design/icons";
 import { UserContext } from "../context/user";
-import { editUser, updateInfo, updatePassword } from "../services/auth";
+import { updateInfo, updatePassword } from "../services/auth";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import fbConfig from "../firebaseConfig";
-import {getallCandidate2 } from "../services/candidate";
+
 
 
 
@@ -27,6 +27,7 @@ const Profile = () => {
   const [inputs, setInputs] = useState({});
   const [fileImgPerc, setFileImgPerc] = useState(0);
   const [img, setImg] = useState('');
+  const [currImg, setCrrImg] = useState(user.img)
 
 
 
@@ -44,6 +45,7 @@ const Profile = () => {
 
   
   useEffect(() => {
+    setCrrImg(user.img)
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setPhone(user.phone);
@@ -58,20 +60,19 @@ const Profile = () => {
         lastName: lastName,
         age: age,
         phone: phone,
+        img: inputs.imgUrl,
       };
 
       const response = await updateInfo(user._id, updatedUser);
-      console.log("Profile updated:", response.data);
-
-      setUser({ ...user, ...updatedUser });
+      setUser(response.data.datas);
+      localStorage.setItem('user', JSON.stringify(response.data.datas))
+      setCrrImg(user.img)
       setPhone(updatedUser.phone);
       setAge(updatedUser.age);
-
       setFirstName(updatedUser.firstName);
       setLastName(updatedUser.lastName);
       setPhone(updatedUser.phone);
       setAge(updatedUser.age);
-
       console.log("Profile updated successfully!");
 
       notification.success({
@@ -163,13 +164,13 @@ const Profile = () => {
                         [fileType]: downloadURL,
                     }
                 })
+              setCrrImg(downloadURL)
             });
         }
     );
 }
 useEffect(() => {
-    img && uploadFile(img, "imgUrl")
-
+   img && uploadFile(img, "imgUrl")
 }, [img])
 
   return (
@@ -194,7 +195,7 @@ useEffect(() => {
               >
                 <div className="renderAva">
                   <img
-                    src={inputs.imgUrl || user.img}
+                    src={currImg}
                     style={{ width: "100%", borderRadius: "100%" }}
                   />
                 </div>
@@ -272,16 +273,7 @@ useEffect(() => {
                       />
                     </form>
                     <Button
-                      className="Tittle_Element"
-                      style={{
-                        height: "40px",
-                        marginTop: "12px",
-                        padding: "0 0 5px 0",
-                        width: "30%",
-                      }}
                       type="primary"
-                      shape="default"
-                      size="middle"
                       onClick={handleUpdateInfo}
                     >
                       Update Your Profile
@@ -301,16 +293,7 @@ useEffect(() => {
                     />
                     {error && <div style={{ color: "red" }}>{error}</div>}
                     <Button
-                      className="Tittle_Element"
-                      style={{
-                        height: "40px",
-                        marginTop: "12px",
-                        padding: "0 0 5px 0",
-                        width: "35%",
-                      }}
                       type="primary"
-                      shape="default"
-                      size="middle"
                       onClick={handleUpdatePassword}
                     >
                       Update Your Password
