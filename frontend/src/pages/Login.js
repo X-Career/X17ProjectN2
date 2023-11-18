@@ -14,17 +14,17 @@ const Login = () => {
                     </div>
                 </Col>
                 <Col span={10} style={{ textAlign: 'end' }}>
-                    <p className="text-white">Don't have an account? <Link to={'/register'}><b>Register</b></Link></p>
+                    <p>Don't have an account? <Link to={'/register'}><b>Register</b></Link></p>
                 </Col>
             </Row>
             <div className="flex-center w-100 h-100">
                 <LoginForm />
             </div>
-            <div className="w-100">
+            {/* <div className="w-100">
                 <div id="stars"></div>
                 <div id="stars2"></div>
                 <div id="stars3"></div>
-            </div>
+            </div> */}
         </div>
     )
 }
