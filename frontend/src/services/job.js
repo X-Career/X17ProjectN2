@@ -5,8 +5,8 @@ export const getallJob= async () => {
   return await axios.get(`${url}/jobs`);
 };
 
-export const getJobsOfRecruit = async (recruitId) => {
-  return await axios.get(`${url}/jobs/get-job-of-recruit/${recruitId}`);
+export const getJobsOfRecruit = async (recruitId, userId) => {
+  return await axios.get(`${url}/jobs/get-job-of-recruit/${recruitId}/${userId}`);
 }
 
 export const addJob = async (Job) => {
@@ -25,4 +25,5 @@ export const editJob = async (id, Job) => {
 export const deleteJob = async (id) => {
   return await axios.delete(`${url}/jobs/${id}`);
 };
+
 

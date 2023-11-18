@@ -34,6 +34,7 @@ const Header = () =>{
        }
     };
 
+
     const items = [
         {
 
@@ -110,7 +111,7 @@ const Header = () =>{
                 <Col span={8} style={{display: 'flex', alignItems: 'center'}}>
                     <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`} onClick={() => navigate('/')}>Home</Button>
                     <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`} onClick={() => navigate('/jobs')} >Job</Button>
-                    <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>About US</Button>
+                    <Link to={`/my-history/${user._id}`}><Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>Apply History</Button></Link>
                     <Dropdown
                         menu={{
                             items,

@@ -4,54 +4,42 @@ import { CandidateContext } from "../../context/candidate";
 import { Row, Col, Timeline, Form, Input, InputNumber, Select, Button, DatePicker, message } from "antd";
 import './candidate.css'
 import { useForm } from "antd/es/form/Form";
-import { CheckOutlined, CloseOutlined, EnterOutlined } from '@ant-design/icons';
+import { MailOutlined, CloseOutlined, EnterOutlined, SendOutlined, CheckOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
 import { editCandidate } from "../../services/candidate";
+import { useNavigate } from "react-router-dom";
+import { ActiveContext } from "../../context/active_menu";
 
 const Info = () => {
     const { candidate } = useContext(CandidateContext)
-    const [isAccept, setAccept] = useState(false);
-    const [change, setChange] = useState(false);
-    const [active, setActive] = useState()
-    const [hasRevert, setHasRevert] = useState(false)
+    const [active, setActives] = useState(0)
+    const { setActive } = useContext(ActiveContext)
+    const navigate = useNavigate()
     const [form] = useForm();
     const { TextArea } = Input;
 
     const handleChange = (value) => {
-        if(value == 1){
-            setAccept(true)
-            setActive(1)
-            form.setFieldsValue({status: 'Testing'})
-        }else{
-            setAccept(false)
-            setActive(0)
+        setActives(value)
+        if (value == 1) {
+            form.setFieldsValue({ status: 'Interviewing' })
+        } else if(value == 2) {
             form.setFieldsValue({ status: 'Rejected' })
         }
-        setChange(true)
     }
-
     const handleRevert = () => {
-        setChange(false)
+        navigate('/admin/recruit-manager')
     }
 
     useEffect(() => {
-        if(candidate.status == 'Testing'){
-            setAccept(true)
+        if (candidate.status == 'Testing') {
             setActive(1)
-            setChange(true)
-            form.setFieldsValue({ status: 'Testing' })
             form.setFieldsValue({ point: candidate.point })
             form.setFieldsValue({ result: candidate.result })
-            setHasRevert(true)
-        } else if (candidate.status == 'Rejected'){
-            setAccept(false)
-            setActive(0)
-            setChange(true)
-            setHasRevert(true)
+        } else if (candidate.status == 'Rejected') {
+            setActive(2)
             form.setFieldsValue({ denyReason: candidate.denyReason })
-            form.setFieldsValue({ status: 'Rejected' })
         }
-    }) 
+    })
 
     const handleConfirm = async () => {
         try {
@@ -61,12 +49,12 @@ const Info = () => {
                     acc[key] = value;
                 }
                 if (key === 'datetoInter' || key === 'datetoGetjob') {
-                   if(value){
-                       acc[key] = dayjs(value).format('YYYY-MM-DD');
-                   }
+                    if (value) {
+                        acc[key] = dayjs(value).format('YYYY-MM-DD HH:mm');
+                    }
                     acc['denyReason'] = null;
                 }
-                if (key === 'denyReason'){
+                if (key === 'denyReason') {
                     acc['datetoInter'] = null;
                     acc['datetoGetjob'] = null;
                     acc['point'] = null;
@@ -78,10 +66,10 @@ const Info = () => {
                 acc['jobId'] = candidate.jobId._id
                 return acc;
             }, {});
-            const res = await editCandidate(candidate._id,values)
-            if(res.status === 200){
+            const res = await editCandidate(candidate._id, values)
+            if (res.status === 200) {
                 message.success(res.data.message)
-            }else{
+            } else {
                 message.error(res.data.message)
             }
 
@@ -89,7 +77,10 @@ const Info = () => {
             console.log("Error:", error.message);
         }
     }
-
+    const mailPage = () => {
+        setActive("mail-manager")
+        navigate("/admin/mail-manager")
+    }
 
     return (
 
@@ -117,19 +108,19 @@ const Info = () => {
                                             <Col span={24} className="flex-between">
                                                 <h3 className="timeline_title">INFOMATION</h3>
                                                 <div>
+                                                    <Button icon={<MailOutlined />} className={active == 0 ? 'change_status_btn_active' : 'change_status_btn'} onClick={() => handleChange(0)}>
+                                                        Mail
+                                                    </Button>
                                                     <Button icon={<CheckOutlined />} className={active == 1 ? 'change_status_btn_active' : 'change_status_btn'} onClick={() => handleChange(1)}>
                                                         Accept
                                                     </Button>
-                                                
-                                                    {!hasRevert && 
-                                                    (<>
-                                                        <Button icon={<CloseOutlined />} className={active == 0 ? 'change_status_btn_active' : 'change_status_btn'} onClick={() => handleChange(0)}>
-                                                            Reject
-                                                        </Button>
-                                                        <Button icon={<EnterOutlined />} className="change_status_btn" onClick={handleRevert}>
-                                                            Revert
-                                                        </Button>
-                                                    </>)}
+                                                    <Button icon={<CloseOutlined />} className={active == 2 ? 'change_status_btn_active' : 'change_status_btn'} onClick={() => handleChange(2)}>
+                                                        Reject
+                                                    </Button>
+                                                    <Button icon={<EnterOutlined />} className="change_status_btn" onClick={handleRevert}>
+                                                        Revert
+                                                    </Button>
+
                                                 </div>
 
                                             </Col>
@@ -210,7 +201,7 @@ const Info = () => {
                                                     </div>
                                                 </Form>
                                             </Col>
-                                            {change ? (
+                                            {active !== 0 ? (
                                                 <Col span={8}>
                                                     <Form
                                                         layout="vertical"
@@ -221,26 +212,36 @@ const Info = () => {
                                                             name='status'
                                                             style={{ width: '100%' }}
                                                         >
-                                                            <Input value='' readOnly={true}/> 
+                                                            <Input value='' readOnly={true} />
                                                         </Form.Item>
-                                                        {isAccept ? (
+                                                        {active == 1 ? (
                                                             <>
                                                                 <Form.Item
                                                                     label='Date to inter'
                                                                     name='datetoInter'
                                                                     style={{ width: '100%' }}
                                                                     rules={[{ required: true, message: "Please enter date to inter of job!" }]}
-                                                                    initialValue={candidate.datetoInter ? dayjs(candidate.datetoInter) : null}
+                                                                    initialValue={candidate.datetoInter ? dayjs(candidate.datetoInter, 'YYYY-MM-DD HH:mm') : undefined}
                                                                 >
-                                                                    <DatePicker format='DD-MM-YYYY'/>
+                                                                    <DatePicker
+                                                                        showTime={{
+                                                                            format: 'HH:mm',
+                                                                        }}
+                                                                        format='YYYY-MM-DD HH:mm'
+                                                                    />
                                                                 </Form.Item>
                                                                 <Form.Item
                                                                     label='Date to get job'
                                                                     name='datetoGetjob'
-                                                                    style={{ width: '100%' }} 
-                                                                    initialValue={candidate.datetoGetjob ? dayjs(candidate.datetoGetjob) : null}
+                                                                    style={{ width: '100%' }}
+                                                                    initialValue={candidate.datetoGetjob ? dayjs(candidate.datetoGetjob, 'YYYY-MM-DD HH:mm') : undefined}
                                                                 >
-                                                                    <DatePicker format='DD-MM-YYYY' />
+                                                                    <DatePicker
+                                                                        showTime={{
+                                                                            format: 'HH:mm',
+                                                                        }}
+                                                                        format='YYYY-MM-DD HH:mm'
+                                                                    />
                                                                 </Form.Item>
                                                                 <div className='flex-between'>
                                                                     <Form.Item
@@ -261,35 +262,31 @@ const Info = () => {
                                                             </>
                                                         ) : (
                                                             <Form.Item
-                                                                    label='Deny reason'
-                                                                    name='denyReason'
-                                                                    style={{ width: '100%' }}   
-                                                                >
-                                                                    <TextArea
-                                                                        rows={4}
-                                                                        placeholder='Enter your reason'
-                                                                    />
-                                                                </Form.Item>
+                                                                label='Deny reason'
+                                                                name='denyReason'
+                                                                style={{ width: '100%' }}
+                                                            >
+                                                                <TextArea
+                                                                    rows={4}
+                                                                    placeholder='Enter your reason'
+                                                                />
+                                                            </Form.Item>
                                                         )}
 
                                                         <Form.Item className="flex-center">
                                                             <Button type="primary" onClick={handleConfirm}>
-                                                               {active == 1 ? "Accept" : "Reject"}
+                                                                {active == 1 ? "Accept" : "Reject"}
                                                             </Button>
                                                         </Form.Item>
                                                     </Form>
                                                 </Col>
                                             ) : (
-                                                <div className="column-center" style={{height: '400px', marginTop: '-5rem'}}>
-                                                    <img style={{ width: '350px' }} src="../images/waitting.png" />
-                                                        {candidate.userId.gender == 'male' ? (<p style={{ marginTop: '-3rem' }}>Oops, he is waitting your reply!</p>) : 
-                                                        (<p style={{ marginTop: '-3rem', color: 'white' }}>Oops, she is waitting your reply!</p>)}
+                                                <div className="column-center" style={{ height: '400px', marginTop: '-5rem' }}>
+                                                    <img style={{ width: '250px' }} src="../images/mail.png" />
+                                                    <Button type="primary" icon={<SendOutlined />} onClick={mailPage}>Send mail</Button>
                                                 </div>
                                             )}
-
                                         </Row>
-
-
                                     )
                                 ,
                             },

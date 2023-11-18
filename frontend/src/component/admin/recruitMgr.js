@@ -1,5 +1,5 @@
 import { Layout, Select, theme } from 'antd';
-import {EditOutlined, MailOutlined, SearchOutlined } from '@ant-design/icons';
+import { FormOutlined, SearchOutlined } from '@ant-design/icons';
 import React, { useContext, useEffect, useRef, useState} from 'react';
 import Highlighter from 'react-highlight-words';
 import { Button, Input, Space, Table } from 'antd';
@@ -17,7 +17,6 @@ const RecruitMgr = () => {
     const navigate = useNavigate()
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
-    const { setActive } = useContext(ActiveContext)
     const searchInput = useRef(null);
     const { recruit } = useContext(RecruitContext)
     const { setCandidate } = useContext(CandidateContext) 
@@ -147,11 +146,6 @@ const RecruitMgr = () => {
     });
     // EDIT DATA
     const [form] = Form.useForm();
-    const mailPage = () => {
-        setActive("mail-manager")
-        navigate("/admin/mail-manager")
-
-    }
 
     const handleUpdateCandidate = (row) =>{
         setCandidate(row)
@@ -221,17 +215,29 @@ const RecruitMgr = () => {
             render: (point) => <span>{point ? point : ' - '}</span>
         },
         {
+            title: 'Job',
+            dataIndex: 'jobId',
+            key: 'job',
+            width: 200,
+            ...getColumnSearchProps('job'),
+            editable: true,
+            align: 'center',
+            render: (jobId) => <span>{jobId.name ? jobId.name : ' - '}</span>
+        },
+        {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
             width: 120,
             ...getColumnSearchProps('status'),
             editable: true,
-            render: (status) => <Select style={{ width: '100%' }} defaultValue={status}>
-                {statusOption.map((item, key) => (
-                    <Select.Option key={key} value={item}>{item}</Select.Option>
-                ))}
-            </Select>
+            align: 'center',
+            render: (status) =><span>{status}</span>
+            // render: (status) => <Select style={{ width: '100%' }} defaultValue={status}>
+            //     {statusOption.map((item, key) => (
+            //         <Select.Option key={key} value={item}>{item}</Select.Option>
+            //     ))}
+            // </Select>
         },
         {
             title: 'Date to intern',
@@ -268,14 +274,15 @@ const RecruitMgr = () => {
             key: 'operation',
             dataIndex: 'operation',
             fixed: 'right',
+            align: 'center',
             width: 80,
             render: (_, record) => {
-                return <div style={{ gap: "12px", display: "flex" }}>
-                    <EditOutlined style={{ cursor: "pointer" }} onClick={() => handleUpdateCandidate(record)}/>
-                    <MailOutlined 
+                return <div style={{ gap: "12px"}}>
+                    <FormOutlined style={{ cursor: "pointer", color: '##e8d207'}} onClick={() => handleUpdateCandidate(record)}/>
+                    {/* <MailOutlined 
                     onClick={() => mailPage()} 
-                    style={{ cursor: "pointer" }}>
-                    </MailOutlined>
+                        style={{ cursor: "pointer", color: '##e8d207' }}>
+                    </MailOutlined> */}
                 </div>
             }
 

@@ -20,6 +20,10 @@ export const getCandidateOfRecruit = async (recruitId) =>{
   return await axios.get(`${url}/candidates/get-candidate-of-recruit/${recruitId}`);
 }
 
+export const getMyHistory = async (userId) => {
+  return await axios.get(`${url}/candidates/get-my-history/${userId}`);
+}
+
 
 
 export const addCandidate = async (Candidate) => {

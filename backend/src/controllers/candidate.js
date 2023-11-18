@@ -86,7 +86,6 @@ export const create = async (req, res) => {
                     message: "Add Job for new Candidates not successful",
                 });
             }
-
             // Gửi CV Gửi vào user tuyển dụng
 
             const updateUsers = await User.findByIdAndUpdate(candidate.userId, {
@@ -112,8 +111,6 @@ export const create = async (req, res) => {
                 });
             }
             
-
-
             return res.status(200).json({
                 message: "Create Cadidate successful",
                 datas: candidate,
@@ -210,3 +207,24 @@ export const getCandidateOfRecruit = async (req, res) => {
         });
     }
 };
+
+export const getMyHistory =  async(req, res) =>{
+    console.log('be');
+    try {
+        const data = await Candidate.find({ userId: req.params.userId }).populate('jobId');
+        if (!data) {
+            return res.status(404).json({
+                message: "No candidate found",
+            });
+        }
+        return res.status(200).json({
+            message: "Find your history",
+            data: data,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            name: error.name,
+            message: error.message,
+        });
+    }
+}

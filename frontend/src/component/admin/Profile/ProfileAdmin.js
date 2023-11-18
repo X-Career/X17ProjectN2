@@ -14,7 +14,6 @@ import { useForm } from "antd/es/form/Form";
 const { Content } = Layout;
 
 const ProfileAdmin = () => {
-
     const { user } = useContext(UserContext)
     const [inputs, setInputs] = useState({});
     const [fileImgPerc, setFileImgPerc] = useState(0);

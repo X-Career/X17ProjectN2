@@ -14,6 +14,7 @@ import { useNavigate , Link} from "react-router-dom";
 import { ActiveContext } from '../context/active_menu';
 import { UserContext } from '../context/user';
 import { logOut } from '../services/auth';
+import { CandidateContext } from '../context/candidate';
 const { Header, Sider } = Layout;
 
 
@@ -22,6 +23,7 @@ const Admin = () => {
     const { user, setUser } = useContext(UserContext)
     const [collapsed, setCollapsed] = useState(false);
     const token = localStorage.getItem('token')
+    const {setCandidate} = useContext(CandidateContext)
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -102,6 +104,7 @@ const Admin = () => {
                             key: 'recruit-manager',
                             icon: <ReconciliationOutlined />,
                             label: "Recruit Management",
+                            onClick: () => { setCandidate()}
 
                         },
                         {
