@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { animated, useSpring } from '@react-spring/web'
 import { Button } from "antd";
 import { CaretRightOutlined } from '@ant-design/icons';
+import Demo from "./Demo";
 
 const contentStyle = {
     height: '100vh',
@@ -12,6 +13,9 @@ const contentStyle = {
     objectFit: 'cover',
 };
 const HomeAfterLogin = () => {
+
+    const [open, setOpen] = useState(false)
+
     const top_text = useSpring({
         from: { opacity: 0, top: '100px' },
         to: { opacity: 1, top: '320px' },
@@ -36,15 +40,31 @@ const HomeAfterLogin = () => {
         config: { duration: 700 }
     })
 
-    setTimeout(() => {
-        var string = "Be all you can be.";
-        var str = string.split("");
-        var el = document.getElementById('str');
-        (function animate() {
-            str.length > 0 ? el.innerHTML += str.shift() : clearTimeout(running);
-            var running = setTimeout(animate, 90);
-        })();
-    }, 800)
+    // setTimeout(() => {
+    // var string = "Be all you can be.";
+    // var str = string.split("");
+    // var el = document.getElementById('str');
+    
+    // // Kiểm tra trạng thái đã viết chữ
+    // var hasWrittenText = localStorage.getItem('hasWrittenText');
+    // if (!hasWrittenText && el) {
+    //     (function animate() {
+    //     str.length > 0 ? el.innerHTML += str.shift() : clearTimeout(running);
+    //     var running = setTimeout(animate, 90);
+    //     })();
+        
+    //     // Đánh dấu rằng đã viết chữ
+    //     localStorage.setItem('hasWrittenText', true);
+    // }
+    // }, 800);
+
+    const showVideoDemo = () =>{
+        toggleOpen()
+    }
+
+    const toggleOpen = () => {
+        setOpen(!open)
+    }
 
     return (
         <div className="home_main">
@@ -65,12 +85,12 @@ const HomeAfterLogin = () => {
             </div>
             <img style={contentStyle} src="../images/about-bg.jpg" />
             <div className="home_content">
-                <animated.div style={top_text} class="text_box">
-                    <div class="top">E-learning</div>
-                    <div class="bottom" aria-hidden="true">E-learning</div>
+                <animated.div style={top_text} className="text_box">
+                    <div className="top">E-learning</div>
+                    <div className="bottom" aria-hidden="true">E-learning</div>
                 </animated.div>
                 <animated.div style={line} className="home_line"></animated.div>
-                <animated.div style={bot_text} class="small_box">
+                <animated.div style={bot_text} className="small_box">
                     <h3>Metaverse</h3>
                 </animated.div>
                 <div className="play_box">
@@ -79,12 +99,13 @@ const HomeAfterLogin = () => {
                         <div className="circle"></div>
                         <div className="circle"></div>
                     </div>
-                    <Button type="primary" shape="circle" className="play_button" icon={<CaretRightOutlined />} size={'large'} />
+                    <Button type="primary" shape="circle" className="play_button" onClick={showVideoDemo} icon={<CaretRightOutlined />} size={'large'} />
                 </div>
                 <animated.div className="flex-center">
-                    <p id="str"></p>
+                    <p id="str">Be all you can be</p>
                 </animated.div>
             </div>
+            {open && (<Demo handleClose={toggleOpen}/>)}
         </div>
     )
 };

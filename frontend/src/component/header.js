@@ -31,6 +31,8 @@ const Header = () =>{
     const handleProfileClick = () => {
        if(user._id){
            navigate(`/profile/${user._id}`);
+       }else {
+            navigate('login')
        }
     };
 
@@ -41,7 +43,7 @@ const Header = () =>{
             label: (
                 <div onClick={handleProfileClick} style={{ cursor: 'pointer' }}>
                     <b>{user.firstName} {user.lastName}</b>
-                    <div>{user.role}</div>
+                    {user.role !== 'admin' && <div>{user.role}</div>}
                 </div>
             ),
 
@@ -111,7 +113,7 @@ const Header = () =>{
                 <Col span={8} style={{display: 'flex', alignItems: 'center'}}>
                     <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`} onClick={() => navigate('/')}>Home</Button>
                     <Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`} onClick={() => navigate('/jobs')} >Job</Button>
-                    <Link to={`/my-history/${user._id}`}><Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>Apply History</Button></Link>
+                    {user.role !== 'admin' && <Link to={`/my-history/${user._id}`}><Button className={`${isSticky ? 'btn_color_sticky' : ''} header_btn`}>Apply History</Button></Link>}
                     <Dropdown
                         menu={{
                             items,

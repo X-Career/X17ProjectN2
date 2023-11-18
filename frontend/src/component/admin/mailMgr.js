@@ -51,7 +51,7 @@ const MailMgr = () => {
     } = theme.useToken();
 
     useEffect(() => {
-        if(candidate){
+        if (candidate && candidate.userId){
             form.setFieldsValue({ userEmail: candidate.userId.email })
             form.setFieldsValue({ candidateName: candidate.userId.firstName + " " + candidate.userId.lastName })
         }

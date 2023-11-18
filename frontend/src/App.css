@@ -797,3 +797,15 @@
   color: #e8d207;
   text-shadow: 0px 1px 0px #d1bd07;
 }
+
+.ant-modal-title {
+  color: #e8d207 !important;
+}
+
+.iframe_demo .ant-modal-content{
+  background-color: transparent !important;
+}
+
+.iframe_demo .ant-modal-content .anticon{
+  color: #e8d207 !important;
+}

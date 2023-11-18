@@ -1,6 +1,14 @@
 import React from "react";
 import { Row, Col } from "antd";
-import { CloudServerOutlined } from '@ant-design/icons';
+import { CloudServerOutlined, 
+    PieChartOutlined,
+     DotChartOutlined, 
+     MobileOutlined, 
+     GlobalOutlined, 
+     FundProjectionScreenOutlined, 
+     ShareAltOutlined, 
+     UserSwitchOutlined
+ } from '@ant-design/icons';
 
 const Service = () => {
     return (
@@ -10,61 +18,61 @@ const Service = () => {
                     <div className="service_item">
                         <CloudServerOutlined />
                         <div className="title">Cloud E-learning</div>
-                        <p>lorem .......</p>
+                        <p>Service information, benefit, conditions</p>
                     </div>
                 </Col>
                 <Col span={6}>
                     <div className="service_item">
-                        <CloudServerOutlined />
-                        <div className="title">Cloud E-learning</div>
-                        <p>lorem .......</p>
-                    </div>
-                </Col>
-
-                <Col span={6}>
-                    <div className="service_item">
-                        <CloudServerOutlined />
-                        <div className="title">Cloud E-learning</div>
-                        <p>lorem .......</p>
+                        <PieChartOutlined />
+                        <div className="title">Platform Systems</div>
+                        <p>Platform systems</p>
                     </div>
                 </Col>
 
                 <Col span={6}>
                     <div className="service_item">
-                        <CloudServerOutlined />
-                        <div className="title">Cloud E-learning</div>
-                        <p>lorem .......</p>
+                        <DotChartOutlined />
+                        <div className="title">Social media marketing</div>
+                        <p>Service information, benefit, conditions</p>
                     </div>
                 </Col>
 
                 <Col span={6}>
                     <div className="service_item">
-                        <CloudServerOutlined />
-                        <div className="title">Cloud E-learning</div>
-                        <p>lorem .......</p>
-                    </div>
-                </Col>
-                <Col span={6}>
-                    <div className="service_item">
-                        <CloudServerOutlined />
-                        <div className="title">Cloud E-learning</div>
-                        <p>lorem .......</p>
+                        <MobileOutlined />
+                        <div className="title">Video Motion Graphic</div>
+                        <p>Service information, benefit, conditions</p>
                     </div>
                 </Col>
 
                 <Col span={6}>
                     <div className="service_item">
-                        <CloudServerOutlined />
-                        <div className="title">Cloud E-learning</div>
-                        <p>lorem .......</p>
+                        <GlobalOutlined />
+                        <div className="title">Digital Content</div>
+                        <p>Service information, benefit, conditions</p>
+                    </div>
+                </Col>
+                <Col span={6}>
+                    <div className="service_item">
+                        <FundProjectionScreenOutlined />
+                        <div className="title">Software production</div>
+                        <p>Service information, benefit, conditions</p>
                     </div>
                 </Col>
 
                 <Col span={6}>
                     <div className="service_item">
-                        <CloudServerOutlined />
-                        <div className="title">Cloud E-learning</div>
-                        <p>lorem .......</p>
+                        <ShareAltOutlined />
+                        <div className="title">Elearning Content Design</div>
+                        <p>Service information, benefit, conditions</p>
+                    </div>
+                </Col>
+
+                <Col span={6}>
+                    <div className="service_item">
+                        <UserSwitchOutlined />
+                        <div className="title">Build Website for branding</div>
+                        <p>Mobile office is a service that fully</p>
                     </div>
                 </Col>
 

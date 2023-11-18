@@ -75,10 +75,35 @@
 
 }
 
-.ant-picker-input input {
+#candidate-info .ant-picker-input input {
     color: white !important;
 }
 
 .anticon-send{
     color: white !important;
 }
+
+.candidate_cv{
+    position: sticky;
+    top: 5rem;
+}
+
+#candidate-info .ant-input, #candidate-info .ant-input-number,
+#candidate-info .ant-select-selector,
+#candidate-info .ant-input-password {
+    background-color: transparent !important;
+    color: #e8d207 !important;
+    border-color: #d9d9d978 !important;
+}
+#candidate-info .ant-form-item-label label {
+    color: white;
+}
+
+#candidate-info .ant-input .anticon, #candidate-info .ant-select-arrow, #candidate-info .ant-picker-input .anticon{
+    color: #e8d207 !important;
+}
+
+#candidate-info ::placeholder,.ant-select-selection-placeholder {
+    color: rgba(255, 255, 255, 0.521) !important;
+}
+

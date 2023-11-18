@@ -11,6 +11,7 @@ import RecruitList from './RecruitList';
 import RecruitContext from '../../context/recruit';
 import { getCandidateOfRecruit } from '../../services/candidate';
 import { CandidateContext } from '../../context/candidate';
+import dayjs from 'dayjs';
 const { Content } = Layout;
 
 const RecruitMgr = () => {
@@ -153,9 +154,6 @@ const RecruitMgr = () => {
         navigate("/admin/info")
     }
 
-
-    const statusOption = ['Applying', 'Testing', 'Interviewing', 'Rejected'];
-
     const columns = [
         {
             title: 'ID',
@@ -247,7 +245,7 @@ const RecruitMgr = () => {
             ...getColumnSearchProps('datetoInter'),
             editable: true,
             align: 'center',
-            render: (datetoInter) => <span>{datetoInter ? datetoInter : ' - '}</span>
+            render: (datetoInter) => <span>{datetoInter ? dayjs(datetoInter).format('DD-MM-YYYY HH:mm') : ' - '}</span>
         },
         {
             title: 'Result intern',
@@ -257,7 +255,7 @@ const RecruitMgr = () => {
             align: 'center',
             ...getColumnSearchProps('result'),
             editable: true,
-            render: (result) => <span>{result ? result : ' - '}</span>
+            render: (result) => <span>{result ? (result === 'pass' ? 'Pass' : 'Fail') : ' - '}</span>
         },
         {
             title: 'Date to getjob',
@@ -267,7 +265,7 @@ const RecruitMgr = () => {
             align: 'center',
             ...getColumnSearchProps('datetoGetjob'),
             editable: true,
-            render: (datetoGetjob) => <span>{datetoGetjob ? datetoGetjob : ' - '}</span>
+            render: (datetoGetjob) => <span>{datetoGetjob ? dayjs(datetoGetjob).format('DD-MM-YYYY HH:mm') : ' - '}</span>
         },
         {
             title: 'Action',
