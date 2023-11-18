@@ -12,7 +12,7 @@ const { SECRET_CODE } = process.env;
 export const signUp = async (req, res) => {
     try {
         // Validation
-        const { firstName, lastName, email, password } = req.body
+        const { firstName, lastName, email, password, phone, age, gender } = req.body
         const { error } = signUpValid.validate(req.body, { abortEarly: false });
         if (error) {
             const errors = error.details.map(err => err.message)
@@ -36,6 +36,9 @@ export const signUp = async (req, res) => {
             firstName,
             lastName,
             email,
+            phone,
+            age,
+            gender,
             password: hashedPassword,
         })
         //  Get info for client

@@ -27,6 +27,9 @@ export const signUpValid = Joi.object(
             "any.only": "confirmpassword is not matching",
             "string.empty": "confirmpassword is not empty",
         }),
+        gender: Joi.string(),
+        age: Joi.number(),
+        phone: Joi.number(),
     });
 export const updateValid = Joi.object(
     {
