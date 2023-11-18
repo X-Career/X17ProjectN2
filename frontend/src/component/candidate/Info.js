@@ -11,22 +11,25 @@ import { useNavigate } from "react-router-dom";
 import { ActiveContext } from "../../context/active_menu";
 
 const Info = () => {
-    const { candidate } = useContext(CandidateContext)
+    const { candidate, setCandidate } = useContext(CandidateContext)
     const [active, setActives] = useState(0)
     const { setActive } = useContext(ActiveContext)
     const navigate = useNavigate()
     const [form] = useForm();
     const { TextArea } = Input;
+    const [hasResult, setResult] = useState(false)
+    const [status, setStatus] = useState(null)
 
     const handleChange = (value) => {
         setActives(value)
         if (value == 1) {
             form.setFieldsValue({ status: 'Interviewing' })
-        } else if(value == 2) {
+        } else if (value == 2) {
             form.setFieldsValue({ status: 'Rejected' })
         }
     }
     const handleRevert = () => {
+        setCandidate({})
         navigate('/admin/recruit-manager')
     }
 
@@ -38,8 +41,13 @@ const Info = () => {
         } else if (candidate.status == 'Rejected') {
             setActive(2)
             form.setFieldsValue({ denyReason: candidate.denyReason })
+        } else if (candidate.status == 'Interviewing') {
+            setActive(1)
+            setResult(true)
+        } else if (candidate.status == 'Applying'){
+            setActive(0)
         }
-    })
+    }, [])
 
     const handleConfirm = async () => {
         try {
@@ -57,8 +65,9 @@ const Info = () => {
                 if (key === 'denyReason') {
                     acc['datetoInter'] = null;
                     acc['datetoGetjob'] = null;
-                    acc['point'] = null;
-                    acc['result'] = null;
+                }
+                if (key === 'status' && acc[key] === 'Interviewing'){
+                    acc['result'] = status
                 }
                 acc['userId'] = candidate.userId._id
                 acc['recruitId'] = candidate.recruitId
@@ -66,8 +75,11 @@ const Info = () => {
                 acc['jobId'] = candidate.jobId._id
                 return acc;
             }, {});
+
             const res = await editCandidate(candidate._id, values)
             if (res.status === 200) {
+                setCandidate({})
+                navigate('/admin/recruit-manager')
                 message.success(res.data.message)
             } else {
                 message.error(res.data.message)
@@ -82,10 +94,14 @@ const Info = () => {
         navigate("/admin/mail-manager")
     }
 
+    const handleStatusInter = (value) =>{
+        setStatus(value)
+    }
+
     return (
 
         <Content
-            id='profile'
+            id='candidate-info'
             style={{
                 margin: '24px 16px',
                 padding: 24,
@@ -114,15 +130,13 @@ const Info = () => {
                                                     <Button icon={<CheckOutlined />} className={active == 1 ? 'change_status_btn_active' : 'change_status_btn'} onClick={() => handleChange(1)}>
                                                         Accept
                                                     </Button>
-                                                    <Button icon={<CloseOutlined />} className={active == 2 ? 'change_status_btn_active' : 'change_status_btn'} onClick={() => handleChange(2)}>
+                                                   {!hasResult &&  <Button icon={<CloseOutlined />} className={active == 2 ? 'change_status_btn_active' : 'change_status_btn'} onClick={() => handleChange(2)}>
                                                         Reject
-                                                    </Button>
+                                                    </Button>}
                                                     <Button icon={<EnterOutlined />} className="change_status_btn" onClick={handleRevert}>
-                                                        Revert
+                                                       Back
                                                     </Button>
-
                                                 </div>
-
                                             </Col>
 
                                             <Col span={14} className="flex-start">
@@ -248,35 +262,68 @@ const Info = () => {
                                                                         label='Point'
                                                                         name='point'
                                                                         style={{ width: '49%' }}
+                                                                        initialValue={candidate.point ? candidate.point : null}
                                                                     >
-                                                                        <Input style={{ width: '100%' }} value={candidate.point} readOnly={true} />
+                                                                        <Input style={{ width: '100%' }} placeholder="Point"/>
+                                                                    </Form.Item>
+                                                                    <Form.Item
+                                                                        label='Result'
+                                                                        style={{ width: '49%' }}
+                                                                        initialValue={candidate.result ? candidate.result : null}
+                                                                    >
+                                                                        <Select placeholder='Result' onChange={handleStatusInter}>
+                                                                            <Select.Option value={null}></Select.Option>
+                                                                            <Select.Option value="pass">Pass</Select.Option>
+                                                                        </Select>
+                                                                    </Form.Item>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <div className='flex-between'>
+                                                                    <Form.Item
+                                                                        label='Point'
+                                                                        name='point'
+                                                                        style={{ width: '49%' }}
+                                                                        initialValue={candidate.point ? candidate.point : null}
+                                                                    >
+                                                                        <Input style={{ width: '100%' }} placeholder=""/>
                                                                     </Form.Item>
                                                                     <Form.Item
                                                                         label='Result'
                                                                         name='result'
                                                                         style={{ width: '49%' }}
+                                                                        initialValue={candidate.result ? candidate.result : null}
                                                                     >
-                                                                        <Input style={{ width: '100%' }} value={candidate.result} readOnly={true} />
+                                                                        <Select placeholder='Result' >
+                                                                            <Select.Option value="pass">Pass</Select.Option>
+                                                                            <Select.Option value="fail">Fail</Select.Option>
+                                                                        </Select>
                                                                     </Form.Item>
                                                                 </div>
+                                                                <Form.Item
+                                                                    label='Deny reason'
+                                                                    name='denyReason'
+                                                                    style={{ width: '100%' }}
+                                                                >
+                                                                    <TextArea
+                                                                        rows={4}
+                                                                        placeholder='Enter your reason'
+                                                                    />
+                                                                </Form.Item>
                                                             </>
-                                                        ) : (
-                                                            <Form.Item
-                                                                label='Deny reason'
-                                                                name='denyReason'
-                                                                style={{ width: '100%' }}
-                                                            >
-                                                                <TextArea
-                                                                    rows={4}
-                                                                    placeholder='Enter your reason'
-                                                                />
-                                                            </Form.Item>
                                                         )}
 
                                                         <Form.Item className="flex-center">
-                                                            <Button type="primary" onClick={handleConfirm}>
-                                                                {active == 1 ? "Accept" : "Reject"}
-                                                            </Button>
+                                                            {active == 1 ? 
+                                                                <Button type="primary" icon={<CheckOutlined/>} onClick={handleConfirm}>
+                                                                     Accept
+                                                                </Button>
+                                                                :
+                                                                <Button type="primary" icon={<CloseOutlined />} onClick={handleConfirm}>
+                                                                    Reject
+                                                                </Button>
+                                                            }
                                                         </Form.Item>
                                                     </Form>
                                                 </Col>
@@ -291,17 +338,17 @@ const Info = () => {
                                 ,
                             },
                             {
-                                children: (
-                                    <Row>
-
-                                        <Col span={14} className="timeline_title">
-                                            ATTACHMENT
-                                        </Col>
-                                        <Col span={14} className="flex-center">
-                                            {/* <iframe src={candidate.fileCV[0]} width="100%" height="500"></iframe> */}
-                                        </Col>
-                                    </Row>
-                                ),
+                                children:
+                                    (
+                                        <Row className="candidate_cv">
+                                            <Col span={24} className="timeline_title">
+                                                ATTACHMENT
+                                            </Col>
+                                            <Col span={24} className="flex-center">
+                                                <iframe className=" w-100 vh-100" src={candidate.fileCV[0]}></iframe>
+                                            </Col>
+                                        </Row>
+                                    ),
                             },
 
                         ]}

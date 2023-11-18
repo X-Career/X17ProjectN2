@@ -13,7 +13,7 @@ const PopupDetail = (props) => {
     const handleApply = async() => {
         try{
             const formData = await form.validateFields();
-            let values = Object.entries(formData).reduce((acc, [key, value]) => {
+            let values = await Object.entries(formData).reduce((acc, [key, value]) => {
                 if (value !== '') {
                     acc[key] = value;
                 }
@@ -28,7 +28,7 @@ const PopupDetail = (props) => {
                 acc['jobId'] = candidate.jobId._id
                 return acc;
             }, {});
-            const res = await editCandidate(values)
+            const res = await editCandidate(candidate._id, values)
             if(res.status == 200){
                 props.handleClose()
                 message.success('Your suggest sent to HR')
@@ -45,7 +45,7 @@ const PopupDetail = (props) => {
 
     return (
         <Modal
-            title={`Detailed information of ${candidate.jobId.name} jobs of history`}
+            title={`Your application process for ${candidate.jobId.name}`}
             centered
             open={open}
             width={900}
@@ -122,12 +122,12 @@ const PopupDetail = (props) => {
                         readOnly={true}
                     />
                 </Form.Item>
-                {candidate.status == 'Interviewing' && (
+                {candidate.status == 'Interviewing' && candidate.result == 'pass' ? (
                     <div className="flex-between">
                         <Form.Item
                             label='Date to inter'
                             name='datetoInter'
-                            style={{ width: '100%' }}
+                            style={{ width: '49%' }}
                             initialValue={candidate.datetoInter ? dayjs(candidate.datetoInter, 'YYYY-MM-DD HH:mm') : undefined}
                         >
                             <DatePicker
@@ -137,6 +137,21 @@ const PopupDetail = (props) => {
                                 format='YYYY-MM-DD HH:mm'
                             />
                         </Form.Item>
+                        <Form.Item
+                            label='Date to get job'
+                            name='datetoGetjob'
+                            style={{ width: '49%' }}
+                            initialValue={candidate.datetoGetjob ? dayjs(candidate.datetoGetjob, 'YYYY-MM-DD HH:mm') : undefined}
+                        >
+                            <DatePicker
+                                showTime={{
+                                    format: 'HH:mm',
+                                }}
+                                format='YYYY-MM-DD HH:mm'
+                            />
+                        </Form.Item>
+                    </div>
+                ) : candidate.status == 'Interviewing' && !candidate.result ? (
                         <Form.Item
                             label='Date to get job'
                             name='datetoGetjob'
@@ -150,18 +165,40 @@ const PopupDetail = (props) => {
                                 format='YYYY-MM-DD HH:mm'
                             />
                         </Form.Item>
-                    </div>
-                )}
+                ) : (<></>)}
                 {candidate.status == 'Rejected' && (
+                       <>
+                        <div className="flex-between">
+                            <Form.Item
+                                label="Point"
+                                style={{ width: '49%' }}
+                            >
+                                <Input
+                                    readOnly={true}
+                                    value={candidate.point}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="Result"
+                                style={{ width: '49%' }}
+                            >
+                                <Input
+                                    readOnly={true}
+                                    value={candidate.result ? (candidate.result === 'pass' ? 'Pass' : 'Fail') : ' - '}
+                                />
+                            </Form.Item>
+                        </div>
                         <Form.Item
-                            name="denyReason"
+                        
                             label="Deny reason"
                         >
                             <TextArea
                                 rows={4}
                                 readOnly={true}
+                                value={candidate.denyReason}
                             />
                         </Form.Item>
+                       </>
                 )}
                 {candidate.status == 'Testing' && (
                     <div className="flex-between">
@@ -170,7 +207,9 @@ const PopupDetail = (props) => {
                             style={{ width: '49%' }}
                         >
                             <Input
+                            placeholder="Point"
                                 readOnly={true}
+                                value={candidate.point}
                             />
                         </Form.Item>
                         <Form.Item
@@ -178,7 +217,9 @@ const PopupDetail = (props) => {
                             style={{ width: '49%' }}
                         >
                             <Input
+                                placeholder="Result"
                                 readOnly={true}
+                                value={candidate.result}
                             />
                         </Form.Item>
                     </div>

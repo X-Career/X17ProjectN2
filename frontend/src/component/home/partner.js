@@ -9,6 +9,7 @@ const SwiperPartner = () =>{
                 <Swiper
                     slidesPerView={4}
                     centeredSlides
+                    autoplay={{ delay: 800 }}
                 >
                     <SwiperSlide className="partner_item">
                         <img src="../images/Partner/scb.webp" width={150} />

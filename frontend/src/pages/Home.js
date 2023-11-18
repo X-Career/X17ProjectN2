@@ -10,7 +10,7 @@ const Home = () => {
             <Header />
             <HomeAfterLogin />
             <Service/>
-            <SwiperPartner/>
+            {/* <SwiperPartner/> */}
             <Footer/>
            
         </div>
